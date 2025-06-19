@@ -11,4 +11,7 @@ android {
 dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
+
+    testImplementation(project(":core:testing"))
+    testImplementation(libs.robolectric)
 }
