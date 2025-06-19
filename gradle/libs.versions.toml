@@ -1,7 +1,7 @@
 [versions]
 accompanist = "0.34.0"
 androidDesugarJdkLibs = "2.0.4"
-androidGradlePlugin = "8.7.3"
+androidGradlePlugin = "8.8.0"
 androidxActivity = "1.10.1"
 androidxAppCompat = "1.7.0"
 androidxMaterial = "1.12.0"
@@ -71,6 +71,7 @@ baselineprofile = "1.2.2"
 gson = "2.11.0"
 dependency-analysis = "1.27.0"
 coil = "2.7.0"
+kotlinTest = "2.1.10"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -178,6 +179,8 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version = "2.1.0" }
 androidx-hilt-common = { group = "androidx.hilt", name = "hilt-common", version = "hiltExt" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines", version.ref = "kotlinxCoroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -216,3 +219,5 @@ naveenapps-android-room = { id = "naveenapps.android.room", version = "unspecifi
 naveenapps-android-test = { id = "naveenapps.android.test", version = "unspecified" }
 naveenapps-hilt = { id = "naveenapps.hilt", version = "unspecified" }
 naveenapps-jvm-library = { id = "naveenapps.jvm.library", version = "unspecified" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
