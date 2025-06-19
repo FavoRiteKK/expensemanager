@@ -25,6 +25,8 @@ plugins {
     alias(libs.plugins.firebase.distribution) apply false
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.dependency.analysis) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.android.kotlin.multiplatform.library) apply false
 }
 
 val ktlintVersion = "0.48.1"
