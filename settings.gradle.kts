@@ -35,6 +35,7 @@ include(":core:model4mp")
 include(":core:navigation")
 include(":core:notification")
 include(":core:repository")
+include(":core:repository4mp")
 include(":core:testing")
 
 include(":feature:account")
