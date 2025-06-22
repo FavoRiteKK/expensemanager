@@ -65,8 +65,8 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
-                implementation(libs.sqldelight.coroutines.extensions)
                 implementation(libs.kotlinx.datetime)
+                implementation(libs.sqldelight.coroutines.extensions)
 
                 api(libs.multiplatformSettings.coroutines)
                 api(libs.koin.core)
