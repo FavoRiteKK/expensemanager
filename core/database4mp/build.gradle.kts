@@ -1,13 +1,19 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 kotlin {
 
     // Target declarations
     androidLibrary {
-        namespace = "com.naveenapps.expensemanager.core.datastore4mp"
+        namespace = "com.naveenapps.expensemanager.core.database4mp"
         compileSdk = 35
         minSdk = 24
     }
@@ -20,21 +26,14 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":core:model4mp"))
                 implementation(project(":core:common4mp"))
+                implementation(project(":core:model4mp"))
 
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.kotlinx.datetime)
                 implementation(libs.sqldelight.coroutines.extensions)
+                implementation(libs.kotlinx.datetime)
 
-                api(libs.multiplatformSettings.coroutines)
-                api(libs.koin.core)
-                implementation(libs.koin.compose)
-
-                // DataStore library
-                implementation(libs.androidx.dataStore.core)
-                // The Preferences DataStore library
-                implementation(libs.androidx.dataStore.preference)
+                implementation(libs.room.runtime)
+                implementation(libs.sqlite.bundled)
             }
         }
 
@@ -45,5 +44,10 @@ kotlin {
             }
         }
     }
+}
 
+dependencies {
+//    add("kspCommonMainMetadata", project(":core:database4mp"))
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
 }

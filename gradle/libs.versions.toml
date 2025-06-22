@@ -78,6 +78,7 @@ kotlinxCoroutinesSwing = "1.10.2"
 koin = "4.0.0"
 koinCompose = "4.0.0"
 koinComposeMultiplatform = "4.0.0"
+sqlite = "2.5.1"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -165,6 +166,7 @@ robolectric-shadows = { group = "org.robolectric", name = "shadows-framework", v
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 mpcharts = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpcharts" }
 mockito = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito" }
@@ -214,7 +216,9 @@ play-publish = { id = "com.github.triplet.play", version.ref = "play-publish" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
+androidx-room = { id = "androidx.room", version.ref = "room" }
 
 naveenapps-android-app = { id = "naveenapps.plugin.android.app", version = "unspecified" }
 naveenapps-kotlin-basic = { id = "naveenapps.plugin.kotlin.basic", version = "unspecified" }
@@ -231,5 +235,3 @@ naveenapps-android-room = { id = "naveenapps.android.room", version = "unspecifi
 naveenapps-android-test = { id = "naveenapps.android.test", version = "unspecified" }
 naveenapps-hilt = { id = "naveenapps.hilt", version = "unspecified" }
 naveenapps-jvm-library = { id = "naveenapps.jvm.library", version = "unspecified" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }

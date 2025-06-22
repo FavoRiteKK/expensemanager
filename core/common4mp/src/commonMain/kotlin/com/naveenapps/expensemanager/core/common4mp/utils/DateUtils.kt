@@ -74,10 +74,9 @@ fun Long.fromUTCToLocalTimeStamp(): Long {
         .toEpochMilliseconds()
 }
 
-fun Long.fromUTCToLocalDate(): LocalDate {
+fun Long.fromUTCToLocalDate(): LocalDateTime {
     return Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.UTC)
-        .date
 }
 
 fun Long.toExactStartOfTheDay(): LocalDate {

@@ -1,56 +1,34 @@
-package com.naveenapps.expensemanager.core.datastore.di
+package com.naveenapps.expensemanager.core.datastore4mp.di
 
-import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
-import com.naveenapps.expensemanager.core.datastore.DateRangeDataStore
-import com.naveenapps.expensemanager.core.datastore.ReminderTimeDataStore
-import com.naveenapps.expensemanager.core.datastore.SettingsDataStore
-import com.naveenapps.expensemanager.core.datastore.ThemeDataStore
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import com.naveenapps.expensemanager.core.datastore4mp.CurrencyDataStore
+import com.naveenapps.expensemanager.core.datastore4mp.DateRangeDataStore
+import com.naveenapps.expensemanager.core.datastore4mp.ReminderTimeDataStore
+import com.naveenapps.expensemanager.core.datastore4mp.SettingsDataStore
+import com.naveenapps.expensemanager.core.datastore4mp.ThemeDataStore
+import okio.Path.Companion.toPath
+import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@InstallIn(SingletonComponent::class)
-@Module
-object DatastoreModule {
+private const val DATA_STORE_NAME = "expense_manager_app_data_store"
 
-    private const val DATA_STORE_NAME = "expense_manager_app_data_store"
+/**
+ *   Gets the singleton DataStore instance, creating it if necessary.
+ */
+internal fun createDataStore(producePath: (String) -> String): DataStore<Preferences> =
+    PreferenceDataStoreFactory.createWithPath(
+        produceFile = { producePath(DATA_STORE_NAME).toPath() }
+    )
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(DATA_STORE_NAME)
+internal expect fun appDataStoreModule(): Module
 
-    @Provides
-    @Singleton
-    fun provideThemeDataStore(@ApplicationContext context: Context): ThemeDataStore {
-        return ThemeDataStore(context.dataStore)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSettingsDataStore(@ApplicationContext context: Context): SettingsDataStore {
-        return SettingsDataStore(context.dataStore)
-    }
-
-    @Provides
-    @Singleton
-    fun provideCurrencyDataStore(@ApplicationContext context: Context): CurrencyDataStore {
-        return CurrencyDataStore(context.dataStore)
-    }
-
-    @Provides
-    @Singleton
-    fun provideReminderTimeDataStore(@ApplicationContext context: Context): ReminderTimeDataStore {
-        return ReminderTimeDataStore(context.dataStore)
-    }
-
-    @Provides
-    @Singleton
-    fun provideDateRangeDataStore(@ApplicationContext context: Context): DateRangeDataStore {
-        return DateRangeDataStore(context.dataStore)
-    }
+val dataStoreModule = appDataStoreModule() + module {
+    singleOf(::ThemeDataStore)
+    singleOf(::SettingsDataStore)
+    singleOf(::CurrencyDataStore)
+    singleOf(::ReminderTimeDataStore)
+    singleOf(::DateRangeDataStore)
 }
