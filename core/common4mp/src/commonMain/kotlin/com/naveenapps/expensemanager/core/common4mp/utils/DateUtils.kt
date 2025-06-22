@@ -151,7 +151,7 @@ fun String.fromCompleteDate(): LocalDate {
             chars("/")
             year()
         }.parseOrNull(this)
-    }.getOrNull() ?: Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    }.getOrNull() ?: Clock.System.now().asCurrentDateTime().date
 }
 
 fun LocalDate.toMonthAndYear(): String {
@@ -217,7 +217,7 @@ fun String.fromTimeAndHour(): LocalDateTime {
             char(':')
             minute()
         }.parseOrNull(this)
-    }.getOrNull() ?: Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    }.getOrNull() ?: Clock.System.now().asCurrentDateTime()
 }
 
 fun LocalDateTime.toTimeAndMinutesWithAMPM(): String {
@@ -230,3 +230,6 @@ fun LocalDateTime.toTimeAndMinutesWithAMPM(): String {
         amPmMarker("AM", "PM")
     }.format(this)
 }
+
+fun Instant.asCurrentDateTime() =
+    Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
