@@ -153,22 +153,14 @@ fun String.fromCompleteDate(): LocalDate {
     }.getOrNull() ?: Clock.System.now().asCurrentDateTime().date
 }
 
-fun LocalDate.toMonthAndYear(): String {
-    return LocalDate.Format {   //"MMMM dd, yyyy"
-        monthName(MonthNames.ENGLISH_FULL)  // FIXME: idk apply to other languages
-        char(' ')
-        dayOfMonth()
-        chars(", ")
-        year()
-    }.format(this)
+fun LocalDateTime.toMonthAndYear(): String {
+    return this.toMonthYear()
 }
 
-fun String.fromMonthAndYear(): LocalDate? {
-    return LocalDate.Format {   //"MMMM dd, yyyy"
-        monthName(MonthNames.ENGLISH_FULL)  // FIXME: idk apply to other languages
+fun String.fromMonthAndYear(): LocalDateTime? {
+    return LocalDateTime.Format {   //MMMM yyyy
+        monthName(MonthNames.ENGLISH_FULL)
         char(' ')
-        dayOfMonth()
-        chars(", ")
         year()
     }.parseOrNull(this)
 }

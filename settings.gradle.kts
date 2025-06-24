@@ -38,6 +38,7 @@ include(":core:notification")
 include(":core:repository")
 include(":core:repository4mp")
 include(":core:testing")
+include(":core:testing4mp")
 
 include(":feature:account")
 include(":feature:analysis")
