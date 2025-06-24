@@ -19,24 +19,44 @@ kotlin {
     jvm("desktop")
 
     // Source set declarations.
+    applyDefaultHierarchyTemplate()
+
     sourceSets {
         commonMain {
             dependencies {
                 api(libs.kotlinx.coroutines.test)
+                api(libs.kotlin.test)
+                api(libs.turbine)
 
                 implementation(project(":core:common4mp"))
                 implementation(project(":core:model4mp"))
 
                 implementation(libs.sqldelight.coroutines.extensions)
                 implementation(libs.kotlinx.datetime)
-                implementation(libs.kotlin.test)
             }
         }
 
         androidMain {
             dependencies {
                 api(libs.androidx.activity.compose)
+                api(libs.androidx.test.core)
+                api(libs.androidx.test.ext)
+                api(libs.androidx.test.runner)
+                api(libs.robolectric)
             }
         }
+
+        val desktopPlusAndroidMain by creating {
+            dependsOn(commonMain.get())
+            dependencies {
+                api(libs.truth)
+            }
+        }
+
+        getByName("desktopMain") {
+            dependsOn(desktopPlusAndroidMain)
+        }
+
+        androidMain.get().dependsOn(desktopPlusAndroidMain)
     }
 }

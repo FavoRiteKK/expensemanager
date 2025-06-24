@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.model4mp
 
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
+import com.naveenapps.expensemanager.core.common4mp.utils.toCompleteDateWithDate
 
 data class TransactionGroup(
     val date: String,

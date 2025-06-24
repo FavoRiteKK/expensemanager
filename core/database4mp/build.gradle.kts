@@ -48,6 +48,7 @@ kotlin {
 
 dependencies {
 //    add("kspCommonMainMetadata", project(":core:database4mp"))
+    add("kspDesktop", libs.room.compiler)
     add("kspAndroid", libs.room.compiler)
     add("kspIosArm64", libs.room.compiler)
 }

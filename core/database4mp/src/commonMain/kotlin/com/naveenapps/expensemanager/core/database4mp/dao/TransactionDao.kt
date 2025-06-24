@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 interface TransactionDao : BaseDao<TransactionEntity> {
 
     @Query("SELECT * from `transaction` WHERE id=:id")
-    fun findById(id: String): TransactionEntity?
+    suspend fun findById(id: String): TransactionEntity?
 
     @Query("SELECT * FROM `transaction`")
     fun getAllTransaction(): Flow<List<TransactionRelation>?>

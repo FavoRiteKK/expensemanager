@@ -131,8 +131,8 @@ fun LocalDate.toCompleteDate(): String {
     }.format(this)
 }
 
-fun LocalDate.toCompleteDateWithDate(): String {
-    return LocalDate.Format {   //"dd/MM/yyyy"
+fun LocalDateTime.toCompleteDateWithDate(): String {
+    return LocalDateTime.Format {   //"dd/MM/yyyy"
         dayOfMonth()
         chars("/")
         monthNumber()

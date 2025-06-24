@@ -107,9 +107,10 @@ kotlin {
             }
         }
 
-        val desktopMain by getting
-        desktopMain.dependencies {
-            implementation(libs.kotlinx.coroutines.swing)
+        getByName("desktopMain") {
+            dependencies {
+                implementation(libs.kotlinx.coroutines.swing)
+            }
         }
     }
 
