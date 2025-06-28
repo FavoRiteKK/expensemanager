@@ -50,6 +50,15 @@ kotlin {
                 implementation(libs.sqlite.bundled)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(compose.components.resources)
+
+                //e: androidx.compose.compiler.plugins.kotlin.IncompatibleComposeRuntimeVersionException:
+                // The Compose Compiler requires the Compose Runtime to be on the class path, but none could be found.
+                implementation(platform("androidx.compose:compose-bom:2025.05.01"))
+
+                // Compose Runtime
+                implementation(libs.androidx.runtime)
+                
+                implementation(libs.koin.test)
             }
         }
 

@@ -1,22 +1,30 @@
 package com.naveenapps.expensemanager.core.data4mp.repository
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
 import app.cash.turbine.test
-import com.naveenapps.expensemanager.core.common4mp.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.datastore4mp.CurrencyDataStore
+import com.naveenapps.expensemanager.core.common4mp.di.dispatcherModule
+import com.naveenapps.expensemanager.core.data4mp.testContextModule
+import com.naveenapps.expensemanager.core.datastore4mp.di.dataStoreModule
 import com.naveenapps.expensemanager.core.model4mp.Amount
 import com.naveenapps.expensemanager.core.model4mp.TextFormat
 import com.naveenapps.expensemanager.core.model4mp.TextPosition
 import com.naveenapps.expensemanager.core.repository4mp.CurrencyRepository
 import com.naveenapps.expensemanager.core.testing4mp.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing4mp.LWTruth_assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
+import org.koin.test.KoinTest
+import org.koin.test.inject
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 
 @ExperimentalCoroutinesApi
-class CurrencyRepositoryImplTest : BaseCoroutineTest() {
+class CurrencyRepositoryImplTest : BaseCoroutineTest(), KoinTest {
 
     private val amount = Amount(
         amount = 100.0,
@@ -24,37 +32,40 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
         currency = null,
     )
 
-    private val testContext: Context = ApplicationProvider.getApplicationContext()
-    private val testDataStore: DataStore<Preferences> =
-        PreferenceDataStoreFactory.create(
-            scope = TestScope(testCoroutineDispatcher),
-            produceFile = {
-                testContext.preferencesDataStoreFile("TEST_DATASTORE_NAME")
-            },
-        )
+    // my modules which override android context in testContextModule
+    private val myModules = dispatcherModule + dataStoreModule + module {
+        singleOf(::CurrencyRepositoryImpl) bind CurrencyRepository::class
+    }
 
-    private val repository: CurrencyRepository = CurrencyRepositoryImpl(
-        CurrencyDataStore(testDataStore),
-        AppCoroutineDispatchers(
-            testCoroutineDispatcher.dispatcher,
-            testCoroutineDispatcher.dispatcher,
-            testCoroutineDispatcher.dispatcher,
-        ),
-    )
+    private val repository: CurrencyRepository by inject()
+
+    @BeforeTest
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            modules(myModules)
+        }
+    }
+
+    @AfterTest
+    override fun onDestroy() {
+        super.onDestroy()
+        stopKoin()
+    }
 
     @Test
     fun getDefaultCurrencyShouldReturnDefaultCurrency() = runTest {
         val currency = repository.getDefaultCurrency()
-        Truth.assertThat(currency).isNotNull()
-        Truth.assertThat(currency).isEqualTo(defaultCurrency)
+        LWTruth_assertThat(currency).isNotNull()
+        LWTruth_assertThat(currency).isEqualTo(defaultCurrency)
     }
 
     @Test
     fun getSelectedCurrencyShouldReturnDefaultCurrency() = runTest {
         repository.getSelectedCurrency().test {
             val currency = awaitItem()
-            Truth.assertThat(currency).isNotNull()
-            Truth.assertThat(currency).isEqualTo(defaultCurrency)
+            LWTruth_assertThat(currency).isNotNull()
+            LWTruth_assertThat(currency).isEqualTo(defaultCurrency)
         }
     }
 
@@ -62,8 +73,8 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     fun getSelectedCurrencyShouldReturnAfterUpdate() = runTest {
         repository.getSelectedCurrency().test {
             val currency = awaitItem()
-            Truth.assertThat(currency).isNotNull()
-            Truth.assertThat(currency).isEqualTo(defaultCurrency)
+            LWTruth_assertThat(currency).isNotNull()
+            LWTruth_assertThat(currency).isEqualTo(defaultCurrency)
 
             val updatingCurrency = defaultCurrency.copy(
                 symbol = "€",
@@ -72,26 +83,27 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             repository.saveCurrency(updatingCurrency)
 
             val newCurrency = awaitItem()
-            Truth.assertThat(newCurrency).isNotNull()
-            Truth.assertThat(newCurrency).isEqualTo(updatingCurrency)
+            LWTruth_assertThat(newCurrency).isNotNull()
+            LWTruth_assertThat(newCurrency).isEqualTo(updatingCurrency)
         }
     }
 
     @Test
     fun getFormattedAmountWithoutCurrencyShouldReturnAmountWithDefaultCurrency() = runTest {
         val formattedAmount = repository.getFormattedCurrency(amount)
-        Truth.assertThat(formattedAmount).isNotNull()
-        Truth.assertThat(formattedAmount.amount).isEqualTo(amount.amount)
-        Truth.assertThat(formattedAmount.amountString).isEqualTo("100.0$")
+        LWTruth_assertThat(formattedAmount).isNotNull()
+        LWTruth_assertThat(formattedAmount.amount).isEqualTo(amount.amount)
+        LWTruth_assertThat(formattedAmount.amountString).isEqualTo("100.0$")
     }
 
     @Test
     fun getFormattedAmountWithCurrencyShouldReturnAmountWithPassedCurrency() = runTest {
-        val passedAmount = amount.copy(amount = 120.0, currency = defaultCurrency.copy(symbol = "€"))
+        val passedAmount =
+            amount.copy(amount = 120.0, currency = defaultCurrency.copy(symbol = "€"))
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
-        Truth.assertThat(formattedAmount).isNotNull()
-        Truth.assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
-        Truth.assertThat(formattedAmount.amountString).isEqualTo("120.0€")
+        LWTruth_assertThat(formattedAmount).isNotNull()
+        LWTruth_assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
+        LWTruth_assertThat(formattedAmount.amountString).isEqualTo("120.0€")
     }
 
     @Test
@@ -104,9 +116,9 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
-        Truth.assertThat(formattedAmount).isNotNull()
-        Truth.assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
-        Truth.assertThat(formattedAmount.amountString).isEqualTo("€120.0")
+        LWTruth_assertThat(formattedAmount).isNotNull()
+        LWTruth_assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
+        LWTruth_assertThat(formattedAmount.amountString).isEqualTo("€120.0")
     }
 
     @Test
@@ -120,9 +132,9 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
-        Truth.assertThat(formattedAmount).isNotNull()
-        Truth.assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
-        Truth.assertThat(formattedAmount.amountString).isEqualTo("€1,200")
+        LWTruth_assertThat(formattedAmount).isNotNull()
+        LWTruth_assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
+        LWTruth_assertThat(formattedAmount.amountString).isEqualTo("€1,200")
     }
 
     @Test
@@ -136,9 +148,9 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
-        Truth.assertThat(formattedAmount).isNotNull()
-        Truth.assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
-        Truth.assertThat(formattedAmount.amountString).isEqualTo("-€1,200")
+        LWTruth_assertThat(formattedAmount).isNotNull()
+        LWTruth_assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
+        LWTruth_assertThat(formattedAmount.amountString).isEqualTo("-€1,200")
     }
 
     @Test
@@ -152,9 +164,9 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
-        Truth.assertThat(formattedAmount).isNotNull()
-        Truth.assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
-        Truth.assertThat(formattedAmount.amountString).isEqualTo("-€1,200,000,000")
+        LWTruth_assertThat(formattedAmount).isNotNull()
+        LWTruth_assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
+        LWTruth_assertThat(formattedAmount.amountString).isEqualTo("-€1,200,000,000")
     }
 
     @Test
@@ -168,8 +180,8 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
-        Truth.assertThat(formattedAmount).isNotNull()
-        Truth.assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
-        Truth.assertThat(formattedAmount.amountString).isEqualTo("-1,200,000,000.4€")
+        LWTruth_assertThat(formattedAmount).isNotNull()
+        LWTruth_assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
+        LWTruth_assertThat(formattedAmount.amountString).isEqualTo("-1,200,000,000.4€")
     }
 }
