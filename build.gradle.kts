@@ -29,6 +29,7 @@ plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library) apply false
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.androidx.room) apply false
+    alias(libs.plugins.mockmp) apply false
 }
 
 val ktlintVersion = "0.48.1"

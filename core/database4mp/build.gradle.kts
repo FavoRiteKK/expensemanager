@@ -18,7 +18,7 @@ kotlin {
         minSdk = 24
     }
 
-    iosArm64()
+//    iosArm64()
 
     jvm("desktop")
 
@@ -47,8 +47,7 @@ kotlin {
 }
 
 dependencies {
-//    add("kspCommonMainMetadata", project(":core:database4mp"))
     add("kspDesktop", libs.room.compiler)
     add("kspAndroid", libs.room.compiler)
-    add("kspIosArm64", libs.room.compiler)
+//    add("kspIosArm64", libs.room.compiler)
 }

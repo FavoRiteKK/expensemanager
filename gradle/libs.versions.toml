@@ -37,6 +37,7 @@ firebaseCrashlyticsPlugin = "3.0.3"
 firebasePerfPlugin = "1.4.2"
 firebaseDistribution = "5.1.1"
 googleOss = "17.1.0"
+mockmp = "2.0.2"
 opencsv = "4.6"
 review = "2.0.2"
 googleOssPlugin = "0.10.6"
@@ -223,6 +224,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+mockmp = { id = "org.kodein.mock.mockmp", version.ref = "mockmp" }
 
 naveenapps-android-app = { id = "naveenapps.plugin.android.app", version = "unspecified" }
 naveenapps-kotlin-basic = { id = "naveenapps.plugin.kotlin.basic", version = "unspecified" }

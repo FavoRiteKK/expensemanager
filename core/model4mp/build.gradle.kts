@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
@@ -12,7 +14,7 @@ kotlin {
         minSdk = 24
     }
 
-    iosArm64()
+//    iosArm64()
 
     jvm("desktop")
 
@@ -24,6 +26,15 @@ kotlin {
 
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.datetime)
+
+                implementation(compose.components.resources)
+
+                //e: androidx.compose.compiler.plugins.kotlin.IncompatibleComposeRuntimeVersionException:
+                // The Compose Compiler requires the Compose Runtime to be on the class path, but none could be found.
+                implementation(project.dependencies.platform(libs.androidx.compose.bom))
+
+                // Compose Runtime
+                implementation(libs.androidx.runtime)
             }
         }
     }

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.mockmp)
 }
 
 kotlin {
@@ -21,7 +22,7 @@ kotlin {
         withDeviceTestBuilder { }
     }
 
-    iosArm64()
+//    iosArm64()
 
     jvm("desktop")
 
@@ -53,12 +54,10 @@ kotlin {
 
                 //e: androidx.compose.compiler.plugins.kotlin.IncompatibleComposeRuntimeVersionException:
                 // The Compose Compiler requires the Compose Runtime to be on the class path, but none could be found.
-                implementation(platform("androidx.compose:compose-bom:2025.05.01"))
+                implementation(project.dependencies.platform(libs.androidx.compose.bom))
 
                 // Compose Runtime
                 implementation(libs.androidx.runtime)
-                
-                implementation(libs.koin.test)
             }
         }
 
@@ -67,6 +66,7 @@ kotlin {
                 implementation(project(":core:testing4mp"))
 
                 implementation(libs.kotlin.test)
+                implementation(libs.koin.test)
             }
         }
     }
@@ -77,8 +77,17 @@ room {
 }
 
 dependencies {  /* actually for test */
-//    add("kspCommonMainMetadata", project(":core:database4mp"))
     add("kspDesktop", libs.room.compiler)
     add("kspAndroid", libs.room.compiler)
-    add("kspIosArm64", libs.room.compiler)
+//    add("kspIosArm64", libs.room.compiler)
+
+    // (2) instead add ksp for mockmp here
+    add("kspDesktopTest", "org.kodein.mock:mockmp-processor:2.0.2")
+    add("kspAndroidHostTest", "org.kodein.mock:mockmp-processor:2.0.2")
+}
+
+mockmp {
+    onTest { // or onMain
+        targets("this-is-not-compatible-with-agp-8.8.+")   // (1)
+    }
 }

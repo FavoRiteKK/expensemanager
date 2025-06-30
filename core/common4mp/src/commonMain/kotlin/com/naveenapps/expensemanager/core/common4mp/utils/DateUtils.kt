@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.core.common4mp.utils
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
@@ -79,50 +78,43 @@ fun Long.fromUTCToLocalDate(): LocalDateTime {
         .toLocalDateTime(TimeZone.UTC)
 }
 
-fun Long.toExactStartOfTheDay(): LocalDate {
+fun Long.toExactStartOfTheDay(): LocalDateTime {
     val dateTime = Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.UTC)
     return dateTime.date.atStartOfDayIn(TimeZone.currentSystemDefault())
         .toLocalDateTime(TimeZone.currentSystemDefault())
-        .date
 }
 
-fun LocalDate.getStartOfTheMonth(): Long {
-    val dateTime = this.atStartOfDayIn(TimeZone.currentSystemDefault())
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-
-    return dateTime.date.minus(dateTime.dayOfMonth, DateTimeUnit.DAY)
+fun LocalDateTime.getStartOfTheMonth(): Long {
+    return this.date.minus(this.dayOfMonth, DateTimeUnit.DAY)
         .atStartOfDayIn(TimeZone.currentSystemDefault())
         .toEpochMilliseconds()
 }
 
-fun LocalDate.getEndOfTheMonth(): Long {
-    val dateTime = this.atStartOfDayIn(TimeZone.currentSystemDefault())
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-    val startOfTheWeekDay = dateTime.date.minus(dateTime.dayOfMonth, DateTimeUnit.DAY)
+fun LocalDateTime.getEndOfTheMonth(): Long {
+    val startOfTheWeekDay = this.date.minus(this.dayOfMonth, DateTimeUnit.DAY)
         .atStartOfDayIn(TimeZone.currentSystemDefault())
     return startOfTheWeekDay.plus(1, DateTimeUnit.MONTH, TimeZone.currentSystemDefault())
         .toEpochMilliseconds()
 }
 
-fun Long.toCompleteDate(): LocalDate {
+fun Long.toCompleteDate(): LocalDateTime {
     return Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.currentSystemDefault())
-        .date
 }
 
-fun LocalDate.toDate(): String {
+fun LocalDateTime.toDate(): String {
     return this.dayOfMonth.toString().padStart(2, '0')
 }
 
-fun LocalDate.toDayAndMonthString(): String {
+fun LocalDateTime.toDateAndMonth(): String {
     val day = this.dayOfMonth.toString().padStart(2, '0')
     val month = this.monthNumber.toString().padStart(2, '0')
     return "$day/$month"
 }
 
-fun LocalDate.toCompleteDate(): String {
-    return LocalDate.Format {   //"MMMM dd, yyyy"
+fun LocalDateTime.toCompleteDate(): String {
+    return LocalDateTime.Format {   //"MMMM dd, yyyy"
         monthName(MonthNames.ENGLISH_FULL)  // FIXME: idk apply to other languages
         char(' ')
         dayOfMonth()
@@ -141,16 +133,16 @@ fun LocalDateTime.toCompleteDateWithDate(): String {
     }.format(this)
 }
 
-fun String.fromCompleteDate(): LocalDate {
+fun String.fromCompleteDate(): LocalDateTime {
     return runCatching {        //"dd/MM/yyyy"
-        LocalDate.Format {
+        LocalDateTime.Format {
             dayOfMonth()
             chars("/")
             monthNumber()
             chars("/")
             year()
         }.parseOrNull(this)
-    }.getOrNull() ?: Clock.System.now().asCurrentDateTime().date
+    }.getOrNull() ?: Clock.System.now().asCurrentDateTime()
 }
 
 fun LocalDateTime.toMonthAndYear(): String {
@@ -165,17 +157,17 @@ fun String.fromMonthAndYear(): LocalDateTime? {
     }.parseOrNull(this)
 }
 
-fun LocalDate.toMonth(): Int {
+fun LocalDateTime.toMonth(): Int {
     return this.monthNumber
 }
 
-fun LocalDate.toYear(): String {
-    return LocalDate.Format {   //yyyy
+fun LocalDateTime.toYear(): String {
+    return LocalDateTime.Format {   //yyyy
         this.year()
     }.format(this)
 }
 
-fun LocalDate.toYearInt(): Int {
+fun LocalDateTime.toYearInt(): Int {
     return this.toYear().toInt()
 }
 
@@ -223,4 +215,7 @@ fun LocalDateTime.toTimeAndMinutesWithAMPM(): String {
 }
 
 fun Instant.asCurrentDateTime() =
-    Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    this.toLocalDateTime(TimeZone.currentSystemDefault())
+
+fun LocalDateTime.toEpochMilliseconds(timeZone: TimeZone): Long =
+    this.toInstant(timeZone).toEpochMilliseconds()

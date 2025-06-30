@@ -1,8 +1,9 @@
 package com.naveenapps.expensemanager.core.data4mp.repository
 
 import app.cash.turbine.test
-import com.naveenapps.expensemanager.core.common4mp.di.dispatcherModule
-import com.naveenapps.expensemanager.core.data4mp.testContextModule
+import com.naveenapps.expensemanager.core.common4mp.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.data4mp.deleteDataStoreFile
+import com.naveenapps.expensemanager.core.data4mp.testDataStoreModule
 import com.naveenapps.expensemanager.core.datastore4mp.di.dataStoreModule
 import com.naveenapps.expensemanager.core.model4mp.Amount
 import com.naveenapps.expensemanager.core.model4mp.TextFormat
@@ -11,6 +12,7 @@ import com.naveenapps.expensemanager.core.repository4mp.CurrencyRepository
 import com.naveenapps.expensemanager.core.testing4mp.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing4mp.LWTruth_assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -26,18 +28,30 @@ import kotlin.test.Test
 @ExperimentalCoroutinesApi
 class CurrencyRepositoryImplTest : BaseCoroutineTest(), KoinTest {
 
+    private val repository: CurrencyRepository by inject()
+
     private val amount = Amount(
         amount = 100.0,
         amountString = null,
         currency = null,
     )
 
-    // my modules which override android context in testContextModule
-    private val myModules = dispatcherModule + dataStoreModule + module {
-        singleOf(::CurrencyRepositoryImpl) bind CurrencyRepository::class
-    }
+    private val testScope = TestScope(testCoroutineDispatcher)
 
-    private val repository: CurrencyRepository by inject()
+    // my modules which override android context and scope in testDataStoreModule
+    private val myModules = dataStoreModule + //repository requires this
+            testDataStoreModule(scope = testScope) +
+            module {
+                single<AppCoroutineDispatchers> {   //repository requires this
+                    AppCoroutineDispatchers(
+                        main = testCoroutineDispatcher,
+                        io = testCoroutineDispatcher,
+                        computation = testCoroutineDispatcher,
+                    )
+                }
+
+                singleOf(::CurrencyRepositoryImpl) bind CurrencyRepository::class
+            }
 
     @BeforeTest
     override fun onCreate() {
@@ -50,6 +64,9 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest(), KoinTest {
     @AfterTest
     override fun onDestroy() {
         super.onDestroy()
+        //on desktop-test, clear data manually
+        deleteDataStoreFile(testScope)
+        testCoroutineDispatcher
         stopKoin()
     }
 

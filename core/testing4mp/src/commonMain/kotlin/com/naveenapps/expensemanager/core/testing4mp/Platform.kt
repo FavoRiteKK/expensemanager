@@ -14,6 +14,11 @@ interface LWBooleanSubject : LWSubject {
     fun isTrue()
 }
 
+interface LWStringSubject : LWSubject {
+    fun isEmpty()
+    fun isNotEmpty()
+}
+
 interface LWIterableSubject : LWSubject {
     fun isEmpty()
     fun isNotEmpty()
@@ -24,4 +29,6 @@ expect fun LWTruth_assertThat(actual: Any?): LWSubject
 
 expect fun LWTruth_assertThat(actual: Boolean?): LWBooleanSubject
 
-expect fun <E> LWTruth_assertThat(actual: Iterable<E>): LWIterableSubject
+expect fun LWTruth_assertThat(actual: String?): LWStringSubject
+
+expect fun <E> LWTruth_assertThat(actual: Iterable<E>?): LWIterableSubject

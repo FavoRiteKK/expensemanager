@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.core.common4mp
 
 expect fun platform(): String
 
-class File4Mp
+class LWFile
 
 expect abstract class LWNumberFormat {
     fun format(number: Double): String?

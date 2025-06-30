@@ -9,7 +9,6 @@ class PlatformTest {
     @BeforeTest
     fun before() {
         println("before")
-        KotlinNull
     }
 
     @Test

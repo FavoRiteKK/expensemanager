@@ -14,12 +14,16 @@ actual fun LWTruth_assertThat(actual: Boolean?): LWBooleanSubject {
     return LWSubjectImpl(actual)
 }
 
-actual fun <E> LWTruth_assertThat(actual: Iterable<E>): LWIterableSubject {
+actual fun LWTruth_assertThat(actual: String?): LWStringSubject {
+    return LWSubjectImpl(actual)
+}
+
+actual fun <E> LWTruth_assertThat(actual: Iterable<E>?): LWIterableSubject {
     return LWSubjectImpl(actual)
 }
 
 internal class LWSubjectImpl(private val actual: Any?) : LWSubject, LWBooleanSubject,
-    LWIterableSubject {
+    LWStringSubject, LWIterableSubject {
     override fun isNull() {
         assertNull(actual)
     }
@@ -45,11 +49,17 @@ internal class LWSubjectImpl(private val actual: Any?) : LWSubject, LWBooleanSub
     }
 
     override fun isEmpty() {
-        assertTrue { actual is Iterable<*> && actual.count() == 0 }
+        when (actual) {
+            is String -> assertTrue { actual.isEmpty() }
+            is Iterable<*> -> assertTrue { actual.count() == 0 }
+        }
     }
 
     override fun isNotEmpty() {
-        assertTrue { actual is Iterable<*> && actual.count() > 0 }
+        when (actual) {
+            is String -> assertTrue { actual.isNotEmpty() }
+            is Iterable<*> -> assertTrue { actual.count() > 0 }
+        }
     }
 
     override fun hasSize(size: Int) {

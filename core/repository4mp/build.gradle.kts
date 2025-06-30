@@ -12,7 +12,7 @@ kotlin {
         minSdk = 24
     }
 
-    iosArm64()
+//    iosArm64()
 
     jvm("desktop")
 

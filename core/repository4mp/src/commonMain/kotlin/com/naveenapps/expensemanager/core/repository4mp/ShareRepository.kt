@@ -1,14 +1,14 @@
 package com.naveenapps.expensemanager.core.repository4mp
 
-import com.naveenapps.expensemanager.core.common4mp.File4Mp
+import com.naveenapps.expensemanager.core.common4mp.LWFile
 
 interface ShareRepository {
 
-    fun sendEmail(file: File4Mp?)
+    fun sendEmail(file: LWFile?)
 
-    fun share(file: File4Mp?)
+    fun share(file: LWFile?)
 
-    fun print(file: File4Mp?)
+    fun print(file: LWFile?)
 
     fun openRateUs()
 
