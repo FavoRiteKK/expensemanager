@@ -6,6 +6,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
@@ -150,11 +151,15 @@ fun LocalDateTime.toMonthAndYear(): String {
 }
 
 fun String.fromMonthAndYear(): LocalDateTime? {
-    return LocalDateTime.Format {   //MMMM yyyy
+    return DateTimeComponents.Format {   //MMMM yyyy
         monthName(MonthNames.ENGLISH_FULL)
         char(' ')
         year()
     }.parseOrNull(this)
+        ?.apply { dayOfMonth = 1 }
+        ?.toLocalDate()
+        ?.atStartOfDayIn(TimeZone.currentSystemDefault())
+        ?.toLocalDateTime(TimeZone.currentSystemDefault())
 }
 
 fun LocalDateTime.toMonth(): Int {
