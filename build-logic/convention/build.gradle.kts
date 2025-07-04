@@ -25,6 +25,8 @@ dependencies {
     compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.mockmp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
 }
 
 gradlePlugin {
@@ -63,6 +65,26 @@ gradlePlugin {
             id = "naveenapps.plugin.room"
             implementationClass =
                 "com.naveenapps.expensemanager.buildsrc.plugins.AndroidRoomPlugin"
+        }
+        create("MultiplatformCoreModulePlugin") {
+            id = "naveenapps.plugin.multiplatform.core"
+            implementationClass =
+                "com.naveenapps.expensemanager.buildsrc.plugins.MultiplatformCoreModulePlugin"
+        }
+        create("ComposeMultiplatformPlugin") {
+            id = "naveenapps.plugin.compose.multiplatform"
+            implementationClass =
+                "com.naveenapps.expensemanager.buildsrc.plugins.ComposeMultiplatformPlugin"
+        }
+        create("RoomMultiplatformPlugin") {
+            id = "naveenapps.plugin.room.multiplatform"
+            implementationClass =
+                "com.naveenapps.expensemanager.buildsrc.plugins.RoomMultiplatformPlugin"
+        }
+        create("TestMultiplatformPlugin") {
+            id = "naveenapps.plugin.test.multiplatform"
+            implementationClass =
+                "com.naveenapps.expensemanager.buildsrc.plugins.TestMultiplatformPlugin"
         }
     }
 }

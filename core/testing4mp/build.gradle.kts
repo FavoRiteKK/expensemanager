@@ -1,8 +1,5 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.androidx.room)
+    id("naveenapps.plugin.multiplatform.core")
 }
 
 kotlin {
@@ -10,13 +7,7 @@ kotlin {
     // Target declarations
     androidLibrary {
         namespace = "com.naveenapps.expensemanager.core.testing4mp"
-        compileSdk = 35
-        minSdk = 24
     }
-
-//    iosArm64()
-
-    jvm("desktop")
 
     // Source set declarations.
     applyDefaultHierarchyTemplate()
@@ -24,25 +15,21 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(libs.kotlinx.coroutines.test)
-                api(libs.kotlin.test)
-                api(libs.turbine)
-
-                implementation(project(":core:common4mp"))
                 implementation(project(":core:model4mp"))
 
-                implementation(libs.sqldelight.coroutines.extensions)
-                implementation(libs.kotlinx.datetime)
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.kotlin.test)
+                implementation(libs.turbine)
             }
         }
 
         androidMain {
             dependencies {
-                api(libs.androidx.activity.compose)
-                api(libs.androidx.test.core)
-                api(libs.androidx.test.ext)
-                api(libs.androidx.test.runner)
-                api(libs.robolectric)
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.test.core)
+                implementation(libs.androidx.test.ext)
+                implementation(libs.androidx.test.runner)
+                implementation(libs.robolectric)
             }
         }
 
