@@ -3,10 +3,6 @@ plugins {
     id("naveenapps.plugin.room.multiplatform")
 }
 
-//room {
-//    schemaDirectory("$projectDir/schemas")
-//}
-
 kotlin {
 
     // Target declarations
