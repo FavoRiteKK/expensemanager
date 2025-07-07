@@ -1,6 +1,6 @@
 plugins {
     id("naveenapps.plugin.multiplatform.core")
-    id("naveenapps.plugin.compose.multiplatform")
+    id("naveenapps.plugin.composeResources.multiplatform")
     id("naveenapps.plugin.test.multiplatform")
 }
 

@@ -4,6 +4,7 @@ const val RED_500 = 0xF44336
 const val GREEN_500 = 0x43A546
 const val LIGHT_GREEN_500 = 0xCDDC39
 const val ORANGE_500 = 0xFF9800
+const val BLACK_100 = 0x10000000
 
 fun Double.getAmountTextColor() = if (this < 0) {
     RED_500

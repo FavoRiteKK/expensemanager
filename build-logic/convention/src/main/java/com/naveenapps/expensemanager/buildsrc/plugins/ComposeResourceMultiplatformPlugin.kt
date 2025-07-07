@@ -7,12 +7,12 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-class ComposeMultiplatformPlugin : Plugin<Project> {
+class ComposeResourceMultiplatformPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("org.jetbrains.compose")
-                apply("org.jetbrains.kotlin.plugin.compose")
+                apply(libs.findPlugin("composeMultiplatform").get().get().pluginId)
+                apply(libs.findPlugin("compose.compiler").get().get().pluginId)
             }
 
             extensions.configure<KotlinMultiplatformExtension> {
@@ -23,24 +23,10 @@ class ComposeMultiplatformPlugin : Plugin<Project> {
                                 libs.findLibrary("compose.components.resources").get()
                             )
 
-                            //e: androidx.compose.compiler.plugins.kotlin.IncompatibleComposeRuntimeVersionException:
-                            // The Compose Compiler requires the Compose Runtime to be on the class path, but none could be found.
-                            implementation(
-                                project.dependencies.platform(
-                                    libs.findLibrary("androidx.compose.bom").get()
-                                )
-                            )
-
                             // Compose Runtime
                             implementation(
-                                libs.findLibrary("androidx.runtime").get()
+                                libs.findLibrary("compose.runtime").get()
                             )
-                        }
-                    }
-
-                    androidMain {
-                        dependencies {
-                            implementation(libs.findLibrary("koin.androidx.compose").get())
                         }
                     }
                 }

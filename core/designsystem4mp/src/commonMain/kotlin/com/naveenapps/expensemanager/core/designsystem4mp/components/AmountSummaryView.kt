@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.designsystem4mp.components
 
-import androidx.annotation.ColorRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,17 +25,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.R
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.common4mp.utils.GREEN_500
+import com.naveenapps.expensemanager.core.common4mp.utils.RED_500
+import com.naveenapps.expensemanager.core.designsystem4mp.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManagerTheme
+import expensemanager.core.designsystem4mp.generated.resources.Res
+import expensemanager.core.designsystem4mp.generated.resources.expense
+import expensemanager.core.designsystem4mp.generated.resources.income
+import expensemanager.core.designsystem4mp.generated.resources.total
+import expensemanager.core.designsystem4mp.generated.resources.transaction_summary
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ColorIconAmountView(
-    @ColorRes color: Int?,
+    color: Int?,
     icon: ImageVector?,
     amount: String,
     modifier: Modifier = Modifier,
@@ -48,7 +52,7 @@ fun ColorIconAmountView(
                 modifier = Modifier
                     .padding(end = 8.dp)
                     .background(
-                        color = colorResource(id = color),
+                        color = Color(color),
                         shape = CircleShape,
                     )
                     .size(16.dp)
@@ -83,7 +87,7 @@ fun ColorIconAmountView(
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.bodyMedium,
             color = if (color != null) {
-                colorResource(id = color)
+                Color(color)
             } else {
                 Color.Unspecified
             },
@@ -109,25 +113,25 @@ fun AmountInfoWidget(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             WidgetHeader(
-                title = stringResource(id = R.string.transaction_summary),
+                title = stringResource(resource = Res.string.transaction_summary),
                 subTitle = transactionPeriod,
             )
 
             ColorIconAmountView(
-                color = com.naveenapps.expensemanager.core.common.R.color.red_500,
+                color = RED_500,
                 icon = Icons.Default.ArrowUpward,
                 amount = expenseAmount,
                 modifier = Modifier
                     .fillMaxWidth(),
-                title = stringResource(id = R.string.expense),
+                title = stringResource(resource = Res.string.expense),
             )
             ColorIconAmountView(
-                color = com.naveenapps.expensemanager.core.common.R.color.green_500,
+                color = GREEN_500,
                 icon = Icons.Default.ArrowDownward,
                 amount = incomeAmount,
                 modifier = Modifier
                     .fillMaxWidth(),
-                title = stringResource(id = R.string.income),
+                title = stringResource(resource = Res.string.income),
             )
             HorizontalDivider()
             ColorIconAmountView(
@@ -136,7 +140,7 @@ fun AmountInfoWidget(
                 amount = balanceAmount,
                 modifier = Modifier
                     .fillMaxWidth(),
-                title = stringResource(id = R.string.total),
+                title = stringResource(resource = Res.string.total),
             )
         }
     }
@@ -175,12 +179,14 @@ fun WidgetHeader(
 
 @AppPreviewsLightAndDarkMode
 @Composable
-private fun AmountViewPreview() {
+fun AmountViewPreview() {
+    val amountValue = "10000000.0$"
+
     ExpenseManagerTheme {
         AmountInfoWidget(
-            expenseAmount = AMOUNT_VALUE,
-            incomeAmount = AMOUNT_VALUE,
-            balanceAmount = AMOUNT_VALUE,
+            expenseAmount = amountValue,
+            incomeAmount = amountValue,
+            balanceAmount = amountValue,
             transactionPeriod = "This Month(Oct 2023)",
         )
     }

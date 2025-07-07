@@ -57,13 +57,18 @@ class MultiplatformCoreModulePlugin : Plugin<Project> {
                             implementation(libs.findLibrary("kotlin.stdlib").get())
                             implementation(libs.findLibrary("kotlinx.coroutines.core").get())
                             implementation(libs.findLibrary("kotlinx.serialization.json").get())
-                            implementation(libs.findLibrary("koin.core").get())
-                        }
-                    }
 
-                    androidMain {
-                        dependencies {
-                            implementation(libs.findLibrary("koin.android").get())
+                            implementation(
+                                project.dependencies.platform(
+                                    libs.findLibrary("koin.bom").get()
+                                )
+                            )
+                            implementation(libs.findLibrary("koin.core").get())
+                            implementation(libs.findLibrary("koin.compose").get())
+                            implementation(libs.findLibrary("koin.composeViewModel").get())
+                            implementation(
+                                libs.findLibrary("koin.composeViewModelNavigation").get()
+                            )
                         }
                     }
                 }

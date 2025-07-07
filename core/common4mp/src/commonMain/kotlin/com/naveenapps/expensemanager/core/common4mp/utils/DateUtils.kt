@@ -222,5 +222,5 @@ fun LocalDateTime.toTimeAndMinutesWithAMPM(): String {
 fun Instant.asCurrentDateTime() =
     this.toLocalDateTime(TimeZone.currentSystemDefault())
 
-fun LocalDateTime.toEpochMilliseconds(timeZone: TimeZone): Long =
+fun LocalDateTime.toEpochMilliseconds(timeZone: TimeZone = TimeZone.currentSystemDefault()): Long =
     this.toInstant(timeZone).toEpochMilliseconds()

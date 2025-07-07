@@ -1,7 +1,7 @@
 plugins {
     id("naveenapps.plugin.multiplatform.core")
-    id("naveenapps.plugin.compose.multiplatform")
-//    id("naveenapps.plugin.test.multiplatform")
+    id("naveenapps.plugin.composeResources.multiplatform")
+    id("naveenapps.plugin.test.multiplatform")
 }
 
 kotlin {
@@ -9,13 +9,6 @@ kotlin {
     // Target declarations
     androidLibrary {
         namespace = "com.naveenapps.expensemanager.core.designsystem4mp"
-
-        withHostTestBuilder { }
-
-        /* without this, Robolectric seems not work, test events were not received */
-        withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-        }
     }
 
     // Source set declarations.
@@ -24,50 +17,24 @@ kotlin {
             dependencies {
                 api(project(":core:model4mp"))
 
-                api(libs.androidx.appcompat)
-                implementation(libs.androidx.compose.activity)
-                implementation(libs.androidx.core.ktx)
+                //think of moving this to Compose plugin, but could not access compose property
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
 
-                api(libs.androidx.compose.animation)
-                api(libs.androidx.compose.foundation)
-                api(libs.androidx.compose.foundation.layout)
-                api(libs.androidx.compose.material.iconsExtended)
-                api(libs.androidx.compose.material3)
-                api(libs.androidx.compose.runtime)
-                api(libs.androidx.compose.runtime.livedata)
-                api(libs.androidx.compose.runtime.tracing)
-                api(libs.androidx.compose.ui.tooling.preview)
-                api(libs.androidx.compose.ui.util)
-                api(libs.androidx.metrics)
-                api(libs.androidx.tracing.ktx)
-                api(libs.androidx.navigation.compose)
-                api(libs.androidx.hilt.navigation.compose)
-                api(libs.accompanist.permissions)
-                api(libs.accompanist.systemUIController)
-
-//                debugApi(libs.androidx.compose.ui.tooling)
-
-                api(libs.mpcharts)
+                implementation(libs.lifecycle.viewModelCompose)
+                implementation(libs.lifecycle.runtimeCompose)
             }
         }
-//
-//        commonTest {
-//            dependencies {
-//                implementation(project(":core:testing4mp"))
-//
-//                implementation(
-//                    libs.kotlinx.coroutines.test
-//                )
-//                implementation(
-//                    libs.kotlin.test
-//                )
-//                implementation(
-//                    libs.koin.test
-//                )
-//                implementation(
-//                    libs.turbine
-//                )
-//            }
-//        }
+        desktopMain {
+            dependencies {
+                implementation(compose.desktop.common)
+                implementation(libs.kotlinx.coroutines.swing)
+            }
+        }
     }
 }

@@ -71,10 +71,10 @@ gradlePlugin {
             implementationClass =
                 "com.naveenapps.expensemanager.buildsrc.plugins.MultiplatformCoreModulePlugin"
         }
-        create("ComposeMultiplatformPlugin") {
-            id = "naveenapps.plugin.compose.multiplatform"
+        create("ComposeResourceMultiplatformPlugin") {
+            id = "naveenapps.plugin.composeResources.multiplatform"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.ComposeMultiplatformPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.ComposeResourceMultiplatformPlugin"
         }
         create("RoomMultiplatformPlugin") {
             id = "naveenapps.plugin.room.multiplatform"
