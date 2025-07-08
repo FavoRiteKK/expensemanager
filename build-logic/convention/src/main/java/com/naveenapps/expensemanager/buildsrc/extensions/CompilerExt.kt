@@ -1,21 +1,10 @@
 package com.naveenapps.expensemanager.buildsrc.extensions
 
-import com.android.build.api.dsl.CommonExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-val JAVA_VERSION = JavaVersion.VERSION_19
-
-fun CommonExtension<*, *, *, *, *, *>.configureJVM() {
-    this.compileOptions {
-        sourceCompatibility = JAVA_VERSION
-        targetCompatibility = JAVA_VERSION
-    }
-}
 
 fun Project.configureKotlinJVM() {
     tasks.withType<KotlinCompile>().configureEach {

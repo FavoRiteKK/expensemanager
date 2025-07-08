@@ -21,8 +21,6 @@ tasks.withType<KotlinCompile>().configureEach {
 
 dependencies {
     compileOnly(libs.android.gradlePlugin)
-    compileOnly(libs.firebase.crashlytics.gradlePlugin)
-    compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.mockmp.gradlePlugin)
@@ -31,41 +29,6 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        create("AndroidLibraryBasicConfigPlugin") {
-            id = "naveenapps.plugin.android.library"
-            implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidLibraryBasicConfigPlugin"
-        }
-        create("AndroidAppBasicConfigPlugin") {
-            id = "naveenapps.plugin.android.app"
-            implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidAppBasicConfigPlugin"
-        }
-        create("AndroidFeatureModuleConfigPlugin") {
-            id = "naveenapps.plugin.android.feature"
-            implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidFeatureModuleConfigPlugin"
-        }
-        create("KotlinBasicConfigPlugin") {
-            id = "naveenapps.plugin.kotlin.basic"
-            implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.KotlinBasicConfigPlugin"
-        }
-        create("AndroidHiltPlugin") {
-            id = "naveenapps.plugin.hilt"
-            implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidHiltPlugin"
-        }
-        create("AndroidComposeConfigPlugin") {
-            id = "naveenapps.plugin.compose"
-            implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidComposeConfigPlugin"
-        }
-        create("AndroidRoomPlugin") {
-            id = "naveenapps.plugin.room"
-            implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidRoomPlugin"
-        }
         create("MultiplatformCoreModulePlugin") {
             id = "naveenapps.plugin.multiplatform.core"
             implementationClass =
