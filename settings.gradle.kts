@@ -17,7 +17,13 @@ dependencyResolutionManagement {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
 rootProject.name = "expensemanager"
+
+include(":composeApp")
 
 include(":core:common4mp")
 include(":core:data4mp")
