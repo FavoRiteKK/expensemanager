@@ -24,8 +24,6 @@ fun Project.configureKotlinJVM() {
                         "-opt-in=kotlin.Experimental",
                         // Enable experimental kotlinx serialization APIs
                         "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
-                        "-P",
-                        "plugin:androidx.compose.compiler.plugins.kotlin:generateFunctionKeyMetaAnnotations=false"
                     )
                 )
             }
