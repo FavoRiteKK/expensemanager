@@ -11,6 +11,12 @@ Expense Manager
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 [![Build](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml/badge.svg)](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml)
 
+## New in Forked
+Convert original repository to a Compose Multiplatform project. Intend to target Android, Desktop
+and iOs platform.
+
+## Original Repository
+
 This is the repository for the [Expense Manager](https://expensemanager.naveenapps.com/) app. It is
 a **work in progress** 🚧.
 
@@ -35,6 +41,11 @@ the world of Android development by providing regular news updates.
 |                Transaction Create                 |                  Account Create                   |                   Budget Create                   |                    Dark Theme                     |
 |:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
 | <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/> | <img src="docs/images/image7.png" width="250px"/> | <img src="docs/images/image8.png" width="250px"/> | 
+
+## Work In Progress
+
+* In KMP, using api() makes modules buildable, but highlight syntax and autocompletion in Android
+  Studio is wrong (In testing4mp module, it seems Ok).
 
 ## Android development
 Expense Manager attempts to make use of the latest Android libraries and best practices:

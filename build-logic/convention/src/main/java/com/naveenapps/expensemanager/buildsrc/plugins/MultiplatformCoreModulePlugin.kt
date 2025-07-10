@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.buildsrc.plugins
 
 import com.android.build.api.dsl.androidLibrary
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.naveenapps.expensemanager.buildsrc.extensions.COMPILE_SDK
 import com.naveenapps.expensemanager.buildsrc.extensions.MIN_SDK
 import com.naveenapps.expensemanager.buildsrc.extensions.configureKotlinJVM
@@ -60,6 +59,14 @@ class MultiplatformCoreModulePlugin : Plugin<Project> {
                             )
                             implementation(
                                 libs.findLibrary("kotlinx.serialization.json").get()
+                            )
+
+                            implementation(
+                                libs.findLibrary("kotlinx.datetime").get()
+                            )
+
+                            implementation(
+                                libs.findLibrary("kotlin.logging").get()
                             )
 
                             implementation(

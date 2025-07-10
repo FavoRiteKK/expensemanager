@@ -14,10 +14,7 @@ kotlin {
 
     sourceSets {
         commonMain {
-            dependencies {
-                api(libs.kotlinx.datetime)
-                api(libs.kotlin.logging)
-            }
+            dependencies { }
         }
     }
 }

@@ -92,6 +92,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(project(":core:domain4mp"))
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

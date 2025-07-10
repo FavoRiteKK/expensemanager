@@ -17,6 +17,9 @@ kotlin {
         commonMain {
             dependencies {
                 api(project(":core:data4mp"))
+
+                implementation(project(":core:repository4mp"))  //for highlight
+                implementation(project(":core:model4mp"))
             }
         }
     }
