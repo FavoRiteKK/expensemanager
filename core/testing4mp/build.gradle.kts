@@ -37,7 +37,7 @@ kotlin {
         val desktopPlusAndroidMain by creating {
             dependsOn(commonMain.get())
             dependencies {
-                api(libs.truth)
+                implementation(libs.truth)
             }
         }
 

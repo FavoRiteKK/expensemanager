@@ -42,11 +42,6 @@ the world of Android development by providing regular news updates.
 |:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
 | <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/> | <img src="docs/images/image7.png" width="250px"/> | <img src="docs/images/image8.png" width="250px"/> | 
 
-## Work In Progress
-
-* In KMP, using api() makes modules buildable, but highlight syntax and autocompletion in Android
-  Studio is wrong (In testing4mp module, it seems Ok).
-
 ## Android development
 Expense Manager attempts to make use of the latest Android libraries and best practices:
 
@@ -72,3 +67,11 @@ also encouraged.
 
 **Expense Manager** is distributed under the terms of the Apache License (Version 2.0). See the
 [license](LICENSE) for more information.
+
+## Work In Progress
+
+* In KMP, using api() makes modules buildable, but highlight syntax and autocompletion in Android
+  Studio is wrong (In testing4mp module, it seems Ok).
+* **launchAppUpdateCheck** not implemented
+* **notificationPermissionLauncher** not implemented
+* **BackHandler** not implemented

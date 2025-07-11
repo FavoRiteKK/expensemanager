@@ -16,7 +16,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(project(":core:model4mp"))
+                implementation(project(":core:data4mp"))
+                implementation(project(":core:model4mp"))
+                implementation(project(":core:common4mp"))
 
                 //think of moving this to Compose plugin, but could not access compose property
                 implementation(compose.foundation)
@@ -29,12 +31,6 @@ kotlin {
 
                 implementation(libs.lifecycle.viewModelCompose)
                 implementation(libs.lifecycle.runtimeCompose)
-            }
-        }
-        desktopMain {
-            dependencies {
-                implementation(compose.desktop.common)
-                implementation(libs.kotlinx.coroutines.swing)
             }
         }
     }

@@ -92,27 +92,32 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(project(":core:navigation4mp"))
+            implementation(project(":core:designsystem4mp"))
+            implementation(project(":core:notification4mp"))
             implementation(project(":core:domain4mp"))
+            implementation(project(":core:data4mp"))
+            implementation(project(":core:repository4mp"))
+            implementation(project(":core:model4mp"))
 
+            implementation(project(":feature:theme4mp"))
+
+            //think of moving this to Compose plugin, but could not access compose property
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
             implementation(libs.androidx.lifecycle.viewModelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.androidx.navigation.compose)
         }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-        }
-
-        val desktopMain by getting
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }

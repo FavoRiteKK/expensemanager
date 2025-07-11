@@ -12,12 +12,12 @@ sealed class UiText {
     /**
      * Constructed string resource from app
      */
-    class StringResource(val resId: org.jetbrains.compose.resources.StringResource) : UiText()
+    class ResString(val resId: org.jetbrains.compose.resources.StringResource) : UiText()
 
     @Composable
     fun asString(): String {
         return when (this) {
-            is StringResource -> {
+            is ResString -> {
                 stringResource(resource = resId)
             }
 

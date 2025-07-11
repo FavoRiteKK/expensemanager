@@ -29,6 +29,9 @@ class MultiplatformCoreModulePlugin : Plugin<Project> {
                     androidLibrary {
                         compileSdk = COMPILE_SDK
                         minSdk = MIN_SDK
+
+                        experimentalProperties["android.experimental.kmp.enableAndroidResources"] =
+                            true
                     }
                 } else if (pluginManager.hasPlugin(androidAppKmp.pluginId)) {
                     androidTarget()

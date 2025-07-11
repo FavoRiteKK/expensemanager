@@ -15,7 +15,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(project(":core:model4mp"))
+                implementation(project(":core:model4mp"))
             }
         }
     }
