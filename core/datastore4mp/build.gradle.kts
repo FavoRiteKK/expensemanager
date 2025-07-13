@@ -14,12 +14,13 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":core:common4mp"))
                 implementation(project(":core:model4mp"))
 
                 // DataStore library
-                implementation(libs.androidx.dataStore.core)
+                api(libs.androidx.dataStore.core)
                 // The Preferences DataStore library
-                implementation(libs.androidx.dataStore.preference)
+                api(libs.androidx.dataStore.preference)
             }
         }
     }

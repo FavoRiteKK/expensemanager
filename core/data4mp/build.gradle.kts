@@ -17,6 +17,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":core:common4mp"))
+                implementation(project(":core:model4mp"))
                 implementation(project(":core:repository4mp"))
                 implementation(project(":core:datastore4mp"))
                 implementation(project(":core:database4mp"))
