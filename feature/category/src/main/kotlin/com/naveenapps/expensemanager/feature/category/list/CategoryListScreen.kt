@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.list
+package com.naveenapps.expensemanager.feature.category4mp.list
 
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
@@ -47,7 +47,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
-import com.naveenapps.expensemanager.feature.category.R
+import com.naveenapps.expensemanager.feature.category4mp.R
 import java.util.Date
 
 enum class CategoryTabItems(

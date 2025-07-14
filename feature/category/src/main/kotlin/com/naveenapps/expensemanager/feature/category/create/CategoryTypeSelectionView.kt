@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.create
+package com.naveenapps.expensemanager.feature.category4mp.create
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
-import com.naveenapps.expensemanager.feature.category.R
+import com.naveenapps.expensemanager.feature.category4mp.R
 
 @Composable
 fun CategoryTypeSelectionView(

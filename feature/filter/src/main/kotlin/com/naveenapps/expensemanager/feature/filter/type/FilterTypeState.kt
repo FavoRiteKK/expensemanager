@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.filter.type
+package com.naveenapps.expensemanager.feature.filter4mp.type
 
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category

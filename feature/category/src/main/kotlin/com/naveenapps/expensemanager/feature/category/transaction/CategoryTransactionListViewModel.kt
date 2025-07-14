@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.transaction
+package com.naveenapps.expensemanager.feature.category4mp.transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

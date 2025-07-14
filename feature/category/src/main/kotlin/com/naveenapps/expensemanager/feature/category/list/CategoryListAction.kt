@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.list
+package com.naveenapps.expensemanager.feature.category4mp.list
 
 import com.naveenapps.expensemanager.core.model.Category
 

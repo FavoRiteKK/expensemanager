@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.filter.type
+package com.naveenapps.expensemanager.feature.filter4mp.type
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,7 +41,7 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.feature.filter.R
+import com.naveenapps.expensemanager.feature.filter4mp.R
 import java.util.Date
 
 @Composable

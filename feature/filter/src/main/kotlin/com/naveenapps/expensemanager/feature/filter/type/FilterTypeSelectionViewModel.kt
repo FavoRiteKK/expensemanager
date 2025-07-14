@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.filter.type
+package com.naveenapps.expensemanager.feature.filter4mp.type
 
 import androidx.compose.ui.util.fastAny
 import androidx.lifecycle.ViewModel

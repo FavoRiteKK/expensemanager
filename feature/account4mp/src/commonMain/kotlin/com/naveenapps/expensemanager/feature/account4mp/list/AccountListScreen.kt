@@ -41,11 +41,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.common4mp.utils.BLACK_100
+import com.naveenapps.expensemanager.core.common4mp.utils.GREEN_500
+import com.naveenapps.expensemanager.core.common4mp.utils.asCurrentDateTime
 import com.naveenapps.expensemanager.core.designsystem4mp.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem4mp.utils.Exports
 import com.naveenapps.expensemanager.core.model4mp.Account
 import com.naveenapps.expensemanager.core.model4mp.AccountType
 import com.naveenapps.expensemanager.core.model4mp.AccountUiModel
@@ -53,11 +57,15 @@ import com.naveenapps.expensemanager.core.model4mp.Amount
 import com.naveenapps.expensemanager.core.model4mp.StoredIcon
 import com.naveenapps.expensemanager.core.model4mp.toAccountUiModel
 import expensemanager.feature.account4mp.generated.resources.Res
+import expensemanager.feature.account4mp.generated.resources.accounts
+import expensemanager.feature.account4mp.generated.resources.available_limit
+import expensemanager.feature.account4mp.generated.resources.no_account_available
 import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
-import java.util.Date
 import java.util.Random
 
 @Composable
@@ -143,7 +151,7 @@ private fun AccountListScreenContent(
         if (state.accounts.isEmpty()) {
             EmptyItem(
                 emptyItemText = stringResource(resource = Res.string.no_account_available),
-                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
+                icon = Exports.Drawables.ic_no_accounts,
                 modifier = Modifier.fillMaxSize()
             )
         } else {
@@ -157,7 +165,7 @@ private fun AccountListScreenContent(
                             .then(ItemSpecModifier)
                             .testTag("Item"),
                         name = account.name,
-                        icon = account.storedIcon.name,
+                        icon = Exports.Drawables.drawableBy(account.storedIcon.name),
                         iconBackgroundColor = account.storedIcon.backgroundColor,
                         amount = account.amount.amountString,
                         availableCreditLimit = account.availableCreditLimit?.amountString,
@@ -222,7 +230,7 @@ fun AccountItem(
                     modifier = Modifier.align(Alignment.End),
                     text = amount,
                     style = MaterialTheme.typography.titleMedium,
-                    color = colorResource(id = amountTextColor),
+                    color = Color(color = amountTextColor),
                 )
             }
         }
@@ -241,7 +249,7 @@ fun AccountItem(
 @Composable
 fun AccountCheckedItem(
     name: String,
-    icon: String,
+    icon: DrawableResource,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -276,14 +284,13 @@ fun AccountCheckedItem(
 @Composable
 fun DashBoardAccountItem(
     name: String,
-    icon: String,
+    icon: DrawableResource,
     modifier: Modifier = Modifier,
     amount: String,
     availableCreditLimit: String?,
     amountTextColor: Color,
     backgroundColor: Color,
 ) {
-    val context = LocalContext.current
     Surface(
         modifier = modifier,
         color = backgroundColor,
@@ -306,7 +313,7 @@ fun DashBoardAccountItem(
                 )
                 Icon(
                     modifier = Modifier.padding(start = 8.dp),
-                    painter = painterResource(id = context.getDrawable(icon)),
+                    painter = painterResource(resource = icon),
                     contentDescription = name,
                 )
             }
@@ -348,8 +355,8 @@ fun getAccountData(
             backgroundColor = "#000000",
         ),
         amount = amount,
-        createdOn = Clock.,
-        updatedOn = Date(),
+        createdOn = Clock.System.now().asCurrentDateTime(),
+        updatedOn = Clock.System.now().asCurrentDateTime(),
     )
 }
 
@@ -387,11 +394,11 @@ private fun DashBoardAccountItemPreview() {
                 .wrapContentWidth()
                 .padding(16.dp),
             name = "Utilities is having a lengthy one",
-            icon = "credit_card",
+            icon = Exports.Drawables.credit_card,
             amount = "100.00$",
             availableCreditLimit = "Available Limit 100.00$",
-            amountTextColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
-            backgroundColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100),
+            amountTextColor = Color(color = GREEN_500),
+            backgroundColor = Color(color = BLACK_100),
         )
     }
 }
@@ -405,11 +412,11 @@ private fun AccountItemPreview() {
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
             name = "Utilities",
-            icon = "credit_card",
+            icon = Exports.Drawables.credit_card,
             iconBackgroundColor = "#000000",
             amount = "$100.00",
             availableCreditLimit = "Available limit ₹ 5,14,000.00",
-            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+            amountTextColor = GREEN_500,
         )
     }
 }
@@ -423,7 +430,7 @@ private fun AccountCheckedItemPreview() {
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
             name = "First Account",
-            icon = "savings",
+            icon = Exports.Drawables.savings,
             iconBackgroundColor = "#000000",
             isSelected = true,
         )

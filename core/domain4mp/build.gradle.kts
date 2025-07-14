@@ -17,7 +17,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":core:common4mp"))
-                implementation(project(":core:domain4mp"))
                 implementation(project(":core:data4mp"))
                 implementation(project(":core:repository4mp"))  //for highlight
                 implementation(project(":core:model4mp"))

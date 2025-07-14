@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.details
+package com.naveenapps.expensemanager.feature.category4mp.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

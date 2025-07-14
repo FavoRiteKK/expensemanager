@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.transaction
+package com.naveenapps.expensemanager.feature.category4mp.transaction
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -57,8 +57,8 @@ import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.PieChartData
 import com.naveenapps.expensemanager.core.model.isExpense
-import com.naveenapps.expensemanager.feature.category.R
-import com.naveenapps.expensemanager.feature.category.list.getCategoryData
+import com.naveenapps.expensemanager.feature.category4mp.R
+import com.naveenapps.expensemanager.feature.category4mp.list.getCategoryData
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import kotlin.random.Random
 

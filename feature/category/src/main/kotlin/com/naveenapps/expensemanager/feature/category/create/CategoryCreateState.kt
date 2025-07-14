@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.create
+package com.naveenapps.expensemanager.feature.category4mp.create
 
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.TextFieldValue

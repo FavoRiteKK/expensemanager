@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.details
+package com.naveenapps.expensemanager.feature.category4mp.details
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -49,8 +49,8 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.feature.category.R
-import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionItem
+import com.naveenapps.expensemanager.feature.category4mp.R
+import com.naveenapps.expensemanager.feature.category4mp.transaction.CategoryTransactionItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

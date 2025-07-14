@@ -34,9 +34,9 @@ import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
-import com.naveenapps.expensemanager.feature.filter.type.FilterTypeSelectionView
-import com.naveenapps.expensemanager.feature.filter.type.InputChipView
+import com.naveenapps.expensemanager.feature.filter4mp.datefilter.DateFilterSelectionView
+import com.naveenapps.expensemanager.feature.filter4mp.type.FilterTypeSelectionView
+import com.naveenapps.expensemanager.feature.filter4mp.type.InputChipView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

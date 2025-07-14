@@ -15,11 +15,11 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":core:common4mp"))
-                implementation(project(":core:designsystem4mp"))
-                implementation(project(":core:domain4mp"))
-                implementation(project(":core:model4mp"))
-                implementation(project(":core:navigation4mp"))
+                api(project(":core:common4mp"))
+                api(project(":core:designsystem4mp"))
+                api(project(":core:domain4mp"))
+                api(project(":core:model4mp"))
+                api(project(":core:navigation4mp"))
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)

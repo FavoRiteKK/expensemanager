@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.selection
+package com.naveenapps.expensemanager.feature.category4mp.selection
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,9 +23,9 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTi
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.model.Category
-import com.naveenapps.expensemanager.feature.category.R
-import com.naveenapps.expensemanager.feature.category.list.CategoryItem
-import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
+import com.naveenapps.expensemanager.feature.category4mp.R
+import com.naveenapps.expensemanager.feature.category4mp.list.CategoryItem
+import com.naveenapps.expensemanager.feature.category4mp.list.getRandomCategoryData
 
 @Composable
 fun CategorySelectionScreen(

@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.category.create
+package com.naveenapps.expensemanager.feature.category4mp.create
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +27,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigati
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
-import com.naveenapps.expensemanager.feature.category.R
+import com.naveenapps.expensemanager.feature.category4mp.R
 
 @Composable
 fun CategoryCreateScreen(
