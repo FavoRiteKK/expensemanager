@@ -213,7 +213,7 @@ fun FilterChipView(
         leadingIcon = if (iconName != null) {
             {
                 Icon(
-                    painter = painterResource(resource = Exports.Drawables.drawableBy(iconName)),
+                    painter = painterResource(resource = Exports.drawableBy(iconName)),
                     contentDescription = "Localized description",
                     modifier = Modifier.size(FilterChipDefaults.IconSize),
                 )
@@ -240,7 +240,7 @@ fun InputChipView(
         avatar = if (iconName != null) {
             {
                 Icon(
-                    painter = painterResource(resource = Exports.Drawables.drawableBy(iconName)),
+                    painter = painterResource(resource = Exports.drawableBy(iconName)),
                     contentDescription = "Localized description",
                     modifier = Modifier.size(FilterChipDefaults.IconSize),
                 )

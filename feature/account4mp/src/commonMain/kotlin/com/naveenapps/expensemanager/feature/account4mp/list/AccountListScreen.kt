@@ -56,6 +56,8 @@ import com.naveenapps.expensemanager.core.model4mp.AccountUiModel
 import com.naveenapps.expensemanager.core.model4mp.Amount
 import com.naveenapps.expensemanager.core.model4mp.StoredIcon
 import com.naveenapps.expensemanager.core.model4mp.toAccountUiModel
+import expensemanager.core.designsystem4mp.generated.resources.credit_card
+import expensemanager.core.designsystem4mp.generated.resources.ic_no_accounts
 import expensemanager.feature.account4mp.generated.resources.Res
 import expensemanager.feature.account4mp.generated.resources.accounts
 import expensemanager.feature.account4mp.generated.resources.available_limit
@@ -151,7 +153,7 @@ private fun AccountListScreenContent(
         if (state.accounts.isEmpty()) {
             EmptyItem(
                 emptyItemText = stringResource(resource = Res.string.no_account_available),
-                icon = Exports.Drawables.ic_no_accounts,
+                icon = expensemanager.core.designsystem4mp.generated.resources.Res.drawable.ic_no_accounts,
                 modifier = Modifier.fillMaxSize()
             )
         } else {
@@ -165,7 +167,7 @@ private fun AccountListScreenContent(
                             .then(ItemSpecModifier)
                             .testTag("Item"),
                         name = account.name,
-                        icon = Exports.Drawables.drawableBy(account.storedIcon.name),
+                        icon = account.storedIcon.name,
                         iconBackgroundColor = account.storedIcon.backgroundColor,
                         amount = account.amount.amountString,
                         availableCreditLimit = account.availableCreditLimit?.amountString,
@@ -187,7 +189,7 @@ private fun AccountListScreenContent(
 @Composable
 fun AccountItem(
     name: String,
-    icon: DrawableResource,
+    icon: String,
     iconBackgroundColor: String,
     amount: String?,
     amountTextColor: Int?,
@@ -249,7 +251,7 @@ fun AccountItem(
 @Composable
 fun AccountCheckedItem(
     name: String,
-    icon: DrawableResource,
+    icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -284,7 +286,7 @@ fun AccountCheckedItem(
 @Composable
 fun DashBoardAccountItem(
     name: String,
-    icon: DrawableResource,
+    icon: String,
     modifier: Modifier = Modifier,
     amount: String,
     availableCreditLimit: String?,
@@ -313,7 +315,7 @@ fun DashBoardAccountItem(
                 )
                 Icon(
                     modifier = Modifier.padding(start = 8.dp),
-                    painter = painterResource(resource = icon),
+                    painter = painterResource(resource = Exports.drawableBy(icon)),
                     contentDescription = name,
                 )
             }
@@ -394,7 +396,7 @@ private fun DashBoardAccountItemPreview() {
                 .wrapContentWidth()
                 .padding(16.dp),
             name = "Utilities is having a lengthy one",
-            icon = Exports.Drawables.credit_card,
+            icon = "credit_card",
             amount = "100.00$",
             availableCreditLimit = "Available Limit 100.00$",
             amountTextColor = Color(color = GREEN_500),
@@ -412,7 +414,7 @@ private fun AccountItemPreview() {
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
             name = "Utilities",
-            icon = Exports.Drawables.credit_card,
+            icon = "credit_card",
             iconBackgroundColor = "#000000",
             amount = "$100.00",
             availableCreditLimit = "Available limit ₹ 5,14,000.00",
@@ -430,7 +432,7 @@ private fun AccountCheckedItemPreview() {
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
             name = "First Account",
-            icon = Exports.Drawables.savings,
+            icon = "savings",
             iconBackgroundColor = "#000000",
             isSelected = true,
         )

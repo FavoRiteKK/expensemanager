@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.naveenapps.expensemanager.core.navigation4mp.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository4mp.ActivityComponentProvider
+import com.naveenapps.expensemanager.feature.dashboard4mp.DashboardScreen
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -38,72 +38,72 @@ fun HomePageNavHostContainer(
 fun NavGraphBuilder.expenseManagerNavigation(
     componentProvider: ActivityComponentProvider,
 ) {
-    composable<ExpenseManagerScreens.IntroScreen> {
-        IntroScreen(componentProvider.getShareRepository())
-    }
-    composable<ExpenseManagerScreens.Onboarding> {
-        OnboardingScreen()
-    }
-    composable<ExpenseManagerScreens.Home> {
-        HomeScreen()
-    }
-    composable<ExpenseManagerScreens.CategoryList> {
-        CategoryListScreen()
-    }
-    composable<ExpenseManagerScreens.CategoryCreate> {
-        CategoryCreateScreen()
-    }
-    composable<ExpenseManagerScreens.CategoryDetails> {
-        CategoryDetailScreen()
-    }
-    composable<ExpenseManagerScreens.TransactionList> {
-        TransactionListScreen(showBackNavigationIcon = true)
-    }
-    composable<ExpenseManagerScreens.TransactionCreate> {
-        TransactionCreateScreen()
-    }
-    composable<ExpenseManagerScreens.AccountList> {
-        AccountListScreen()
-    }
-    composable<ExpenseManagerScreens.AccountCreate> {
-        AccountCreateScreen()
-    }
-    composable<ExpenseManagerScreens.BudgetList> {
-        BudgetListScreen()
-    }
-    composable<ExpenseManagerScreens.BudgetCreate> {
-        BudgetCreateScreen()
-    }
-    composable<ExpenseManagerScreens.BudgetDetails> {
-        BudgetDetailScreen()
-    }
-    composable<ExpenseManagerScreens.AnalysisScreen> {
-        AnalysisScreen()
-    }
-    composable<ExpenseManagerScreens.Settings> {
-        SettingsScreen(componentProvider.getShareRepository())
-    }
-    composable<ExpenseManagerScreens.ExportScreen> {
-        ExportScreen()
-    }
-    composable<ExpenseManagerScreens.ReminderScreen> {
-        ReminderScreen()
-    }
-    composable<ExpenseManagerScreens.CurrencyCustomiseScreen> {
-        CurrencyCustomiseScreen()
-    }
-    composable<ExpenseManagerScreens.CategoryTransaction> {
-        CategoryTransactionTabScreen()
-    }
-    composable<ExpenseManagerScreens.AboutUsScreen> {
-        AboutScreen(componentProvider.getShareRepository())
-    }
-    composable<ExpenseManagerScreens.AdvancedSettingsScreen> {
-        AdvancedSettingsScreen(componentProvider.getBackupRepository())
-    }
-    composable<ExpenseManagerScreens.AccountReOrderScreen> {
-        AccountReOrderScreen()
-    }
+//    composable<ExpenseManagerScreens.IntroScreen> {
+//        IntroScreen(componentProvider.getShareRepository())
+//    }
+//    composable<ExpenseManagerScreens.Onboarding> {
+//        OnboardingScreen()
+//    }
+//    composable<ExpenseManagerScreens.Home> {
+//        HomeScreen()
+//    }
+//    composable<ExpenseManagerScreens.CategoryList> {
+//        CategoryListScreen()
+//    }
+//    composable<ExpenseManagerScreens.CategoryCreate> {
+//        CategoryCreateScreen()
+//    }
+//    composable<ExpenseManagerScreens.CategoryDetails> {
+//        CategoryDetailScreen()
+//    }
+//    composable<ExpenseManagerScreens.TransactionList> {
+//        TransactionListScreen(showBackNavigationIcon = true)
+//    }
+//    composable<ExpenseManagerScreens.TransactionCreate> {
+//        TransactionCreateScreen()
+//    }
+//    composable<ExpenseManagerScreens.AccountList> {
+//        AccountListScreen()
+//    }
+//    composable<ExpenseManagerScreens.AccountCreate> {
+//        AccountCreateScreen()
+//    }
+//    composable<ExpenseManagerScreens.BudgetList> {
+//        BudgetListScreen()
+//    }
+//    composable<ExpenseManagerScreens.BudgetCreate> {
+//        BudgetCreateScreen()
+//    }
+//    composable<ExpenseManagerScreens.BudgetDetails> {
+//        BudgetDetailScreen()
+//    }
+//    composable<ExpenseManagerScreens.AnalysisScreen> {
+//        AnalysisScreen()
+//    }
+//    composable<ExpenseManagerScreens.Settings> {
+//        SettingsScreen(componentProvider.getShareRepository())
+//    }
+//    composable<ExpenseManagerScreens.ExportScreen> {
+//        ExportScreen()
+//    }
+//    composable<ExpenseManagerScreens.ReminderScreen> {
+//        ReminderScreen()
+//    }
+//    composable<ExpenseManagerScreens.CurrencyCustomiseScreen> {
+//        CurrencyCustomiseScreen()
+//    }
+//    composable<ExpenseManagerScreens.CategoryTransaction> {
+//        CategoryTransactionTabScreen()
+//    }
+//    composable<ExpenseManagerScreens.AboutUsScreen> {
+//        AboutScreen(componentProvider.getShareRepository())
+//    }
+//    composable<ExpenseManagerScreens.AdvancedSettingsScreen> {
+//        AdvancedSettingsScreen(componentProvider.getBackupRepository())
+//    }
+//    composable<ExpenseManagerScreens.AccountReOrderScreen> {
+//        AccountReOrderScreen()
+//    }
 }
 
 @Composable

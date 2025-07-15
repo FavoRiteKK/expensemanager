@@ -29,6 +29,7 @@ import com.naveenapps.expensemanager.core.common4mp.utils.toColorString
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.components.RoundIconView
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.utils.toColor
+import com.naveenapps.expensemanager.core.designsystem4mp.utils.Exports
 import expensemanager.core.designsystem4mp.generated.resources.Res
 import expensemanager.core.designsystem4mp.generated.resources.ic_add
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -49,9 +50,9 @@ enum class SelectionType {
 @Composable
 fun IconAndColorComponent(
     selectedColor: String,
-    selectedIcon: DrawableResource,
+    selectedIcon: String,
     onColorSelection: ((String) -> Unit)?,
-    onIconSelection: ((DrawableResource) -> Unit)?,
+    onIconSelection: ((String) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
@@ -136,7 +137,7 @@ fun IconAndColorComponent(
             },
         ) {
             Icon(
-                painter = painterResource(selectedIcon),
+                painter = painterResource(Exports.drawableBy(selectedIcon)),
                 contentDescription = "",
             )
         }
@@ -158,7 +159,7 @@ fun IconAndColorComponent(
             ),
         ) {
             Icon(
-                painter = painterResource(selectedIcon),
+                painter = painterResource(Exports.drawableBy(selectedIcon)),
                 contentDescription = "",
             )
         }
@@ -171,7 +172,7 @@ private fun IconAndColorComponentPreview() {
     ExpenseManagerTheme {
         IconAndColorComponent(
             selectedColor = "#000000",
-            selectedIcon = Res.drawable.ic_add,
+            selectedIcon = "ic_add",
             onColorSelection = {},
             onIconSelection = {},
         )

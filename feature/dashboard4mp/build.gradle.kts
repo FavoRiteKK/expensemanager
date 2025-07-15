@@ -15,17 +15,17 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-//                implementation(project(":core:common4mp"))
-//                implementation(project(":core:designsystem4mp"))
-//                implementation(project(":core:domain4mp"))
-//                implementation(project(":core:model4mp"))
-//                implementation(project(":core:navigation4mp"))
-//
-//                implementation(project(":feature:account4mp"))
-//                implementation(project(":feature:budget4mp"))
-//                implementation(project(":feature:category4mp"))
-//                implementation(project(":feature:filter4mp"))
-//                implementation(project(":feature:transaction4mp"))
+                implementation(project(":core:common4mp"))
+                implementation(project(":core:designsystem4mp"))
+                implementation(project(":core:domain4mp"))
+                implementation(project(":core:model4mp"))
+                implementation(project(":core:navigation4mp"))
+
+                implementation(project(":feature:account4mp"))
+                implementation(project(":feature:budget4mp"))
+                implementation(project(":feature:category4mp"))
+                implementation(project(":feature:filter4mp"))
+                implementation(project(":feature:transaction4mp"))
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)

@@ -16,10 +16,12 @@ import com.naveenapps.expensemanager.core.common4mp.utils.GREEN_500
 import com.naveenapps.expensemanager.core.common4mp.utils.RED_500
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.designsystem4mp.utils.Exports
 import com.naveenapps.expensemanager.core.model4mp.CategoryType
 import com.naveenapps.expensemanager.core.model4mp.isExpense
 import com.naveenapps.expensemanager.core.model4mp.isIncome
+import expensemanager.core.designsystem4mp.generated.resources.Res
+import expensemanager.core.designsystem4mp.generated.resources.expense
+import expensemanager.core.designsystem4mp.generated.resources.income
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -35,7 +37,7 @@ fun CategoryTypeSelectionView(
     ) {
         AppFilterChip(
             modifier = Modifier.align(Alignment.CenterVertically),
-            filterName = stringResource(resource = Exports.StringResources.income),
+            filterName = stringResource(resource = Res.string.income),
             isSelected = selectedCategoryType.isIncome(),
             filterIcon = Icons.Default.ArrowDownward,
             filterSelectedColor = GREEN_500,
@@ -45,7 +47,7 @@ fun CategoryTypeSelectionView(
         )
         AppFilterChip(
             modifier = Modifier.align(Alignment.CenterVertically),
-            filterName = stringResource(resource = Exports.StringResources.expense),
+            filterName = stringResource(resource = Res.string.expense),
             isSelected = selectedCategoryType.isExpense(),
             filterIcon = Icons.Default.ArrowUpward,
             filterSelectedColor = RED_500,

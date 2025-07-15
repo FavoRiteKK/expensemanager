@@ -34,6 +34,11 @@ gradlePlugin {
             implementationClass =
                 "com.naveenapps.expensemanager.buildsrc.plugins.MultiplatformCoreModulePlugin"
         }
+        create("MultiplatformFeatureModulePlugin") {
+            id = "naveenapps.plugin.multiplatform.feature"
+            implementationClass =
+                "com.naveenapps.expensemanager.buildsrc.plugins.MultiplatformFeatureModulePlugin"
+        }
         create("ComposeResourceMultiplatformPlugin") {
             id = "naveenapps.plugin.composeResources.multiplatform"
             implementationClass =

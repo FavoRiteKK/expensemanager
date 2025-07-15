@@ -25,11 +25,9 @@ import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManage
 import com.naveenapps.expensemanager.core.model4mp.CategoryType
 import com.naveenapps.expensemanager.core.model4mp.TextFieldValue
 import expensemanager.feature.category4mp.generated.resources.Res
-import expensemanager.feature.category4mp.generated.resources.allDrawableResources
 import expensemanager.feature.category4mp.generated.resources.category
 import expensemanager.feature.category4mp.generated.resources.category_name
 import expensemanager.feature.category4mp.generated.resources.category_name_error
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -99,7 +97,7 @@ private fun CategoryCreateScreen(
     nameField: TextFieldValue<String>,
     categoryTypeField: TextFieldValue<CategoryType>,
     selectedColorField: TextFieldValue<String>,
-    selectedIconField: TextFieldValue<DrawableResource>,
+    selectedIconField: TextFieldValue<String>,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -144,7 +142,7 @@ private fun CategoryCreateStatePreview() {
         value = "#000000", valueError = false, onValueChange = { }
     )
     val selectedIconField = TextFieldValue(
-        value = Res.allDrawableResources["account_balance_wallet"]!!,
+        value = "account_balance_wallet",
         valueError = false,
         onValueChange = { }
     )

@@ -23,15 +23,16 @@ plugins {
 
 rootProject.name = "expensemanager"
 
-//include(":composeApp")
-//
-//include(":feature:theme4mp")
-//include(":feature:dashboard4mp")
+include(":composeApp")
+
+include(":feature:theme4mp")
+include(":feature:dashboard4mp")
 include(":feature:account4mp")
-//include(":feature:budget4mp")
+include(":feature:budget4mp")
 include(":feature:category4mp")
 include(":feature:filter4mp")
-//include(":feature:transaction4mp")
+include(":feature:transaction4mp")
+include(":feature:analysis4mp")
 
 include(":core:common4mp")
 include(":core:model4mp")

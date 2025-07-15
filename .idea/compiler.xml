@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="21">
-      <module name="expensemanager.feature.budget4mp.commonMain" target="21" />
-      <module name="expensemanager.feature.budget4mp.commonTest" target="21" />
-      <module name="expensemanager.feature.dashboard4mp.commonMain" target="21" />
-      <module name="expensemanager.feature.dashboard4mp.commonTest" target="21" />
-      <module name="expensemanager.feature.theme4mp.commonMain" target="21" />
-      <module name="expensemanager.feature.theme4mp.commonTest" target="21" />
-      <module name="expensemanager.feature.transaction4mp.commonMain" target="21" />
-      <module name="expensemanager.feature.transaction4mp.commonTest" target="21" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="21" />
   </component>
 </project>

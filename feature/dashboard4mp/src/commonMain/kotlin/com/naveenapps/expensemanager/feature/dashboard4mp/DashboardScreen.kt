@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Settings
@@ -26,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem4mp.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem4mp.components.AmountStatusView
@@ -33,6 +35,7 @@ import com.naveenapps.expensemanager.core.designsystem4mp.components.DashboardWi
 import com.naveenapps.expensemanager.core.designsystem4mp.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem4mp.ui.utils.toColor
 import com.naveenapps.expensemanager.core.model4mp.Amount
 import com.naveenapps.expensemanager.core.model4mp.CategoryTransaction
 import com.naveenapps.expensemanager.core.model4mp.CategoryTransactionState
@@ -47,6 +50,16 @@ import com.naveenapps.expensemanager.feature.category4mp.list.getCategoryData
 import com.naveenapps.expensemanager.feature.filter4mp.FilterView
 import com.naveenapps.expensemanager.feature.transaction4mp.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction4mp.list.getTransactionItem
+import expensemanager.feature.account4mp.generated.resources.accounts
+import expensemanager.feature.account4mp.generated.resources.no_account_available_short
+import expensemanager.feature.budget4mp.generated.resources.budgets
+import expensemanager.feature.budget4mp.generated.resources.no_budget_available_short
+import expensemanager.feature.dashboard4mp.generated.resources.Res
+import expensemanager.feature.dashboard4mp.generated.resources.home
+import expensemanager.feature.dashboard4mp.generated.resources.no_transactions_available
+import expensemanager.feature.dashboard4mp.generated.resources.settings
+import expensemanager.feature.dashboard4mp.generated.resources.transaction
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.random.Random
 
@@ -73,7 +86,7 @@ private fun DashboardScaffoldContent(
         topBar = {
             TopAppBar(title = {
                 Text(
-                    text = stringResource(id = R.string.home),
+                    text = stringResource(resource = Res.string.home),
                     style = MaterialTheme.typography.titleLarge,
                 )
             }, actions = {
@@ -84,7 +97,7 @@ private fun DashboardScaffoldContent(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Settings,
-                        contentDescription = stringResource(id = R.string.settings),
+                        contentDescription = stringResource(resource = Res.string.settings),
                     )
                 }
             })
@@ -141,7 +154,7 @@ private fun DashboardScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
+                title = stringResource(resource = expensemanager.feature.account4mp.generated.resources.Res.string.accounts),
                 onViewAllClick = {
                     onAction.invoke(DashboardAction.OpenAccountList)
                 },
@@ -167,7 +180,7 @@ private fun DashboardScreenContent(
                             icon = it.storedIcon.name,
                             amount = it.amount.amountString ?: "",
                             availableCreditLimit = it.availableCreditLimit?.amountString ?: "",
-                            amountTextColor = colorResource(id = it.amountTextColor),
+                            amountTextColor = Color(color = it.amountTextColor),
                             backgroundColor = it.storedIcon.backgroundColor.toColor()
                                 .copy(alpha = .1f),
                         )
@@ -177,8 +190,8 @@ private fun DashboardScreenContent(
         } else {
             item {
                 EmptyItem(
-                    emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.no_account_available_short),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
+                    emptyItemText = stringResource(resource = expensemanager.feature.account4mp.generated.resources.Res.string.no_account_available_short),
+                    icon = "ic_no_accounts",
                     modifier = Modifier
                         .fillMaxSize()
                         .height(200.dp)
@@ -197,7 +210,7 @@ private fun DashboardScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.budgets),
+                title = stringResource(resource = expensemanager.feature.budget4mp.generated.resources.Res.string.budgets),
                 onViewAllClick = {
                     onAction.invoke(DashboardAction.OpenBudgetList)
                 },
@@ -231,8 +244,8 @@ private fun DashboardScreenContent(
         } else {
             item {
                 EmptyItem(
-                    emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.no_budget_available_short),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
+                    emptyItemText = stringResource(resource = expensemanager.feature.budget4mp.generated.resources.Res.string.no_budget_available_short),
+                    icon = "ic_no_budgets",
                     modifier = Modifier
                         .fillMaxSize()
                         .height(200.dp)
@@ -244,7 +257,7 @@ private fun DashboardScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                title = stringResource(id = R.string.transaction),
+                title = stringResource(resource = Res.string.transaction),
                 onViewAllClick = {
                     onAction.invoke(DashboardAction.OpenTransactionList)
                 },
@@ -277,8 +290,8 @@ private fun DashboardScreenContent(
         } else {
             item {
                 EmptyItem(
-                    emptyItemText = stringResource(id = R.string.no_transactions_available),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
+                    emptyItemText = stringResource(resource = Res.string.no_transactions_available),
+                    icon = "ic_no_transaction",
                     modifier = Modifier
                         .fillMaxSize()
                         .height(200.dp)

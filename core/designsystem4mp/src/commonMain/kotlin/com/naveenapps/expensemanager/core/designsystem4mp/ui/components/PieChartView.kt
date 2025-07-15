@@ -24,6 +24,7 @@ fun PieChartView(
     modifier: Modifier = Modifier,
     chartHeight: Int = 600,
     hideValues: Boolean = false,
+    chartWidth: Int = -1,    //MATCH_PARENT
 ) {
     var isAnimated by remember { mutableStateOf(false) }
 

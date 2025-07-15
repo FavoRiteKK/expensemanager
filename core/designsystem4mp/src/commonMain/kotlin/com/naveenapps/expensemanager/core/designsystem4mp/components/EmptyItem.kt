@@ -16,13 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.DrawableResource
+import com.naveenapps.expensemanager.core.designsystem4mp.utils.Exports
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun EmptyItem(
     emptyItemText: String,
-    icon: DrawableResource,
+    icon: String,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -39,7 +39,7 @@ fun EmptyItem(
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 16.dp)
                     .size(96.dp),
-                painter = painterResource(resource = icon),
+                painter = painterResource(resource = Exports.drawableBy(icon)),
                 contentDescription = null
             )
             Text(

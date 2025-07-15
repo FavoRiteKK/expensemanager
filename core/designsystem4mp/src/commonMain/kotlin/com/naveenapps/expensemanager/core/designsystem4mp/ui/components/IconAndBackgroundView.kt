@@ -17,15 +17,13 @@ import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManage
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.utils.IconSpecModifier
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.utils.SmallIconSpecModifier
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.utils.toColor
-import expensemanager.core.designsystem4mp.generated.resources.Res
-import expensemanager.core.designsystem4mp.generated.resources.account_balance_wallet
-import org.jetbrains.compose.resources.DrawableResource
+import com.naveenapps.expensemanager.core.designsystem4mp.utils.Exports
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun IconAndBackgroundView(
-    icon: DrawableResource,
+    icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
     name: String? = null,
@@ -41,7 +39,7 @@ fun IconAndBackgroundView(
 
 @Composable
 fun SmallIconAndBackgroundView(
-    icon: DrawableResource,
+    icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
     name: String? = null,
@@ -60,7 +58,7 @@ fun SmallIconAndBackgroundView(
 private fun IconView(
     modifier: Modifier,
     iconBackgroundColor: String,
-    icon: DrawableResource,
+    icon: String,
     name: String?,
     iconSize: Dp = 18.dp,
 ) {
@@ -75,7 +73,7 @@ private fun IconView(
             modifier = Modifier
                 .size(iconSize)
                 .align(Alignment.Center),
-            imageVector = vectorResource(resource = icon),
+            imageVector = vectorResource(resource = Exports.drawableBy(icon)),
             colorFilter = ColorFilter.tint(color = Color.White),
             contentDescription = name,
         )
@@ -105,11 +103,11 @@ fun IconAndBackgroundViewPreview() {
     ExpenseManagerTheme {
         Column {
             IconAndBackgroundView(
-                icon = Res.drawable.account_balance_wallet,
+                icon = "account_balance_wallet",
                 iconBackgroundColor = "#000000",
             )
             SmallIconAndBackgroundView(
-                icon = Res.drawable.account_balance_wallet,
+                icon = "account_balance_wallet",
                 iconBackgroundColor = "#000000",
                 iconSize = 12.dp,
             )

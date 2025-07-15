@@ -75,3 +75,4 @@ also encouraged.
 * **launchAppUpdateCheck** not implemented
 * **notificationPermissionLauncher** not implemented
 * **BackHandler** not implemented
+* calendar.getActualMaximum(Calendar.DAY_OF_WEEK)

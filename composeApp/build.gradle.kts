@@ -101,6 +101,8 @@ kotlin {
             implementation(project(":core:model4mp"))
 
             implementation(project(":feature:theme4mp"))
+            implementation(project(":feature:dashboard4mp"))
+            implementation(project(":feature:analysis4mp"))
 
             //think of moving this to Compose plugin, but could not access compose property
             implementation(compose.runtime)

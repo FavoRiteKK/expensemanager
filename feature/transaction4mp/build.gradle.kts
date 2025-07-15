@@ -21,6 +21,8 @@ kotlin {
                 implementation(project(":core:model4mp"))
                 implementation(project(":core:navigation4mp"))
 
+                implementation(project(":feature:filter4mp"))
+
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)

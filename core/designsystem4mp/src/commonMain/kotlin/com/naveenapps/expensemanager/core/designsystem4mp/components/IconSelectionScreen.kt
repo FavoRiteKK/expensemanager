@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.components.SelectionTitle
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem4mp.ui.utils.ColorIconSpecModifier
+import com.naveenapps.expensemanager.core.designsystem4mp.utils.Exports
 import expensemanager.core.designsystem4mp.generated.resources.Res
 import expensemanager.core.designsystem4mp.generated.resources.choose_icon
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -34,7 +34,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun IconSelectionScreen(
     viewModel: IconSelectionViewModel = koinViewModel(),
-    onIconPicked: ((DrawableResource) -> Unit)? = null,
+    onIconPicked: ((String) -> Unit)? = null,
 ) {
     val columns = GridCells.Adaptive(minSize = 48.dp)
 
@@ -67,7 +67,7 @@ fun IconSelectionScreen(
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
-                    painter = painterResource(resource = icon),
+                    painter = painterResource(resource = Exports.drawableBy(icon)),
                     modifier = Modifier.align(Alignment.Center),
                     contentDescription = null,
                 )
