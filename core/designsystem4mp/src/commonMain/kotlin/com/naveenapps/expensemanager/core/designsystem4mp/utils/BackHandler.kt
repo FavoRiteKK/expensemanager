@@ -1,8 +1,0 @@
-package com.naveenapps.expensemanager.core.designsystem4mp.utils
-
-import androidx.compose.runtime.Composable
-
-@Composable
-fun BackHandler(enabled: Boolean = true, onBack: () -> Unit) {
-    TODO("Not yet implemented")
-}

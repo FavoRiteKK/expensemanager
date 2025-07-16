@@ -2,8 +2,8 @@ package com.naveenapps.expensemanager.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain4mp.usecase.settings.reminder.UpdateReminderStatusUseCase
-import com.naveenapps.expensemanager.core.notification4mp.NotificationScheduler
+import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.UpdateReminderStatusUseCase
+import com.naveenapps.expensemanager.core.notification.NotificationScheduler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

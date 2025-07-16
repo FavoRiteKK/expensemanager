@@ -2,10 +2,10 @@ package com.naveenapps.expensemanager
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.data4mp.utils.LWAppCompatDelegate
-import com.naveenapps.expensemanager.core.domain4mp.usecase.GetOnboardingStatusUseCase
-import com.naveenapps.expensemanager.core.domain4mp.usecase.settings.theme.GetCurrentThemeUseCase
-import com.naveenapps.expensemanager.core.model4mp.Theme
+import com.naveenapps.expensemanager.core.data.utils.LWAppCompatDelegate
+import com.naveenapps.expensemanager.core.domain.usecase.GetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
+import com.naveenapps.expensemanager.core.model.Theme
 import expensemanager.composeapp.generated.resources.Res
 import expensemanager.composeapp.generated.resources.choose_theme
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -3,10 +3,10 @@ package com.naveenapps.expensemanager.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.rememberNavController
-import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.navigation4mp.AppComposeNavigator
-import com.naveenapps.expensemanager.core.navigation4mp.ExpenseManagerScreens
-import com.naveenapps.expensemanager.core.repository4mp.ActivityComponentProvider
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
 
 @Composable
 fun MainScreen(

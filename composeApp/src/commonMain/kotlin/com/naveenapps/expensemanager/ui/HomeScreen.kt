@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.naveenapps.expensemanager.core.navigation4mp.ExpenseManagerScreens
-import com.naveenapps.expensemanager.core.repository4mp.ActivityComponentProvider
-import com.naveenapps.expensemanager.feature.dashboard4mp.DashboardScreen
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
+import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
