@@ -103,6 +103,8 @@ kotlin {
             implementation(project(":feature:theme4mp"))
             implementation(project(":feature:dashboard4mp"))
             implementation(project(":feature:analysis4mp"))
+            implementation(project(":feature:transaction4mp"))
+            implementation(project(":feature:category4mp"))
 
             //think of moving this to Compose plugin, but could not access compose property
             implementation(compose.runtime)

@@ -53,7 +53,6 @@ import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.filter.FilterView
-import expensemanager.core.designsystem4mp.generated.resources.ic_no_transaction
 import expensemanager.feature.transaction4mp.generated.resources.Res
 import expensemanager.feature.transaction4mp.generated.resources.no_transactions_available
 import expensemanager.feature.transaction4mp.generated.resources.transaction
@@ -140,7 +139,7 @@ private fun TransactionListScreen(
                         .fillMaxSize()
                         .height(400.dp),
                     emptyItemText = stringResource(resource = Res.string.no_transactions_available),
-                    icon = expensemanager.core.designsystem4mp.generated.resources.Res.drawable.ic_no_transaction
+                    icon = "ic_no_transaction"
                 )
             }
         } else {

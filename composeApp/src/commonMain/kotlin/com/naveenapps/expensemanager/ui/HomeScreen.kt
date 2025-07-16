@@ -14,9 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
+import com.naveenapps.expensemanager.feature.analysis.AnalysisScreen
+import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
+import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -38,15 +42,15 @@ fun HomePageNavHostContainer(
 fun NavGraphBuilder.expenseManagerNavigation(
     componentProvider: ActivityComponentProvider,
 ) {
-//    composable<ExpenseManagerScreens.IntroScreen> {
-//        IntroScreen(componentProvider.getShareRepository())
-//    }
-//    composable<ExpenseManagerScreens.Onboarding> {
-//        OnboardingScreen()
-//    }
-//    composable<ExpenseManagerScreens.Home> {
-//        HomeScreen()
-//    }
+    composable<ExpenseManagerScreens.IntroScreen> {
+        IntroScreen(componentProvider.getShareRepository())
+    }
+    composable<ExpenseManagerScreens.Onboarding> {
+        OnboardingScreen()
+    }
+    composable<ExpenseManagerScreens.Home> {
+        HomeScreen()
+    }
 //    composable<ExpenseManagerScreens.CategoryList> {
 //        CategoryListScreen()
 //    }

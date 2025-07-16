@@ -9,6 +9,7 @@ androidxBrowser = "1.7.0"
 androidxComposeBom = "2025.05.01"
 androidxComposeRuntimeTracing = "1.8.2"
 kotlinLogging = "7.0.3"
+kottie = "2.0.1"
 lottieCompose = "6.4.0"
 material3 = "1.3.2"
 androidxCore = "1.16.0"
@@ -118,6 +119,7 @@ androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecy
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 kotlin-logging = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlinLogging" }
+kottie = { module = "io.github.ismai117:kottie", version.ref = "kottie" }
 lifecycle-viewModelCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 lifecycle-runtimeCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", version.ref = "androidxMetrics" }

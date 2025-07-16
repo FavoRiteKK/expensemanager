@@ -101,6 +101,7 @@ fun Project.configureFeatureMultiplatformExtension() {
                     implementation(project(":core:domain4mp"))
                     implementation(project(":core:model4mp"))
                     implementation(project(":core:navigation4mp"))
+                    implementation(project(":core:repository4mp"))
                 }
             }
         }

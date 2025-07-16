@@ -33,6 +33,7 @@ include(":feature:category4mp")
 include(":feature:filter4mp")
 include(":feature:transaction4mp")
 include(":feature:analysis4mp")
+include(":feature:onboarding4mp")
 
 include(":core:common4mp")
 include(":core:model4mp")
