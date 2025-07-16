@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class CategoryTransactionListViewModel (
+class CategoryTransactionListViewModel(
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {

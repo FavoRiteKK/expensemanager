@@ -8,7 +8,8 @@ sealed class CategoryTransactionAction {
 
     data object OpenTransactionCreate : CategoryTransactionAction()
 
-    data class OpenCategoryDetails(val transaction: CategoryTransaction) : CategoryTransactionAction()
+    data class OpenCategoryDetails(val transaction: CategoryTransaction) :
+        CategoryTransactionAction()
 
     data object OpenCategoryList : CategoryTransactionAction()
 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
-class BudgetListViewModel (
+class BudgetListViewModel(
     getBudgetsUseCase: GetBudgetsUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {

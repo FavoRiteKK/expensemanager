@@ -20,11 +20,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
-import kotlinx.datetime.LocalDateTime
 
-class GetChartDataUseCase (
+class GetChartDataUseCase(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getDateRangeUseCase: GetDateRangeUseCase,
@@ -134,19 +134,20 @@ class GetChartDataUseCase (
         }
     }
 
-    private fun groupValue(groupType: GroupType, transactionDate: LocalDateTime) = when (groupType) {
-        GroupType.YEAR -> {
-            transactionDate.toYear()
-        }
+    private fun groupValue(groupType: GroupType, transactionDate: LocalDateTime) =
+        when (groupType) {
+            GroupType.YEAR -> {
+                transactionDate.toYear()
+            }
 
-        GroupType.MONTH -> {
-            transactionDate.toMonthAndYear()
-        }
+            GroupType.MONTH -> {
+                transactionDate.toMonthAndYear()
+            }
 
-        GroupType.DATE -> {
-            transactionDate.toCompleteDateWithDate()
+            GroupType.DATE -> {
+                transactionDate.toCompleteDateWithDate()
+            }
         }
-    }
 }
 
 data class FloatEntryModel(

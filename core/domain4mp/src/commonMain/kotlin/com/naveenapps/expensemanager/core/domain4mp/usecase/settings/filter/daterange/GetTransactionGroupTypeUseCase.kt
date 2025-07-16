@@ -4,7 +4,7 @@ import com.naveenapps.expensemanager.core.model4mp.DateRangeType
 import com.naveenapps.expensemanager.core.model4mp.GroupType
 import com.naveenapps.expensemanager.core.repository4mp.DateRangeFilterRepository
 
-class GetTransactionGroupTypeUseCase (
+class GetTransactionGroupTypeUseCase(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 

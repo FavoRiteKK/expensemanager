@@ -4,7 +4,7 @@ import com.naveenapps.expensemanager.core.model4mp.TransactionType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetExpenseAmountUseCase (
+class GetExpenseAmountUseCase(
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
 ) {
 

@@ -15,12 +15,6 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-//                implementation(project(":core:common4mp"))
-//                implementation(project(":core:designsystem4mp"))
-//                implementation(project(":core:domain4mp"))
-//                implementation(project(":core:model4mp"))
-//                implementation(project(":core:navigation4mp"))
-
                 implementation(project(":feature:filter4mp"))
 
                 implementation(compose.runtime)
@@ -36,7 +30,6 @@ kotlin {
                 implementation(libs.androidx.navigation.compose)
 
                 implementation(libs.vico.multiplatform.m3)
-//                implementation(libs.vico.core)
             }
         }
     }

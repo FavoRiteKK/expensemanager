@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.feature.filter.FilterView
+import com.naveenapps.expensemanager.core.designsystem4mp.ui.components.TopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem4mp.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.feature.filter4mp.FilterView
+import expensemanager.feature.analysis4mp.generated.resources.Res
+import expensemanager.feature.analysis4mp.generated.resources.analysis
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AnalysisScreen() {
@@ -25,7 +27,7 @@ private fun AnalysisScreenScaffoldView() {
         topBar = {
             TopNavigationBar(
                 onClick = {},
-                title = stringResource(R.string.analysis),
+                title = stringResource(Res.string.analysis),
                 disableBackIcon = true,
             )
         },

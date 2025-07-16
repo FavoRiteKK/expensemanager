@@ -2,25 +2,24 @@ package com.naveenapps.expensemanager.feature.analysis
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.data4mp.utils.LWAppCompatDelegate
 import com.naveenapps.expensemanager.core.domain4mp.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.domain4mp.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.core.domain4mp.usecase.transaction.GetAverageDataUseCase
 import com.naveenapps.expensemanager.core.domain4mp.usecase.transaction.GetChartDataUseCase
-import com.naveenapps.expensemanager.core.model4mp.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model4mp.AverageData
+import com.naveenapps.expensemanager.core.model4mp.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model4mp.Theme
 import com.naveenapps.expensemanager.core.model4mp.TransactionUiItem
 import com.naveenapps.expensemanager.core.model4mp.WholeAverageData
+import expensemanager.feature.analysis4mp.generated.resources.Res
+import expensemanager.feature.analysis4mp.generated.resources.analysis
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import com.naveenapps.expensemanager.core.data4mp.utils.LWAppCompatDelegate
-import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianChartModelProducer
-import expensemanager.feature.analysis4mp.generated.resources.Res
-import expensemanager.feature.analysis4mp.generated.resources.analysis
 
-class AnalysisScreenViewModel (
+class AnalysisScreenViewModel(
     getCurrentThemeUseCase: GetCurrentThemeUseCase,
     getChartDataUseCase: GetChartDataUseCase,
     getAverageDataUseCase: GetAverageDataUseCase,
@@ -66,16 +65,11 @@ class AnalysisScreenViewModel (
                 transactions = response.transactions,
                 chartData = response.chartData?.let { chart ->
                     AnalysisUiChartData(
-                        chartData = CartesianChartModelProducer(
-                            chart.chartData.map {
-                                it.map { entry ->
-                                    entryOf(
-                                        entry.index,
-                                        entry.total,
-                                    )
-                                }
-                            },
-                        ).getModel(),
+                        chartData = chart.chartData.map {
+                            it.map {
+                                mapOf(it.index to it.total)
+                            }
+                        },
                         dates = chart.dates,
                     )
                 },
@@ -102,7 +96,7 @@ data class AnalysisUiData(
 )
 
 data class AnalysisUiChartData(
-    val chartData: ChartEntryModel,
+    val chartData: List<List<Map<Int, Double>>>,
     val dates: List<String>,
     val title: String? = null,
 )

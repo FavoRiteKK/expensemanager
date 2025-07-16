@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 
-class TransactionListViewModel (
+class TransactionListViewModel(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,

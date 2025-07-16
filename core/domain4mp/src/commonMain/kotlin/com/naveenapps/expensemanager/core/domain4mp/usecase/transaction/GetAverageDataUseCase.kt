@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 
-class GetAverageDataUseCase (
+class GetAverageDataUseCase(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
@@ -43,28 +43,36 @@ class GetAverageDataUseCase (
             when (dateRangeModel.type) {
                 DateRangeType.TODAY -> {
                     daysMultiplier = 1.0
-                    weeksMultiplier = TODO()    //calendar.getActualMaximum(Calendar.DAY_OF_WEEK).toDouble()
-                    monthMultiplier = TODO()    //calendar.getActualMaximum(Calendar.DAY_OF_MONTH).toDouble()
+                    weeksMultiplier =
+                        TODO()    //calendar.getActualMaximum(Calendar.DAY_OF_WEEK).toDouble()
+                    monthMultiplier =
+                        TODO()    //calendar.getActualMaximum(Calendar.DAY_OF_MONTH).toDouble()
                 }
 
                 DateRangeType.THIS_WEEK -> {
-                    daysMultiplier = TODO()    //1.0 / calendar.getActualMaximum(Calendar.DAY_OF_WEEK)
+                    daysMultiplier =
+                        TODO()    //1.0 / calendar.getActualMaximum(Calendar.DAY_OF_WEEK)
                     weeksMultiplier = 1.0
-                    monthMultiplier = TODO()    //calendar.getActualMaximum(Calendar.WEEK_OF_MONTH).toDouble()
+                    monthMultiplier =
+                        TODO()    //calendar.getActualMaximum(Calendar.WEEK_OF_MONTH).toDouble()
                 }
 
                 DateRangeType.THIS_MONTH -> {
-                    daysMultiplier = TODO()    //1.0 / calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-                    weeksMultiplier = TODO()    //1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
+                    daysMultiplier =
+                        TODO()    //1.0 / calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                    weeksMultiplier =
+                        TODO()    //1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
                     monthMultiplier = 1.0
                 }
 
                 DateRangeType.THIS_YEAR,
                 DateRangeType.CUSTOM,
                 DateRangeType.ALL,
-                -> {
-                    daysMultiplier = TODO()    //1.0 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
-                    weeksMultiplier = TODO()    //1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
+                    -> {
+                    daysMultiplier =
+                        TODO()    //1.0 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
+                    weeksMultiplier =
+                        TODO()    //1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
                     monthMultiplier = 1.0 / 12
                 }
             }

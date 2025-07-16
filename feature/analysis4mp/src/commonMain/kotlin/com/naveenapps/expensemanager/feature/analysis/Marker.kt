@@ -1,111 +1,84 @@
 package com.naveenapps.expensemanager.feature.analysis
 
-import android.graphics.Typeface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import com.patrykandpatrick.vico.compose.component.lineComponent
-import com.patrykandpatrick.vico.compose.component.overlayingComponent
-import com.patrykandpatrick.vico.compose.component.shapeComponent
-import com.patrykandpatrick.vico.compose.component.textComponent
-import com.patrykandpatrick.vico.compose.dimensions.dimensionsOf
-import com.patrykandpatrick.vico.core.chart.dimensions.HorizontalDimensions
-import com.patrykandpatrick.vico.core.chart.insets.Insets
-import com.patrykandpatrick.vico.core.component.marker.MarkerComponent
-import com.patrykandpatrick.vico.core.component.shape.DashedShape
-import com.patrykandpatrick.vico.core.component.shape.ShapeComponent
-import com.patrykandpatrick.vico.core.component.shape.Shapes
-import com.patrykandpatrick.vico.core.component.shape.cornered.Corner
-import com.patrykandpatrick.vico.core.component.shape.cornered.MarkerCorneredShape
-import com.patrykandpatrick.vico.core.context.MeasureContext
-import com.patrykandpatrick.vico.core.extension.copyColor
-import com.patrykandpatrick.vico.core.marker.Marker
+import com.patrykandpatrick.vico.multiplatform.cartesian.marker.CartesianMarker
+import com.patrykandpatrick.vico.multiplatform.cartesian.marker.rememberDefaultCartesianMarker
+import com.patrykandpatrick.vico.multiplatform.common.Fill
+import com.patrykandpatrick.vico.multiplatform.common.Insets
+import com.patrykandpatrick.vico.multiplatform.common.LayeredComponent
+import com.patrykandpatrick.vico.multiplatform.common.component.LineComponent
+import com.patrykandpatrick.vico.multiplatform.common.component.ShapeComponent
+import com.patrykandpatrick.vico.multiplatform.common.component.rememberShapeComponent
+import com.patrykandpatrick.vico.multiplatform.common.component.rememberTextComponent
+import com.patrykandpatrick.vico.multiplatform.common.fill
+import com.patrykandpatrick.vico.multiplatform.common.shape.CorneredShape
+import com.patrykandpatrick.vico.multiplatform.common.shape.CorneredShape.Corner
+import com.patrykandpatrick.vico.multiplatform.common.shape.DashedShape
+import com.patrykandpatrick.vico.multiplatform.common.shape.MarkerCorneredShape
 
 @Composable
-internal fun rememberMarker(): Marker {
+internal fun rememberMarker(): CartesianMarker {
     val labelBackgroundColor = MaterialTheme.colorScheme.surface
-    val labelBackground = remember(labelBackgroundColor) {
-        ShapeComponent(labelBackgroundShape, labelBackgroundColor.toArgb()).setShadow(
-            radius = LABEL_BACKGROUND_SHADOW_RADIUS,
-            dy = LABEL_BACKGROUND_SHADOW_DY,
-            applyElevationOverlay = true,
+    val labelBackground =
+        rememberShapeComponent(
+            fill = Fill(labelBackgroundColor),
+            shape = labelBackgroundShape,
+            strokeFill = Fill(MaterialTheme.colorScheme.outline),
+            strokeThickness = 1.dp,
         )
-    }
-    val label = textComponent(
-        background = labelBackground,
-        lineCount = LABEL_LINE_COUNT,
-        padding = labelPadding,
-        typeface = Typeface.MONOSPACE,
-        color = MaterialTheme.colorScheme.onSurface,
-    )
-    val indicatorInnerComponent =
-        shapeComponent(Shapes.pillShape, MaterialTheme.colorScheme.surface)
-    val indicatorCenterComponent = shapeComponent(Shapes.pillShape, Color.White)
-    val indicatorOuterComponent = shapeComponent(Shapes.pillShape, Color.White)
-    val indicator = overlayingComponent(
-        outer = indicatorOuterComponent,
-        inner = overlayingComponent(
-            outer = indicatorCenterComponent,
-            inner = indicatorInnerComponent,
-            innerPaddingAll = indicatorInnerAndCenterComponentPaddingValue,
-        ),
-        innerPaddingAll = indicatorCenterAndOuterComponentPaddingValue,
-    )
-    val guideline = lineComponent(
-        MaterialTheme.colorScheme.onSurface.copy(GUIDELINE_ALPHA),
-        guidelineThickness,
-        guidelineShape,
-    )
-    return remember(label, indicator, guideline) {
-        object : MarkerComponent(label, indicator, guideline) {
-            init {
-                indicatorSizeDp = INDICATOR_SIZE_DP
-                onApplyEntryColor = { entryColor ->
-                    indicatorOuterComponent.color =
-                        entryColor.copyColor(INDICATOR_OUTER_COMPONENT_ALPHA)
-                    with(indicatorCenterComponent) {
-                        color = entryColor
-                        setShadow(
-                            radius = INDICATOR_CENTER_COMPONENT_SHADOW_RADIUS,
-                            color = entryColor,
-                        )
-                    }
-                }
-            }
+    val label =
+        rememberTextComponent(
+            background = labelBackground,
+            lineCount = LABEL_LINE_COUNT,
+            padding = labelPadding,
+            style =
+                TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontFamily = FontFamily.Monospace,
+                ),
+        )
 
-            override fun getInsets(
-                context: MeasureContext,
-                outInsets: Insets,
-                horizontalDimensions: HorizontalDimensions,
-            ) = with(context) {
-                outInsets.top = label.getHeight(context) + labelBackgroundShape.tickSizeDp.pixels +
-                    LABEL_BACKGROUND_SHADOW_RADIUS.pixels * SHADOW_RADIUS_MULTIPLIER -
-                    LABEL_BACKGROUND_SHADOW_DY.pixels
-            }
-        }
-    }
+    return rememberDefaultCartesianMarker(
+        label = label,
+        indicator = { color ->
+            val indicatorInnerComponent =
+                ShapeComponent(Fill(color), CorneredShape.Pill)
+            val indicatorCenterComponent = ShapeComponent(Fill(Color.White), CorneredShape.Pill)
+            val indicatorOuterComponent = ShapeComponent(Fill(color), CorneredShape.Pill)
+
+            LayeredComponent(
+                back = indicatorOuterComponent,
+                front = LayeredComponent(
+                    back = indicatorCenterComponent,
+                    front = indicatorInnerComponent,
+                    padding = Insets(indicatorInnerAndCenterComponentPaddingValue),
+                ),
+                padding = Insets(indicatorCenterAndOuterComponentPaddingValue),
+            )
+        },
+        guideline = LineComponent(
+            fill = fill(MaterialTheme.colorScheme.onSurface.copy(0.2f)),
+            thickness = guidelineThickness,
+            shape = guidelineShape
+        )
+    )
 }
 
-private const val LABEL_BACKGROUND_SHADOW_RADIUS = 4f
-private const val LABEL_BACKGROUND_SHADOW_DY = 2f
 private const val LABEL_LINE_COUNT = 1
-private const val GUIDELINE_ALPHA = .2f
-private const val INDICATOR_SIZE_DP = 36f
-private const val INDICATOR_OUTER_COMPONENT_ALPHA = 32
-private const val INDICATOR_CENTER_COMPONENT_SHADOW_RADIUS = 12f
-private const val GUIDELINE_DASH_LENGTH_DP = 8f
-private const val GUIDELINE_GAP_LENGTH_DP = 4f
-private const val SHADOW_RADIUS_MULTIPLIER = 1.3f
+private val GUIDELINE_DASH_LENGTH_DP = 8.dp
+private val GUIDELINE_GAP_LENGTH_DP = 4.dp
 
-private val labelBackgroundShape = MarkerCorneredShape(Corner.FullyRounded)
+private val labelBackgroundShape = MarkerCorneredShape(Corner.Rounded)
 private val labelHorizontalPaddingValue = 8.dp
 private val labelVerticalPaddingValue = 4.dp
-private val labelPadding = dimensionsOf(labelHorizontalPaddingValue, labelVerticalPaddingValue)
+private val labelPadding = Insets(labelHorizontalPaddingValue, labelVerticalPaddingValue)
 private val indicatorInnerAndCenterComponentPaddingValue = 5.dp
 private val indicatorCenterAndOuterComponentPaddingValue = 10.dp
 private val guidelineThickness = 2.dp
 private val guidelineShape =
-    DashedShape(Shapes.pillShape, GUIDELINE_DASH_LENGTH_DP, GUIDELINE_GAP_LENGTH_DP)
+    DashedShape(CorneredShape.Pill, GUIDELINE_DASH_LENGTH_DP, GUIDELINE_GAP_LENGTH_DP)

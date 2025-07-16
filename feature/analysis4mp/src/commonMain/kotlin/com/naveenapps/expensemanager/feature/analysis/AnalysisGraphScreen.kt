@@ -1,16 +1,5 @@
 package com.naveenapps.expensemanager.feature.analysis
 
-//import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
-//import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
-//import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
-//import com.patrykandpatrick.vico.compose.chart.Chart
-//import com.patrykandpatrick.vico.compose.chart.line.lineChart
-//import com.patrykandpatrick.vico.compose.chart.line.lineSpec
-//import com.patrykandpatrick.vico.compose.component.shape.shader.verticalGradient
-//import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
-//import com.patrykandpatrick.vico.core.axis.AxisItemPlacer
-//import com.patrykandpatrick.vico.core.entry.entryModelOf
-//import com.patrykandpatrick.vico.core.entry.entryOf
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,17 +14,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.common4mp.utils.getCompactNumber
+import com.naveenapps.expensemanager.core.common4mp.utils.GREEN_500
+import com.naveenapps.expensemanager.core.common4mp.utils.RED_500
 import com.naveenapps.expensemanager.core.designsystem4mp.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem4mp.components.AMOUNT_VALUE
 import com.naveenapps.expensemanager.core.designsystem4mp.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem4mp.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem4mp.components.EmptyItem
@@ -49,9 +41,21 @@ import com.naveenapps.expensemanager.core.model4mp.WholeAverageData
 import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.multiplatform.cartesian.data.lineSeries
+import com.patrykandpatrick.vico.multiplatform.cartesian.layer.LineCartesianLayer
+import com.patrykandpatrick.vico.multiplatform.cartesian.layer.rememberLine
 import com.patrykandpatrick.vico.multiplatform.cartesian.layer.rememberLineCartesianLayer
 import com.patrykandpatrick.vico.multiplatform.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.multiplatform.common.ProvideVicoTheme
+import com.patrykandpatrick.vico.multiplatform.common.fill
+import expensemanager.feature.analysis4mp.generated.resources.Res
+import expensemanager.feature.analysis4mp.generated.resources.average_and_projected
+import expensemanager.feature.analysis4mp.generated.resources.day
+import expensemanager.feature.analysis4mp.generated.resources.month
+import expensemanager.feature.analysis4mp.generated.resources.no_chart_available
+import expensemanager.feature.analysis4mp.generated.resources.week
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -83,8 +87,8 @@ fun AnalysisGraphScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
-                emptyItemText = stringResource(id = R.string.no_chart_available),
-                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_analysis
+                emptyItemText = stringResource(resource = Res.string.no_chart_available),
+                icon = "ic_no_analysis"
             )
         }
 
@@ -133,7 +137,7 @@ fun TransactionAverageItem(
                 .fillMaxWidth()
                 .padding(16.dp),
         ) {
-            DashboardWidgetTitle(title = stringResource(id = R.string.average_and_projected))
+            DashboardWidgetTitle(title = stringResource(resource = Res.string.average_and_projected))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -146,29 +150,29 @@ fun TransactionAverageItem(
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     Text(
-                        text = stringResource(id = R.string.day),
+                        text = stringResource(resource = Res.string.day),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Normal,
                     )
                     Text(
-                        text = stringResource(id = R.string.week),
+                        text = stringResource(resource = Res.string.week),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Normal,
                     )
                     Text(
-                        text = stringResource(id = R.string.month),
+                        text = stringResource(resource = Res.string.month),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Normal,
                     )
                 }
                 AverageAmountItems(
                     averageData = averageData.incomeAverageData,
-                    textColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
+                    textColor = Color(color = GREEN_500),
                     modifier = Modifier.align(Alignment.CenterVertically),
                 )
                 AverageAmountItems(
                     averageData = averageData.expenseAverageData,
-                    textColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500),
+                    textColor = Color(color = RED_500),
                     modifier = Modifier
                         .wrapContentSize()
                         .align(Alignment.CenterVertically),
@@ -182,7 +186,7 @@ fun TransactionAverageItem(
 private fun AverageAmountItems(
     averageData: AverageData,
     modifier: Modifier = Modifier,
-    textColor: Color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
+    textColor: Color = Color(color = GREEN_500),
 ) {
     Column(
         modifier = modifier,
@@ -222,64 +226,62 @@ fun ChartScreen(
 
     val expenseColor = getExpenseColor()
     val incomeColor = getIncomeColor()
-
     val marker = rememberMarker()
+    val modelProducer = remember { CartesianChartModelProducer() }
+
+    LaunchedEffect(Unit) {
+        modelProducer.runTransaction {
+            chart.chartData.onEach { lines ->
+                lineSeries {
+                    lines.onEach { entry ->
+                        series(entry.keys, entry.values)
+                    }
+                }
+            }
+        }
+    }
 
     ProvideVicoTheme(rememberChartTheme(chartColors, isDarkTheme)) {
         CartesianChartHost(
             modifier = modifier,
             chart = rememberCartesianChart(
-                layers = rememberLineCartesianLayer(),
-            ),
-            modelProducer = chart.chartData
-        )
-    }
-
-    ProvideChartStyle(rememberChartStyle(chartColors, isDarkTheme)) {
-        Chart(
-            modifier = modifier,
-            chart = lineChart(
-                lines = listOf(
-                    lineSpec(
-                        lineColor = expenseColor,
-                        lineBackgroundShader = verticalGradient(
-                            arrayOf(
-                                expenseColor.copy(0.5f),
-                                expenseColor.copy(alpha = 0f),
+                layers = arrayOf(
+                    rememberLineCartesianLayer(
+                        lineProvider = LineCartesianLayer.LineProvider.series(
+                            LineCartesianLayer.rememberLine(
+                                fill = LineCartesianLayer.LineFill.single(fill(expenseColor)),
+                                areaFill = LineCartesianLayer.AreaFill.single(
+                                    fill = fill(
+                                        brush = Brush.verticalGradient(
+                                            colors = listOf(
+                                                expenseColor.copy(alpha = 0.5f),
+                                                expenseColor.copy(alpha = 0f)
+                                            )
+                                        )
+                                    )
+                                )
                             ),
-                        ),
-                    ),
-                    lineSpec(
-                        lineColor = incomeColor,
-                        lineBackgroundShader = verticalGradient(
-                            arrayOf(
-                                incomeColor.copy(0.5f),
-                                incomeColor.copy(alpha = 0f),
+                            LineCartesianLayer.rememberLine(
+                                fill = LineCartesianLayer.LineFill.single(fill(incomeColor)),
+                                areaFill = LineCartesianLayer.AreaFill.single(
+                                    fill = fill(
+                                        brush = Brush.verticalGradient(
+                                            colors = listOf(
+                                                incomeColor.copy(alpha = 0.5f),
+                                                incomeColor.copy(alpha = 0f)
+                                            )
+                                        )
+                                    )
+                                )
                             ),
-                        ),
-                    ),
+                        )
+                    )
                 ),
+                startAxis = VerticalAxis.rememberStart(),
+                bottomAxis = HorizontalAxis.rememberBottom(),
+                marker = marker
             ),
-            startAxis = rememberStartAxis(
-                itemPlacer = AxisItemPlacer.Vertical.default(6),
-                label = axisLabelComponent(),
-                valueFormatter = { value, _ ->
-                    getCompactNumber(value)
-                },
-            ),
-            bottomAxis = rememberBottomAxis(
-                itemPlacer = AxisItemPlacer.Horizontal.default(5),
-                label = axisLabelComponent(),
-                valueFormatter = { value, _ ->
-                    if (chart.dates.isNotEmpty()) {
-                        chart.dates[value.toInt()]
-                    } else {
-                        ""
-                    }
-                },
-            ),
-            model = chart.chartData,
-            marker = marker,
+            modelProducer = modelProducer,
         )
     }
 }
@@ -291,32 +293,36 @@ fun ChartScreenPreview() {
         ChartScreen(
             isDarkTheme = true,
             chart = AnalysisUiChartData(
-                chartData = entryModelOf(
+                chartData = listOf(
                     listOf(
-                        entryOf(0, 1),
-                        entryOf(1, 2),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
+                        mapOf(
+                            Pair(0, 1.0),
+                            Pair(1, 2.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                        )
                     ),
                     listOf(
-                        entryOf(0, 4),
-                        entryOf(1, 3),
-                        entryOf(2, 2),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
-                        entryOf(2, 3),
+                        mapOf(
+                            Pair(0, 4.0),
+                            Pair(1, 3.0),
+                            Pair(2, 2.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                            Pair(2, 3.0),
+                        )
                     ),
                 ),
                 dates = listOf(
@@ -360,6 +366,7 @@ fun TransactionAverageItemPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 fun AmountSummaryPreview() {
+    val AMOUNT_VALUE = "1000000"
     ExpenseManagerTheme {
         AmountInfoWidget(
             expenseAmount = AMOUNT_VALUE,

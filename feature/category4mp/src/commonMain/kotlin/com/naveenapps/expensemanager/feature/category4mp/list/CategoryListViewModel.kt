@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
-class CategoryListViewModel (
+class CategoryListViewModel(
     getAllCategoryUseCase: GetAllCategoryUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
