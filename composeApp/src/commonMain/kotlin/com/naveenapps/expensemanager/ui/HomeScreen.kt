@@ -16,10 +16,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
+import com.naveenapps.expensemanager.core.repository.AppComponentProvider
 import com.naveenapps.expensemanager.feature.analysis.AnalysisScreen
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
+import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
+import com.naveenapps.expensemanager.feature.onboarding.into.IntroScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -27,7 +29,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomePageNavHostContainer(
-    backupRepository: ActivityComponentProvider,
+    backupRepository: AppComponentProvider,
     navHostController: NavHostController,
     landingScreen: ExpenseManagerScreens,
 ) {
@@ -40,7 +42,7 @@ fun HomePageNavHostContainer(
 }
 
 fun NavGraphBuilder.expenseManagerNavigation(
-    componentProvider: ActivityComponentProvider,
+    componentProvider: AppComponentProvider,
 ) {
     composable<ExpenseManagerScreens.IntroScreen> {
         IntroScreen(componentProvider.getShareRepository())

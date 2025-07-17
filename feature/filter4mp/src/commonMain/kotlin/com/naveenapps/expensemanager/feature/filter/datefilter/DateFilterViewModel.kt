@@ -175,15 +175,6 @@ class DateFilterViewModel (
             is DateFilterAction.SaveToDate -> {
                 setToDate(action.date)
             }
-
-            DateFilterAction.ShowToDateSelection -> {
-                _state.update {
-                    it.copy(
-                        showDateFilter = true,
-                        dateFilterType = DateFilterType.TO_DATE
-                    )
-                }
-            }
         }
     }
 }

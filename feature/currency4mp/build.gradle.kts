@@ -8,14 +8,13 @@ kotlin {
 
     // Target declarations
     androidLibrary {
-        namespace = "com.naveenapps.expensemanager.feature.onboarding"
+        namespace = "com.naveenapps.expensemanager.feature.currency"
     }
 
     // Source set declarations.
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":feature:account4mp"))
                 implementation(project(":feature:country4mp"))
 
                 implementation(compose.runtime)

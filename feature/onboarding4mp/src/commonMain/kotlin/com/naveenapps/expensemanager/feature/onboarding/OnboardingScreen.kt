@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.onboarding
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,10 +24,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.common.utils.GREEN_500
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
@@ -41,10 +38,21 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionDialog
 import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
+import expensemanager.feature.account4mp.generated.resources.accounts
+import expensemanager.feature.onboarding4mp.generated.resources.Res
+import expensemanager.feature.onboarding4mp.generated.resources.create_new
+import expensemanager.feature.onboarding4mp.generated.resources.currency
+import expensemanager.feature.onboarding4mp.generated.resources.proceed
+import expensemanager.feature.onboarding4mp.generated.resources.select_main_currency
+import expensemanager.feature.onboarding4mp.generated.resources.setup
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun OnboardingScreen(
-    viewModel: OnboardingViewModel = hiltViewModel()
+    viewModel: OnboardingViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -100,7 +108,7 @@ private fun OnboardingContentView(
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth(),
-                    text = stringResource(id = R.string.setup),
+                    text = stringResource(resource = Res.string.setup),
                     style = MaterialTheme.typography.titleLarge,
                 )
 
@@ -108,8 +116,8 @@ private fun OnboardingContentView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
-                    label = R.string.select_main_currency,
-                    value = state.currency.name.ifBlank { stringResource(id = R.string.currency) },
+                    label = Res.string.select_main_currency,
+                    value = state.currency.name.ifBlank { stringResource(resource = Res.string.currency) },
                     onClick = { onAction.invoke(OnboardingAction.ShowCurrencySelection) },
                     trailingIcon = Icons.AutoMirrored.Filled.ArrowRight
                 )
@@ -120,7 +128,7 @@ private fun OnboardingContentView(
                         .padding(16.dp),
                 ) {
                     Text(
-                        text = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
+                        text = stringResource(resource = expensemanager.feature.account4mp.generated.resources.Res.string.accounts),
                         style = MaterialTheme.typography.headlineSmall,
                     )
                 }
@@ -148,7 +156,7 @@ private fun OnboardingContentView(
                         onAction.invoke(OnboardingAction.AccountCreate(null))
                     }
                 ) {
-                    Text(text = stringResource(id = R.string.create_new).uppercase())
+                    Text(text = stringResource(resource = Res.string.create_new).uppercase())
                 }
             }
 
@@ -165,7 +173,7 @@ private fun OnboardingContentView(
                     },
                     shape = RoundedCornerShape(8.dp),
                 ) {
-                    Text(text = stringResource(id = R.string.proceed).uppercase())
+                    Text(text = stringResource(resource = Res.string.proceed).uppercase())
                 }
             }
         }
@@ -177,7 +185,7 @@ private fun CurrencyItem(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
-    @DrawableRes icon: Int? = null,
+    icon: DrawableResource? = null,
 ) {
     Row(modifier = modifier) {
         if (icon != null) {
@@ -185,7 +193,7 @@ private fun CurrencyItem(
                 modifier = Modifier
                     .wrapContentSize()
                     .padding(16.dp),
-                painter = painterResource(id = icon),
+                painter = painterResource(resource = icon),
                 contentDescription = null,
             )
         }
@@ -221,7 +229,7 @@ fun OnboardingScreenPreview() {
                             name = "account_balance",
                             backgroundColor = "#000000",
                         ),
-                        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+                        amountTextColor = GREEN_500,
                         amount = Amount(0.0, "$ 0.00"),
                     ),
                 ),

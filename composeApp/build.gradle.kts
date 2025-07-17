@@ -7,7 +7,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    id("naveenapps.plugin.multiplatform.core")
+    id("naveenapps.plugin.multiplatform.feature")
     id("naveenapps.plugin.composeResources.multiplatform")
     id("org.jetbrains.compose.hot-reload") version "1.0.0-alpha10"
 
@@ -92,19 +92,12 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":core:navigation4mp"))
-            implementation(project(":core:designsystem4mp"))
-            implementation(project(":core:notification4mp"))
-            implementation(project(":core:domain4mp"))
-            implementation(project(":core:data4mp"))
-            implementation(project(":core:repository4mp"))
-            implementation(project(":core:model4mp"))
-
             implementation(project(":feature:theme4mp"))
             implementation(project(":feature:dashboard4mp"))
             implementation(project(":feature:analysis4mp"))
             implementation(project(":feature:transaction4mp"))
             implementation(project(":feature:category4mp"))
+            implementation(project(":feature:onboarding4mp"))
 
             //think of moving this to Compose plugin, but could not access compose property
             implementation(compose.runtime)
@@ -114,6 +107,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(compose.desktop.currentOs)
 
             implementation(libs.androidx.lifecycle.viewModelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -122,6 +116,12 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.kotlinx.coroutines.android)
+        }
+        getByName("desktopMain") {
+            dependencies {
+                implementation(libs.kotlinx.coroutines.swing)
+            }
         }
     }
 }

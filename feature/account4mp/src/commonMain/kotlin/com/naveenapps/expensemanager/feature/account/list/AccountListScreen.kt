@@ -56,7 +56,6 @@ import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
-import expensemanager.core.designsystem4mp.generated.resources.ic_no_accounts
 import expensemanager.feature.account4mp.generated.resources.Res
 import expensemanager.feature.account4mp.generated.resources.accounts
 import expensemanager.feature.account4mp.generated.resources.available_limit
@@ -151,7 +150,7 @@ private fun AccountListScreenContent(
         if (state.accounts.isEmpty()) {
             EmptyItem(
                 emptyItemText = stringResource(resource = Res.string.no_account_available),
-                icon = expensemanager.core.designsystem4mp.generated.resources.Res.drawable.ic_no_accounts,
+                icon = "ic_no_accounts",
                 modifier = Modifier.fillMaxSize()
             )
         } else {

@@ -45,7 +45,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
-import expensemanager.core.designsystem4mp.generated.resources.ic_no_category
 import expensemanager.feature.category4mp.generated.resources.Res
 import expensemanager.feature.category4mp.generated.resources.category
 import expensemanager.feature.category4mp.generated.resources.expense
@@ -150,7 +149,7 @@ private fun CategoryListScreenContent(
                     .wrapContentSize()
                     .align(Alignment.Center),
                 emptyItemText = stringResource(resource = Res.string.no_category_available),
-                icon = expensemanager.core.designsystem4mp.generated.resources.Res.drawable.ic_no_category,
+                icon = "ic_no_category",
             )
         } else {
             LazyColumn {

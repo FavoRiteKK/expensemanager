@@ -22,6 +22,11 @@ kotlin {
                 implementation(project(":core:repository4mp"))
                 implementation(project(":core:datastore4mp"))
                 implementation(project(":core:database4mp"))
+
+                // DataStore library
+                implementation(libs.androidx.dataStore.core)
+                // The Preferences DataStore library
+                implementation(libs.androidx.dataStore.preference)
             }
         }
     }

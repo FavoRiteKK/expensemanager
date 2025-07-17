@@ -6,12 +6,12 @@ import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
+import com.naveenapps.expensemanager.core.repository.AppComponentProvider
 
 @Composable
 fun MainScreen(
     composeNavigator: AppComposeNavigator,
-    componentProvider: ActivityComponentProvider,
+    componentProvider: AppComponentProvider,
     isDarkTheme: Boolean,
     landingScreen: ExpenseManagerScreens,
 ) {

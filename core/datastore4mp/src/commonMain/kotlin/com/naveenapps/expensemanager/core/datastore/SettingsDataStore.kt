@@ -10,7 +10,7 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SettingsDataStore constructor(private val dataStore: DataStore<Preferences>) {
+class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
 
     suspend fun setTransactionType(transactionTypes: List<TransactionType>?) =
         dataStore.edit { preferences ->
@@ -44,7 +44,7 @@ class SettingsDataStore constructor(private val dataStore: DataStore<Preferences
     }
 
     fun isPreloaded(): Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[KEY_IS_PRELOAD] ?: false
+        preferences[KEY_IS_PRELOAD] == true
     }
 
     suspend fun setOnboardingCompleted(onboardingCompleted: Boolean) =
@@ -53,7 +53,7 @@ class SettingsDataStore constructor(private val dataStore: DataStore<Preferences
         }
 
     fun isOnboardingCompleted(): Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[KEY_IS_ON_BOARDING_COMPLETED] ?: false
+        preferences[KEY_IS_ON_BOARDING_COMPLETED] == true
     }
 
     suspend fun setDefaultAccount(defaultAccount: String?) = dataStore.edit { preferences ->

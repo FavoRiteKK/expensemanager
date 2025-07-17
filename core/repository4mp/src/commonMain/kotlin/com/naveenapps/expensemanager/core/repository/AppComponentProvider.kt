@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.repository
 
-interface ActivityComponentProvider {
+interface AppComponentProvider {
 
     fun getBackupRepository(): BackupRepository
 

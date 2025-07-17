@@ -29,8 +29,14 @@ import com.naveenapps.expensemanager.core.data.utils.convertFileToString
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
+import expensemanager.feature.onboarding4mp.generated.resources.Res
+import expensemanager.feature.onboarding4mp.generated.resources.get_started
+import expensemanager.feature.onboarding4mp.generated.resources.privacy_text
+import expensemanager.feature.onboarding4mp.generated.resources.welcome_message_description
+import expensemanager.feature.onboarding4mp.generated.resources.welcome_message_title
 import kottieComposition.KottieCompositionSpec
 import kottieComposition.rememberKottieComposition
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -71,20 +77,24 @@ private fun ScaffoldContent(
                     val composition = rememberKottieComposition(
                         spec = KottieCompositionSpec.File(jsonString = animation)
                     )
-                    kottieComposition.animateKottieCompositionAsState()
-                    KottieAnimation(
+                    val animationState by kottieComposition.animateKottieCompositionAsState(
                         composition = composition,
                         reverseOnRepeat = true,
+                    )
+
+                    KottieAnimation(
+                        composition = animationState.composition,
+                        progress = { animationState.progress },
                         modifier = Modifier
                             .fillMaxSize()
-                            .align(Alignment.Center),
+                            .align(Alignment.Center)
                     )
                 }
                 Text(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth(),
-                    text = stringResource(id = R.string.welcome_message_title),
+                    text = stringResource(resource = Res.string.welcome_message_title),
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center
                 )
@@ -92,7 +102,7 @@ private fun ScaffoldContent(
                     modifier = Modifier
                         .padding(start = 16.dp, top = 8.dp, end = 16.dp)
                         .fillMaxWidth(),
-                    text = stringResource(id = R.string.welcome_message_description),
+                    text = stringResource(resource = Res.string.welcome_message_description),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
                 )
@@ -107,7 +117,7 @@ private fun ScaffoldContent(
                 },
                 shape = RoundedCornerShape(8.dp),
             ) {
-                Text(text = stringResource(id = R.string.get_started).uppercase())
+                Text(text = stringResource(resource = Res.string.get_started).uppercase())
             }
 
             Text(
@@ -115,7 +125,7 @@ private fun ScaffoldContent(
                     .padding(start = 16.dp, end = 16.dp, bottom = 32.dp)
                     .fillMaxWidth(),
                 text = buildAnnotatedString {
-                    val text = stringResource(id = R.string.privacy_text)
+                    val text = stringResource(resource = Res.string.privacy_text)
                     append(text)
                     addLink(
                         url = LinkAnnotation.Url(
