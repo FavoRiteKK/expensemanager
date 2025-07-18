@@ -5,7 +5,7 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
 import com.naveenapps.expensemanager.core.data.deleteDataStoreFile
 import com.naveenapps.expensemanager.core.data.testDataStoreModule
-import com.naveenapps.expensemanager.core.datastore.di.dataStoreModule
+import com.naveenapps.expensemanager.core.datastore.di.dataStore
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.Resource
@@ -33,7 +33,7 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest(), KoinTest {
     private val testCoroutineScope = TestScope(testCoroutineDispatcher)
 
     // my modules which override android context and scope in testDataStoreModule
-    private val myModules = dataStoreModule + //repository requires this
+    private val myModules = dataStore + //repository requires this
             testDataStoreModule(scope = testCoroutineScope) +
             module {
                 single<AppCoroutineDispatchers> {   //repository requires this

@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library)
-    id("naveenapps.plugin.multiplatform.core")
+    id("naveenapps.plugin.multiplatform.feature")
     id("naveenapps.plugin.composeResources.multiplatform")
 }
 
@@ -15,12 +15,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":core:common4mp"))
-                implementation(project(":core:designsystem4mp"))
-                implementation(project(":core:domain4mp"))
-                implementation(project(":core:model4mp"))
-                implementation(project(":core:navigation4mp"))
-
+                implementation(project(":feature:account4mp"))
+                implementation(project(":feature:category4mp"))
                 implementation(project(":feature:filter4mp"))
 
                 implementation(compose.runtime)

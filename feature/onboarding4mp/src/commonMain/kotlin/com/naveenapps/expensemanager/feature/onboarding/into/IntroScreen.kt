@@ -25,7 +25,6 @@ import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.data.utils.convertFileToString
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
@@ -38,6 +37,7 @@ import kottieComposition.KottieCompositionSpec
 import kottieComposition.rememberKottieComposition
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import utils.KottieConstants
 
 @Composable
 fun IntroScreen(
@@ -71,7 +71,7 @@ private fun ScaffoldContent(
                     var animation by remember { mutableStateOf("") }
 
                     LaunchedEffect(Unit) {
-                        animation = convertFileToString("expense_1")
+                        animation = Res.readBytes("files/expense_1.json").decodeToString()
                     }
 
                     val composition = rememberKottieComposition(
@@ -80,6 +80,7 @@ private fun ScaffoldContent(
                     val animationState by kottieComposition.animateKottieCompositionAsState(
                         composition = composition,
                         reverseOnRepeat = true,
+                        iterations = KottieConstants.IterateForever
                     )
 
                     KottieAnimation(

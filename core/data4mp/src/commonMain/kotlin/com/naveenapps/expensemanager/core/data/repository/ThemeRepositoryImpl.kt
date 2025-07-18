@@ -20,7 +20,7 @@ val defaultTheme = Theme(
     Res.string.system_default,
 )
 
-class ThemeRepositoryImpl(
+internal class ThemeRepositoryImpl(
     private val dataStore: ThemeDataStore,
     private val versionCheckerRepository: VersionCheckerRepository,
     private val dispatchers: AppCoroutineDispatchers,

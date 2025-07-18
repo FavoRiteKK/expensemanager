@@ -18,4 +18,5 @@ plugins {
     alias(libs.plugins.play.publish) apply false
     alias(libs.plugins.androidx.room) apply false
     alias(libs.plugins.mockmp) apply false
+    id("org.jetbrains.compose.hot-reload") version "1.0.0-beta02" apply false
 }

@@ -4,7 +4,7 @@ import app.cash.turbine.test
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.deleteDataStoreFile
 import com.naveenapps.expensemanager.core.data.testDataStoreModule
-import com.naveenapps.expensemanager.core.datastore.di.dataStoreModule
+import com.naveenapps.expensemanager.core.datastore.di.dataStore
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
@@ -28,7 +28,7 @@ import kotlin.test.Test
 class SettingsRepositoryImplTest : BaseCoroutineTest(), KoinTest {
     private val testCoroutineScope = TestScope(testCoroutineDispatcher)
     // my modules which override android context and scope in testDataStoreModule
-    private val myModules = dataStoreModule + //repository requires this
+    private val myModules = dataStore + //repository requires this
             testDataStoreModule(scope = testCoroutineScope) +
             module {
                 single<AppCoroutineDispatchers> {   //repository requires this

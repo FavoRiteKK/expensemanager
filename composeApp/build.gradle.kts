@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.android.application)
     id("naveenapps.plugin.multiplatform.feature")
     id("naveenapps.plugin.composeResources.multiplatform")
-    id("org.jetbrains.compose.hot-reload") version "1.0.0-alpha10"
+    id("org.jetbrains.compose.hot-reload") version "1.0.0-beta02"
 
     id("com.github.triplet.play")
     id("com.google.android.gms.oss-licenses-plugin")
@@ -94,10 +94,13 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":feature:theme4mp"))
             implementation(project(":feature:dashboard4mp"))
+            implementation(project(":feature:account4mp"))
             implementation(project(":feature:analysis4mp"))
             implementation(project(":feature:transaction4mp"))
             implementation(project(":feature:category4mp"))
             implementation(project(":feature:onboarding4mp"))
+            implementation(project(":feature:country4mp"))
+            implementation(project(":feature:filter4mp"))
 
             //think of moving this to Compose plugin, but could not access compose property
             implementation(compose.runtime)
@@ -107,20 +110,20 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(compose.desktop.currentOs)
+            implementation(compose.preview) //it seems only android main source set in Android studio has preview capability
 
             implementation(libs.androidx.lifecycle.viewModelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.navigation.compose)
         }
         androidMain.dependencies {
-            implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.kotlinx.coroutines.android)
         }
         getByName("desktopMain") {
             dependencies {
                 implementation(libs.kotlinx.coroutines.swing)
+                implementation(compose.desktop.currentOs)
             }
         }
     }

@@ -2,7 +2,8 @@ package com.naveenapps.expensemanager.core.data.utils
 
 import expensemanager.core.data4mp.generated.resources.Res
 
-suspend fun convertFileToString(fileName: String): String {
+internal suspend fun convertFileToString(fileName: String): String {
+    //this api is package scoped, eg: <module>.generated.resources
     return Res.readBytes("files/$fileName").decodeToString()
 }
 

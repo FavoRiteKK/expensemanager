@@ -76,3 +76,4 @@ also encouraged.
 * **notificationPermissionLauncher** not implemented
 * **BackHandler** not implemented
 * calendar.getActualMaximum(Calendar.DAY_OF_WEEK)
+* getAverageDataUseCase.invoke()

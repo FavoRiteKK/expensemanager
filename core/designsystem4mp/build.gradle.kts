@@ -33,6 +33,11 @@ kotlin {
                 implementation(libs.lifecycle.runtimeCompose)
             }
         }
+        getByName("desktopMain") {
+            dependencies {
+                implementation("org.slf4j:slf4j-simple:2.0.3")
+            }
+        }
     }
 }
 

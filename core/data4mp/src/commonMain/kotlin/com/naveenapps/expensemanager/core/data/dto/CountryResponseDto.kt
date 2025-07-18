@@ -9,6 +9,7 @@ data class CountriesResponseDto(
     var counties: List<CountryResponseDto>,
 )
 
+@Serializable
 data class CountryResponseDto(
     @SerialName("name")
     var name: String? = null,

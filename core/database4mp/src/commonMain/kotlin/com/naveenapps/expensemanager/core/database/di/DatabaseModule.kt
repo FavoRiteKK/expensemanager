@@ -24,7 +24,7 @@ private val MIGRATION_2_3 = object : Migration(2, 3) {
     }
 }
 
-val databaseModule = databaseBuilderModule() + module {
+val database = databaseBuilderModule() + module {
     single<ExpenseManagerDatabase> {
         val appDispatchers: AppCoroutineDispatchers = get()
 

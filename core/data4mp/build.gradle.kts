@@ -4,6 +4,7 @@ plugins {
     id("naveenapps.plugin.composeResources.multiplatform")
     id("naveenapps.plugin.room.multiplatform")
     id("naveenapps.plugin.test.multiplatform")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -23,6 +24,7 @@ kotlin {
                 implementation(project(":core:datastore4mp"))
                 implementation(project(":core:database4mp"))
 
+                implementation(libs.kotlinx.serialization.json)
                 // DataStore library
                 implementation(libs.androidx.dataStore.core)
                 // The Preferences DataStore library

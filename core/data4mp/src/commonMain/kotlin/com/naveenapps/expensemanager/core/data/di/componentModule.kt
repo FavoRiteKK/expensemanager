@@ -1,0 +1,27 @@
+package com.naveenapps.expensemanager.core.data.di
+
+import com.naveenapps.expensemanager.core.data.repository.BackupRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.FirebaseSettingsRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.ShareRepositoryImpl
+import com.naveenapps.expensemanager.core.repository.AppComponentProvider
+import com.naveenapps.expensemanager.core.repository.BackupRepository
+import com.naveenapps.expensemanager.core.repository.FirebaseSettingsRepository
+import com.naveenapps.expensemanager.core.repository.ShareRepository
+import org.koin.dsl.module
+
+val component = module {
+    factory<BackupRepository> { BackupRepositoryImpl() }
+    factory<FirebaseSettingsRepository> { FirebaseSettingsRepositoryImpl() }
+    factory<ShareRepository> { ShareRepositoryImpl(get()) }
+    factory<AppComponentProvider> {
+        object : AppComponentProvider {
+            override fun getBackupRepository(): BackupRepository {
+                return get<BackupRepository>()
+            }
+
+            override fun getShareRepository(): ShareRepository {
+                return get<ShareRepository>()
+            }
+        }
+    }
+}

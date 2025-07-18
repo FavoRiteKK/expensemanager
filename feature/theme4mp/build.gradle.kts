@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library)
-    id("naveenapps.plugin.multiplatform.core")
+    id("naveenapps.plugin.multiplatform.feature")
     id("naveenapps.plugin.composeResources.multiplatform")
 }
 

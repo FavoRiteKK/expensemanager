@@ -13,7 +13,7 @@ internal const val DATA_STORE_NAME = "expense_manager_app_data_store.preferences
 
 internal expect fun appDataStoreModule(): Module
 
-val dataStoreModule = appDataStoreModule() + module {
+val dataStore = appDataStoreModule() + module {
     singleOf(::ThemeDataStore)
     singleOf(::SettingsDataStore)
     singleOf(::CurrencyDataStore)

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library)
     id("naveenapps.plugin.multiplatform.core")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -16,6 +17,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.androidx.navigation.compose)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
     }

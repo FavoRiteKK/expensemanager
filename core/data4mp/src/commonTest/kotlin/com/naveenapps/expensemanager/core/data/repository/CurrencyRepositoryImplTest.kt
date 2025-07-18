@@ -4,7 +4,7 @@ import app.cash.turbine.test
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.deleteDataStoreFile
 import com.naveenapps.expensemanager.core.data.testDataStoreModule
-import com.naveenapps.expensemanager.core.datastore.di.dataStoreModule
+import com.naveenapps.expensemanager.core.datastore.di.dataStore
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
@@ -39,7 +39,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest(), KoinTest {
     private val testScope = TestScope(testCoroutineDispatcher)
 
     // my modules which override android context and scope in testDataStoreModule
-    private val myModules = dataStoreModule + //repository requires this
+    private val myModules = dataStore + //repository requires this
             testDataStoreModule(scope = testScope) +
             module {
                 single<AppCoroutineDispatchers> {   //repository requires this

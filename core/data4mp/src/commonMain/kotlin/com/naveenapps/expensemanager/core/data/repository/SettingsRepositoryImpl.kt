@@ -8,7 +8,7 @@ import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-class SettingsRepositoryImpl(
+internal class SettingsRepositoryImpl(
     private val dataStore: SettingsDataStore,
     private val dispatcher: AppCoroutineDispatchers,
 ) : SettingsRepository {

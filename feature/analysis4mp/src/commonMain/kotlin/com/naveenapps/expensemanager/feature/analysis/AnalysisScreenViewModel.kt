@@ -75,10 +75,12 @@ class AnalysisScreenViewModel(
                 },
             )
         }.launchIn(viewModelScope)
+        /*
 
-        getAverageDataUseCase.invoke().onEach { response ->
-            _averageData.value = response
-        }.launchIn(viewModelScope)
+                getAverageDataUseCase.invoke().onEach { response ->
+                    _averageData.value = response
+                }.launchIn(viewModelScope)
+        */
 
         getAmountStateUseCase.invoke().onEach { response ->
             _expenseFlowState.value = response

@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.koin.dsl.module
 
-val dispatcherModule = module {
+val dispatcher = module {
     single {
         AppCoroutineDispatchers(
             Dispatchers.Main,

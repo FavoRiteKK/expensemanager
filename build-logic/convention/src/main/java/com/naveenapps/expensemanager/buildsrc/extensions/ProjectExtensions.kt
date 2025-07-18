@@ -98,6 +98,7 @@ fun Project.configureFeatureMultiplatformExtension() {
                     implementation(project(":core:common4mp"))
                     implementation(project(":core:data4mp"))
                     implementation(project(":core:datastore4mp"))
+                    implementation(project(":core:database4mp"))
                     implementation(project(":core:designsystem4mp"))
                     implementation(project(":core:domain4mp"))
                     implementation(project(":core:model4mp"))
