@@ -1,0 +1,390 @@
+package com.naveenapps.expensemanager.feature.budget.list
+
+import androidx.annotation.ColorInt
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.common.utils.ORANGE_500
+import com.naveenapps.expensemanager.core.common.utils.toPercentString
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
+import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
+import com.naveenapps.expensemanager.core.model.Amount
+import expensemanager.feature.budget4mp.generated.resources.Res
+import expensemanager.feature.budget4mp.generated.resources.budgets
+import expensemanager.feature.budget4mp.generated.resources.no_budget_available
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+
+@Composable
+fun BudgetListScreen(
+    viewModel: BudgetListViewModel = koinViewModel(),
+) {
+    val state by viewModel.state.collectAsState()
+
+    BudgetListScreenContent(
+        state = state,
+        onAction = viewModel::processAction,
+    )
+}
+
+@Composable
+private fun BudgetListScreenContent(
+    state: BudgetState,
+    onAction: (BudgetListAction) -> Unit,
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+        topBar = {
+            TopNavigationBar(
+                onClick = {
+                    onAction.invoke(BudgetListAction.ClosePage)
+                },
+                title = stringResource(Res.string.budgets),
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    onAction.invoke(BudgetListAction.OpenBudgetCreate)
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "",
+                )
+            }
+        },
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding) // This ensures content doesn't overlap with snackbar
+                .fillMaxSize()
+        ) {
+            BudgetListScreenContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                state = state,
+                onItemClick = {
+                    onAction.invoke(BudgetListAction.EditBudget(it.id))
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun BudgetListScreenContent(
+    state: BudgetState,
+    onItemClick: ((BudgetUiModel) -> Unit),
+    modifier: Modifier = Modifier,
+) {
+    val scrollState = rememberLazyListState()
+
+    if (state.isLoading) {
+        LoadingItem(modifier)
+        return
+    }
+
+    if (state.budgets.isNotEmpty()) {
+        LazyColumn(state = scrollState) {
+            items(
+                state.budgets,
+                key = { it.id }
+            ) { budget ->
+                BudgetItem(
+                    name = budget.name,
+                    icon = budget.icon,
+                    iconBackgroundColor = budget.iconBackgroundColor,
+                    progressBarColor = budget.progressBarColor,
+                    amount = budget.amount,
+                    transactionAmount = budget.transactionAmount,
+                    percentage = budget.percent,
+                    modifier = Modifier
+                        .clickable {
+                            onItemClick.invoke(budget)
+                        }
+                        .then(ItemSpecModifier),
+                )
+            }
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(36.dp),
+                )
+            }
+        }
+    } else {
+        EmptyItem(
+            emptyItemText = stringResource(resource = Res.string.no_budget_available),
+            icon = "ic_no_budgets",
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Composable
+fun BudgetItem(
+    name: String,
+    icon: String,
+    iconBackgroundColor: String,
+    @ColorInt progressBarColor: Int,
+    amount: Amount?,
+    transactionAmount: Amount?,
+    modifier: Modifier = Modifier,
+    percentage: Float = 0.0f,
+) {
+    Row(modifier = modifier) {
+        IconAndBackgroundView(
+            modifier = Modifier
+                .align(Alignment.CenterVertically),
+            icon = icon,
+            iconBackgroundColor = iconBackgroundColor,
+            name = name,
+        )
+        Column(
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(start = 16.dp),
+        ) {
+            Row {
+                Text(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
+                    text = name,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                if (amount != null) {
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .align(Alignment.CenterVertically),
+                        text = amount.amountString ?: "",
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+            }
+            Row(modifier = Modifier.padding(top = 4.dp)) {
+                LinearProgressIndicator(
+                    progress = { percentage / 100 },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(8.dp)
+                        .align(Alignment.CenterVertically),
+                    color = Color(color = progressBarColor),
+                    strokeCap = StrokeCap.Round,
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .align(Alignment.CenterVertically),
+                    text = percentage.toPercentString(),
+                    style = MaterialTheme.typography.labelSmall,
+                )
+            }
+
+            Text(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = "${transactionAmount?.amountString} of ${amount?.amountString}",
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
+    }
+}
+
+@Composable
+fun DashBoardBudgetItem(
+    name: String,
+    @ColorInt progressBarColor: Int,
+    amount: String?,
+    transactionAmount: String?,
+    modifier: Modifier = Modifier,
+    percentage: Float = 0.0f,
+    backgroundColor: Color,
+) {
+    Surface(
+        modifier = modifier,
+        color = backgroundColor,
+        shape = RoundedCornerShape(8.dp),
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .width(260.dp),
+        ) {
+            Row {
+                Text(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
+                    text = name,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.titleMedium,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(start = 4.dp),
+                    text = transactionAmount ?: "",
+                    style = MaterialTheme.typography.headlineSmall,
+                )
+            }
+            Row(modifier = Modifier.padding(top = 4.dp)) {
+                LinearProgressIndicator(
+                    progress = { percentage / 100 },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(8.dp)
+                        .align(Alignment.CenterVertically),
+                    color = Color(color = progressBarColor),
+                    strokeCap = StrokeCap.Round,
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .align(Alignment.CenterVertically),
+                    text = percentage.toPercentString(),
+                    style = MaterialTheme.typography.labelSmall,
+                )
+            }
+
+            Text(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = "$transactionAmount of $amount",
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
+    }
+}
+
+fun getRandomBudgetUiModel(size: Int): List<BudgetUiModel> {
+    return buildList {
+        repeat(size) {
+            add(getBudgetUiModel(it.toString()))
+        }
+    }
+}
+
+private fun getBudgetUiModel(id: String) = BudgetUiModel(
+    id = id,
+    name = "Cash",
+    icon = "account_balance",
+    iconBackgroundColor = "#FF000000",
+    amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+    transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+    progressBarColor = ORANGE_500,
+    percent = 0.9f,
+)
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun BudgetItemPreview() {
+    ExpenseManagerTheme {
+        BudgetItem(
+            name = "Utilities",
+            icon = "account_balance",
+            iconBackgroundColor = "#FF000000",
+            amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+            transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+            modifier = ItemSpecModifier,
+            progressBarColor = ORANGE_500,
+            percentage = 78.8f,
+        )
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun DashboardBudgetItemPreview() {
+    ExpenseManagerTheme {
+        DashBoardBudgetItem(
+            name = "This Month Budget",
+            progressBarColor = ORANGE_500,
+            amount = "$100.00",
+            transactionAmount = "$78.00",
+            modifier = ItemSpecModifier,
+            percentage = 78.8f,
+            backgroundColor = getIncomeBGColor(),
+        )
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun BudgetListItemLoadingStatePreview() {
+    ExpenseManagerTheme {
+        BudgetListScreenContent(
+            state = BudgetState(isLoading = true, budgets = emptyList()),
+            onAction = {},
+        )
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun BudgetListItemEmptyStatePreview() {
+    ExpenseManagerTheme {
+        BudgetListScreenContent(
+            state = BudgetState(isLoading = false, budgets = emptyList()),
+            onAction = {},
+        )
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun BudgetListItemSuccessStatePreview() {
+    ExpenseManagerTheme {
+        BudgetListScreenContent(
+            state = BudgetState(isLoading = false, budgets = getRandomBudgetUiModel(5)),
+            onAction = {},
+        )
+    }
+}

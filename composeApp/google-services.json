@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1090957406783",
+    "project_id": "fin-flow-c9587",
+    "storage_bucket": "fin-flow-c9587.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1090957406783:android:22dc0265140ce1fbc7fe8a",
+        "android_client_info": {
+          "package_name": "com.lws.naveenapps.expensemanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA60_jXDzgc21n5foHKsC5sJdWp8ti-RCo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

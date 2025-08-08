@@ -21,48 +21,38 @@ tasks.withType<KotlinCompile>().configureEach {
 
 dependencies {
     compileOnly(libs.android.gradlePlugin)
-    compileOnly(libs.firebase.crashlytics.gradlePlugin)
-    compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.mockmp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
 }
 
 gradlePlugin {
     plugins {
-        create("AndroidLibraryBasicConfigPlugin") {
-            id = "naveenapps.plugin.android.library"
+        create("MultiplatformCoreModulePlugin") {
+            id = "naveenapps.plugin.multiplatform.core"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidLibraryBasicConfigPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.MultiplatformCoreModulePlugin"
         }
-        create("AndroidAppBasicConfigPlugin") {
-            id = "naveenapps.plugin.android.app"
+        create("MultiplatformFeatureModulePlugin") {
+            id = "naveenapps.plugin.multiplatform.feature"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidAppBasicConfigPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.MultiplatformFeatureModulePlugin"
         }
-        create("AndroidFeatureModuleConfigPlugin") {
-            id = "naveenapps.plugin.android.feature"
+        create("ComposeResourceMultiplatformPlugin") {
+            id = "naveenapps.plugin.composeResources.multiplatform"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidFeatureModuleConfigPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.ComposeResourceMultiplatformPlugin"
         }
-        create("KotlinBasicConfigPlugin") {
-            id = "naveenapps.plugin.kotlin.basic"
+        create("RoomMultiplatformPlugin") {
+            id = "naveenapps.plugin.room.multiplatform"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.KotlinBasicConfigPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.RoomMultiplatformPlugin"
         }
-        create("AndroidHiltPlugin") {
-            id = "naveenapps.plugin.hilt"
+        create("TestMultiplatformPlugin") {
+            id = "naveenapps.plugin.test.multiplatform"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidHiltPlugin"
-        }
-        create("AndroidComposeConfigPlugin") {
-            id = "naveenapps.plugin.compose"
-            implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidComposeConfigPlugin"
-        }
-        create("AndroidRoomPlugin") {
-            id = "naveenapps.plugin.room"
-            implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidRoomPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.TestMultiplatformPlugin"
         }
     }
 }

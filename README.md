@@ -11,6 +11,12 @@ Expense Manager
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 [![Build](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml/badge.svg)](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml)
 
+## New in Forked
+Convert original repository to a Compose Multiplatform project. Intend to target Android, Desktop
+and iOs platform.
+
+## Original Repository
+
 This is the repository for the [Expense Manager](https://expensemanager.naveenapps.com/) app. It is
 a **work in progress** 🚧.
 
@@ -61,3 +67,14 @@ also encouraged.
 
 **Expense Manager** is distributed under the terms of the Apache License (Version 2.0). See the
 [license](LICENSE) for more information.
+
+## Work In Progress
+
+* In KMP, using api() makes modules buildable, but highlight syntax and autocompletion in Android
+  Studio is wrong (In testing4mp module, it seems Ok).
+* **launchAppUpdateCheck** not implemented
+* **notificationPermissionLauncher** not implemented
+* **BackHandler** not implemented
+* calendar.getActualMaximum(Calendar.DAY_OF_WEEK)
+* getAverageDataUseCase.invoke()
+* Remove AverageData.perWeek

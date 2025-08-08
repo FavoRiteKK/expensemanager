@@ -97,3 +97,10 @@ lint/tmp/
 #Keys
 keys
 
+/.idea/AndroidProjectSystem.xml
+/.idea/artifacts/
+/.idea/deploymentTargetSelector.xml
+/.kotlin/metadata/
+/.idea/runConfigurations.xml
+/.idea/kotlinc.xml
+/.kotlin/sessions/

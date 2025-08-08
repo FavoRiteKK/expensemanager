@@ -1,113 +1,117 @@
 package com.naveenapps.expensemanager.buildsrc.extensions
 
+import com.android.build.api.dsl.androidLibrary
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.register
-import org.gradle.kotlin.dsl.withType
-import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
-import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
-import org.gradle.testing.jacoco.tasks.JacocoReport
+import org.gradle.kotlin.dsl.invoke
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 val Project.libs
     get(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-private val coverageExclusions = listOf(
-    "**/databinding/*Binding.*",
-    "**/*DataBinding*",
-    "**/R.class",
-    "**/R$*.class",
-    "**/BuildConfig.*",
-    "**/Manifest*.*",
-    "**/*Test*.*",
-    "android/**/*.*",
-    // butterKnife
-    "**/*\$ViewInjector*.*",
-    "**/*\$ViewBinder*.*",
-    "**/Lambda$*.class",
-    "**/Lambda.class",
-    "**/*Lambda.class",
-    "**/*Lambda*.class",
-    "**/*_MembersInjector.class",
-    "**/Dagger*Component*.*",
-    "**/*Module_*Factory.class",
-    "**/di/module/*",
-    "**/*_Factory*.*",
-    "**/*Module*.*",
-    "**/*Dagger*.*",
-    "**/*Hilt*.*",
-    // kotlin
-    "**/*MapperImpl*.*",
-    "**/*\$ViewInjector*.*",
-    "**/*\$ViewBinder*.*",
-    "**/BuildConfig.*",
-    "**/*Component*.*",
-    "**/*BR*.*",
-    "**/Manifest*.*",
-    "**/*\$Lambda$*.*",
-    "**/*Companion*.*",
-    "**/*Module*.*",
-    "**/*Dagger*.*",
-    "**/*Hilt*.*",
-    "**/*hilt*",
-    "**/*MembersInjector*.*",
-    "**/*_MembersInjector.class",
-    "**/*_Factory*.*",
-    "**/*_Provide*Factory*.*",
-    "**/*Extensions*.*",
-    "**/*_Impl*.*",
-    "**/*.new*",
-)
+@Suppress("UnstableApiUsage")
+fun Project.configureBasicMultiplatformExtension() {
+    extensions.configure<KotlinMultiplatformExtension> {
+        val androidKmpPlugin =
+            libs.findPlugin("android.kotlin.multiplatform.library").get().get()
+        val androidAppKmp =
+            libs.findPlugin("android.application").get().get()
 
-internal fun Project.configureJacoco() {
+        if (pluginManager.hasPlugin(androidKmpPlugin.pluginId)) {
+            androidLibrary {
+                compileSdk = COMPILE_SDK
+                minSdk = MIN_SDK
 
-    configure<JacocoPluginExtension> {
-        toolVersion = libs.findVersion("jacoco").get().toString()
-    }
+                experimentalProperties["android.experimental.kmp.enableAndroidResources"] =
+                    true
+            }
+        } else if (pluginManager.hasPlugin(androidAppKmp.pluginId)) {
+            androidTarget()
 
-    tasks.register<JacocoReport>("debugCoverage") {
-
-        dependsOn("testDebugUnitTest")
-
-        group = "Reporting"
-
-        description = "Generate Jacoco coverage reports for the debug build."
-
-        reports {
-            xml.required.set(true)
-            html.required.set(true)
+//                    listOf(
+//                        iosX64(),
+//                        iosArm64(),
+//                        iosSimulatorArm64()
+//                    ).forEach { iosTarget ->
+//                        iosTarget.binaries.framework {
+//                            baseName = "ExpenseManagerComposeApp"
+//                            isStatic = true
+//                        }
+//                    }
         }
 
-        val jClasses = "${buildDir}/intermediates/javac/debug/classes"
-        val kClasses = "${buildDir}/tmp/kotlin-classes/debug"
-        val javaClasses = fileTree(jClasses) { exclude(coverageExclusions) }
-        val kotlinClasses = fileTree(kClasses) { exclude(coverageExclusions) }
+        // Jvm Desktop
+        jvm("desktop")
 
-        classDirectories.setFrom(files(javaClasses, kotlinClasses))
+        sourceSets.invoke {
+            commonMain {
+                dependencies {
+                    implementation(
+                        libs.findLibrary("kotlin.stdlib").get()
+                    )
+                    implementation(
+                        libs.findLibrary("kotlinx.coroutines.core").get()
+                    )
+                    implementation(
+                        libs.findLibrary("kotlinx.serialization.json").get()
+                    )
 
-        val sourceDirs = listOf(
-            "${projectDir}/src/main/java",
-            "${projectDir}/src/main/kotlin",
-            "${projectDir}/src/debug/java",
-            "${projectDir}/src/debug/kotlin",
-        )
+                    implementation(
+                        libs.findLibrary("kotlinx.datetime").get()
+                    )
 
-        sourceDirectories.setFrom(files(sourceDirs))
+                    implementation(
+                        libs.findLibrary("kotlin.logging").get()
+                    )
 
-        executionData.setFrom(
-            files(
-                listOf("${buildDir}/jacoco/testDebugUnitTest.exec"),
-            ),
-        )
+                    implementation(
+                        project.dependencies.platform(
+                            libs.findLibrary("koin.bom").get()
+                        )
+                    )
+                    implementation(
+                        libs.findLibrary("koin.core").get()
+                    )
+                    implementation(
+                        libs.findLibrary("koin.compose").get()
+                    )
+                    implementation(
+                        libs.findLibrary("koin.composeViewModel").get()
+                    )
+//                            implementation(
+//                                libs.findLibrary("koin.composeViewModelNavigation").get()
+//                            )
+                    implementation("de.drick.compose:hotpreview:0.2.0")
+                }
+            }
+        }
     }
+}
 
-    tasks.withType<Test>().configureEach {
-        configure<JacocoTaskExtension> {
-            isIncludeNoLocationClasses = true
-            excludes = listOf("jdk.internal.*")
+fun Project.configureFeatureMultiplatformExtension() {
+    extensions.configure<KotlinMultiplatformExtension> {
+        sourceSets.invoke {
+            commonMain {
+                dependencies {
+                    implementation(project(":core:common4mp"))
+                    implementation(project(":core:data4mp"))
+                    implementation(project(":core:datastore4mp"))
+                    implementation(project(":core:database4mp"))
+                    implementation(project(":core:designsystem4mp"))
+                    implementation(project(":core:domain4mp"))
+                    implementation(project(":core:model4mp"))
+                    implementation(project(":core:navigation4mp"))
+                    implementation(project(":core:notification4mp"))
+                    implementation(project(":core:repository4mp"))
+
+                    implementation(
+                        libs.findLibrary("alert.kmp").get()
+                    )
+                }
+            }
         }
     }
 }
