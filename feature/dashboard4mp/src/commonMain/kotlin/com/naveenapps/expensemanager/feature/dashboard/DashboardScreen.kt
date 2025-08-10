@@ -143,7 +143,7 @@ private fun DashboardScreenContent(
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 title = stringResource(resource = expensemanager.feature.account4mp.generated.resources.Res.string.accounts),
-                onViewAllClick = {
+                onActionClick = {
                     onAction.invoke(DashboardAction.OpenAccountList)
                 },
             )
@@ -199,7 +199,7 @@ private fun DashboardScreenContent(
                     .fillMaxWidth()
                     .padding(16.dp),
                 title = stringResource(resource = expensemanager.feature.budget4mp.generated.resources.Res.string.budgets),
-                onViewAllClick = {
+                onActionClick = {
                     onAction.invoke(DashboardAction.OpenBudgetList)
                 },
             )
@@ -246,7 +246,7 @@ private fun DashboardScreenContent(
                     .fillMaxWidth()
                     .padding(16.dp),
                 title = stringResource(resource = Res.string.transaction),
-                onViewAllClick = {
+                onActionClick = {
                     onAction.invoke(DashboardAction.OpenTransactionList)
                 },
             )

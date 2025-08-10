@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.feature.settings.advanced
 
+import Notify
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,6 +40,7 @@ import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMo
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
@@ -50,7 +52,9 @@ import expensemanager.feature.settings4mp.generated.resources.accounts_re_order
 import expensemanager.feature.settings4mp.generated.resources.accounts_re_order_message
 import expensemanager.feature.settings4mp.generated.resources.advanced
 import expensemanager.feature.settings4mp.generated.resources.backup
+import expensemanager.feature.settings4mp.generated.resources.backup_fail
 import expensemanager.feature.settings4mp.generated.resources.backup_message
+import expensemanager.feature.settings4mp.generated.resources.backup_success
 import expensemanager.feature.settings4mp.generated.resources.default_account
 import expensemanager.feature.settings4mp.generated.resources.default_expense_category
 import expensemanager.feature.settings4mp.generated.resources.default_income_category
@@ -60,17 +64,48 @@ import expensemanager.feature.settings4mp.generated.resources.filter_message
 import expensemanager.feature.settings4mp.generated.resources.others
 import expensemanager.feature.settings4mp.generated.resources.restore
 import expensemanager.feature.settings4mp.generated.resources.restore_and_backup
+import expensemanager.feature.settings4mp.generated.resources.restore_fail
 import expensemanager.feature.settings4mp.generated.resources.restore_message
+import expensemanager.feature.settings4mp.generated.resources.restore_success
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+private val logger = KotlinLogging.logger {}
+
 @Composable
 fun AdvancedSettingsScreen(
     viewModel: AdvancedSettingsViewModel = koinViewModel(),
 ) {
+    val restoreSuccessMsg = stringResource(Res.string.restore_success)
+    val restoreFailMsg = stringResource(Res.string.restore_fail)
+    val backupSuccessMsg = stringResource(Res.string.backup_success)
+    val backupFailMsg = stringResource(Res.string.backup_fail)
+
+    ObserveAsEvents(viewModel.event) {
+        when (it) {
+            AdvancedSettingEvent.RestoreSuccess -> {
+                Notify(message = restoreSuccessMsg)
+            }
+
+            AdvancedSettingEvent.RestoreFail -> {
+                Notify(message = restoreFailMsg)
+            }
+
+            AdvancedSettingEvent.BackupFail -> {
+                Notify(message = backupFailMsg)
+            }
+
+            AdvancedSettingEvent.BackupSuccess -> {
+                Notify(message = backupSuccessMsg)
+            }
+
+        }
+    }
+
     val state by viewModel.state.collectAsState()
 
     AdvancedSettingsScaffoldView(
@@ -85,7 +120,9 @@ internal fun AdvancedSettingsScaffoldView(
     state: AdvancedSettingState,
     onAction: (AdvancedSettingAction) -> Unit,
 ) {
-
+    if (state.message != null) {
+        Notify(message = state.message)
+    }
 
     if (state.showDateFilter) {
         ModalBottomSheet(
@@ -435,7 +472,8 @@ fun AdvancedSettingsPreview() {
                 selectedExpenseCategory = getRandomCategoryData(5).firstOrNull(),
                 incomeCategories = getRandomCategoryData(5),
                 selectedIncomeCategory = getRandomCategoryData(5).firstOrNull(),
-                showDateFilter = false
+                showDateFilter = false,
+                message = null,
             ),
             onAction = {}
         )

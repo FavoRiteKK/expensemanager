@@ -29,6 +29,13 @@ kotlin {
                 implementation(libs.androidx.dataStore.core)
                 // The Preferences DataStore library
                 implementation(libs.androidx.dataStore.preference)
+                implementation(libs.filekit.dialogs.compose)
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation(libs.permissions)
+                implementation(libs.permissions.storage)
             }
         }
     }

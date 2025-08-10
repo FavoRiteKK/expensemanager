@@ -2,6 +2,9 @@ package com.naveenapps.expensemanager.feature.settings.advanced
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.data.di.LWDeniedAlwaysException
+import com.naveenapps.expensemanager.core.data.di.LWDeniedException
+import com.naveenapps.expensemanager.core.data.di.LWPermissionsController
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.model.Account
@@ -13,6 +16,9 @@ import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.openFilePicker
+import io.github.vinceglb.filekit.dialogs.openFileSaver
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,12 +31,13 @@ import kotlinx.coroutines.launch
 
 private val logger = KotlinLogging.logger {}
 
-class AdvancedSettingsViewModel (
+class AdvancedSettingsViewModel(
     getAllCategoryUseCase: GetAllCategoryUseCase,
     getAllAccountsUseCase: GetAllAccountsUseCase,
     private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
     private val backupRepository: BackupRepository,
+    private val permissionsController: LWPermissionsController,
 ) : ViewModel() {
 
     private val _event = Channel<AdvancedSettingEvent>()
@@ -45,6 +52,7 @@ class AdvancedSettingsViewModel (
             expenseCategories = emptyList(),
             selectedExpenseCategory = null,
             showDateFilter = false,
+            message = null,
         )
     )
     val state = _state.asStateFlow()
@@ -132,16 +140,27 @@ class AdvancedSettingsViewModel (
         viewModelScope.launch {
             when (action) {
                 AdvancedSettingAction.Backup -> {
-                    val result =
-                        backupRepository.backupData("/home/khiemnv3/Public/expense_manager_database.db")
-                    when (result) {
-                        is Resource.Error -> {
-                            logger.warn { "Could not backup the database" }
-                        }
+                    try {
+                        val file =
+                            FileKit.openFileSaver(
+                                suggestedName = "fin-flow", extension = "lws"
+                            )
+                        val result =
+                            backupRepository.backupData(file)
 
-                        is Resource.Success -> {
-                            logger.info { "Database backed up successfully" }
+                        when (result) {
+                            is Resource.Error -> {
+                                logger.warn { "Could not backup the database: $result" }
+                            }
+
+                            is Resource.Success -> {
+                                logger.info { "Database backed up successfully" }
+                            }
                         }
+                    } catch (deniedAlways: LWDeniedAlwaysException) {
+                        logger.warn { "Permission denied forever. ($deniedAlways)" }
+                    } catch (denied: LWDeniedException) {
+                        logger.warn { "Permission denied. ($denied)" }
                     }
                 }
 
@@ -154,15 +173,17 @@ class AdvancedSettingsViewModel (
                 }
 
                 AdvancedSettingAction.Restore -> {
+                    val file = FileKit.openFilePicker()
                     val result =
-                        backupRepository.restoreData("/home/khiemnv3/Public/expense_manager_database.db")
+                        backupRepository.restoreData(file)
+
                     when (result) {
                         is Resource.Error -> {
-                            logger.warn { "Could not restore the database" }
+                            _event.send(AdvancedSettingEvent.RestoreFail)
                         }
 
                         is Resource.Success -> {
-                            logger.info { "Database restored successfully.!" } // TODO: emit room db changed to whole app, so ui can be updated?
+                            _event.send(AdvancedSettingEvent.RestoreSuccess)    // TODO: emit room db changed to whole app, so ui can be updated?
                         }
                     }
                 }

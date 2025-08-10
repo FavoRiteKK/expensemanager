@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_create_success">Account created/updated successfully</string>
-    <string name="account_name_error">Name shouldn't be null</string>
+    <string name="account_name_error">Name shouldn't be empty</string>
     <string name="account_delete_error_message">Unable to delete this account</string>
     <string name="account_name">Account Name</string>
     <string name="accounts">Accounts</string>

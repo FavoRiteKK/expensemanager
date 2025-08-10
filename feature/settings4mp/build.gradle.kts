@@ -34,6 +34,15 @@ kotlin {
                 implementation(libs.androidx.navigation.compose)
 
                 implementation(libs.kottie)
+                implementation(libs.filekit.dialogs.compose)
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation(libs.permissions)
+                implementation(libs.permissions.storage)
+                implementation(libs.permissions.notifications)
+                implementation(libs.permissions.compose)
             }
         }
     }

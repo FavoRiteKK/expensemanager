@@ -4,9 +4,16 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.core.net.toUri
 import com.naveenapps.expensemanager.core.data4mp.R
 import com.naveenapps.expensemanager.core.repository.PlatformRepository
+import dev.icerock.moko.permissions.DeniedAlwaysException
+import dev.icerock.moko.permissions.DeniedException
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.storage.WriteStoragePermission
+import dev.icerock.moko.permissions.PermissionsController
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -14,6 +21,11 @@ import org.koin.dsl.module
 
 actual fun platformRepository(): Module = module {
     singleOf(::PlatformRepositoryImpl) bind PlatformRepository::class
+    single<LWPermissionsController> {
+        val p = PermissionsController(androidContext().applicationContext)
+        p.bind(get<ComponentActivity>())
+        p
+    }
 }
 
 internal class PlatformRepositoryImpl(private val context: Context) : PlatformRepository {
@@ -58,3 +70,9 @@ internal class PlatformRepositoryImpl(private val context: Context) : PlatformRe
         }
     }
 }
+
+actual typealias LWPermission = dev.icerock.moko.permissions.Permission
+actual typealias LWPermissionsController = PermissionsController
+actual typealias LWWriteStoragePermission = WriteStoragePermission
+actual typealias LWDeniedAlwaysException = DeniedAlwaysException
+actual typealias LWDeniedException = DeniedException

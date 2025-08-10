@@ -22,10 +22,5 @@ kotlin {
                 implementation(project(":core:model4mp"))
             }
         }
-        commonTest {
-            dependencies {
-                implementation(libs.slf4j.simple)
-            }
-        }
     }
 }

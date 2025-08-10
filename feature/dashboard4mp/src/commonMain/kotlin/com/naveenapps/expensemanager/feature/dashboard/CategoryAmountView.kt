@@ -44,9 +44,11 @@ fun CategoryAmountView(
                         it.color.toColorInt(),
                     )
                 },
+                modifier = Modifier.fillMaxWidth(0.5f)
             )
             Column(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .wrapContentHeight()
                     .padding(start = 16.dp)
                     .align(Alignment.CenterVertically),

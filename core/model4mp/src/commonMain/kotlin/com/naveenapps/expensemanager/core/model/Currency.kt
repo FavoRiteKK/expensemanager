@@ -4,7 +4,7 @@ data class Currency(
     val symbol: String,
     val name: String,
     val position: TextPosition = TextPosition.PREFIX,
-    val format: TextFormat = TextFormat.NONE,
+    val format: TextFormat = TextFormat.NUMBER_FORMAT,
     val namePlural: String = "",
     val nativeSymbol: String = "",
 )

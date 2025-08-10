@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.common.utils
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
@@ -125,6 +126,10 @@ fun LocalDateTime.toDate(): String {
     return day.toString().padStart(2, '0')
 }
 
+fun LocalDate.toDate(): String {
+    return day.toString().padStart(2, '0')
+}
+
 fun LocalDateTime.toDateAndMonth(): String {
     val day = day.toString().padStart(2, '0')
     val month = month.number.toString().padStart(2, '0')
@@ -152,16 +157,18 @@ fun LocalDateTime.toCompleteDateWithDate(): String {
 }
 
 @OptIn(ExperimentalTime::class)
-fun String.fromCompleteDate(): LocalDateTime {
+fun String.fromCompleteDate(): LocalDate {
     return runCatching {        //"dd/MM/yyyy"
-        LocalDateTime.Format {
+        LocalDate.Format {
             day()
             chars("/")
             monthNumber()
             chars("/")
             year()
         }.parseOrNull(this)
-    }.getOrNull() ?: Clock.System.now().asCurrentDateTime()
+    }.getOrNull() ?: Clock.System.now().asCurrentDateTime().date.also {
+        logger.warn { "LocalDateTime.Format failed" }
+    }
 }
 
 fun LocalDateTime.toMonthAndYear(): String {
@@ -211,8 +218,22 @@ fun LocalDateTime.toMonthYear(): String {
     }.format(this)
 }
 
+fun LocalDate.toMonthYear(): String {
+    return LocalDate.Format {   //MMMM yyyy
+        monthName(MonthNames.ENGLISH_FULL)
+        char(' ')
+        year()
+    }.format(this)
+}
+
 fun LocalDateTime.toDay(): String {
     return LocalDateTime.Format {   //EEEE
+        dayOfWeek(DayOfWeekNames.ENGLISH_FULL)
+    }.format(this)
+}
+
+fun LocalDate.toDay(): String {
+    return LocalDate.Format {   //EEEE
         dayOfWeek(DayOfWeekNames.ENGLISH_FULL)
     }.format(this)
 }

@@ -10,6 +10,9 @@ import java.net.URI
 
 actual fun platformRepository(): Module = module {
     singleOf(::PlatformRepositoryImpl) bind PlatformRepository::class
+    single<LWPermissionsController> {
+        LWPermissionsControllerImpl()
+    }
 }
 
 internal class PlatformRepositoryImpl : PlatformRepository {
@@ -40,3 +43,19 @@ internal class PlatformRepositoryImpl : PlatformRepository {
         share()
     }
 }
+
+actual interface LWPermission
+actual interface LWPermissionsController {
+    actual suspend fun providePermission(permission: LWPermission)
+}
+
+internal class LWPermissionsControllerImpl : LWPermissionsController {
+    override suspend fun providePermission(permission: LWPermission) {
+        /* noop */
+    }
+}
+
+actual object LWWriteStoragePermission : LWPermission
+
+actual class LWDeniedAlwaysException : Exception()
+actual class LWDeniedException : Exception()

@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
+import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
@@ -57,6 +58,7 @@ import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import expensemanager.feature.category4mp.generated.resources.Res
 import expensemanager.feature.category4mp.generated.resources.categories
+import expensemanager.feature.category4mp.generated.resources.change_chart
 import expensemanager.feature.category4mp.generated.resources.edit
 import expensemanager.feature.category4mp.generated.resources.expense
 import expensemanager.feature.category4mp.generated.resources.income
@@ -175,16 +177,28 @@ private fun CategoryTransactionListScreenContent(
                     )
                 }
                 item {
+                    DashboardWidgetTitle(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                        title = if (state.data.categoryType.isExpense()) {
+                            stringResource(resource = Res.string.expense)
+                        } else {
+                            stringResource(resource = Res.string.income)
+                        },
+                        onActionClick = {
+                            changeChart.invoke()
+                        },
+                        onActionText = Res.string.change_chart
+                    )
+                }
+                item {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
                         PieChartView(
-                            if (state.data.categoryType.isExpense()) {
-                                stringResource(Res.string.expense)
-                            } else {
-                                stringResource(Res.string.income)
-                            } + "\n" + state.data.totalAmount.amountString,
+                            state.data.totalAmount.amountString ?: "?",
                             chartData = state.data.pieChartData.map {
                                 PieChartUiData(
                                     it.name,
@@ -197,6 +211,7 @@ private fun CategoryTransactionListScreenContent(
                                 .clickable(indicationSource, null) {
                                     changeChart.invoke()
                                 },
+                            hasLabel = true,
                         )
                     }
                 }
@@ -314,19 +329,23 @@ fun CategoryTransactionSmallItem(
             name = name,
             iconSize = 12.dp,
         )
-        Text(
+        Column(
             modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically)
-                .padding(start = 16.dp, end = 16.dp),
-            text = name,
-            style = MaterialTheme.typography.bodySmall,
-        )
-        Text(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            text = amount,
-            style = MaterialTheme.typography.labelSmall,
-        )
+                .fillMaxWidth()
+                .padding(end = 16.dp),
+            horizontalAlignment = Alignment.End,
+        ) {
+            Text(
+                text = name,
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.End,
+            )
+            Text(
+                text = amount,
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.End,
+            )
+        }
     }
 }
 

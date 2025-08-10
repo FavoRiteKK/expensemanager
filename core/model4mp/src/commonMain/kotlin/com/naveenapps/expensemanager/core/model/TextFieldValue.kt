@@ -4,11 +4,9 @@ data class TextFieldValue<T>(
     var value: T,
     var valueError: Boolean = false,
     val onValueChange: ((T) -> Unit)?,
-)
-
-data class FieldValue<T>(
-    var value: T,
-    var valueError: Boolean = false,
-    val onValueChange: (T) -> Unit,
-    val onClick: () -> Unit,
-)
+) {
+    @OptIn(ExperimentalStdlibApi::class)
+    override fun toString(): String {
+        return "TextFieldValue(value=$value, valueError=$valueError, onValueChange=${onValueChange.hashCode().toHexString()})"
+    }
+}

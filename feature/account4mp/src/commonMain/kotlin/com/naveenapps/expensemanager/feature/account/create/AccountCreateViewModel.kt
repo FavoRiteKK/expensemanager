@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.feature.account.create
 
+import androidx.compose.animation.core.rememberTransition
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,6 +25,7 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -33,6 +35,10 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+
+private val logger = KotlinLogging.logger {}
+private const val MAX_ACCOUNT_NAME_LENGTH = 30
+private const val MAX_AMOUNT_LENGTH = 16
 
 class AccountCreateViewModel(
     savedStateHandle: SavedStateHandle,
@@ -196,12 +202,12 @@ class AccountCreateViewModel(
         }
 
         if (currentBalance.isBlank() || currentBalance.toDoubleOrNullWithLocale() == null) {
-            _state.update { it.copy(name = it.amount.copy(valueError = true)) }
+            _state.update { it.copy(amount = it.amount.copy(valueError = true)) }
             isError = true
         }
 
         if (accountType == AccountType.CREDIT && (creditLimit.isBlank() || creditLimit.toDoubleOrNullWithLocale() == null)) {
-            _state.update { it.copy(name = it.creditLimit.copy(valueError = true)) }
+            _state.update { it.copy(creditLimit = it.creditLimit.copy(valueError = true)) }
             isError = true
         }
 
@@ -260,20 +266,34 @@ class AccountCreateViewModel(
     }
 
     private fun setNameChange(name: String) {
-        _state.update { it.copy(name = it.name.copy(value = name, valueError = name.isBlank())) }
+        name.take(MAX_ACCOUNT_NAME_LENGTH)
+            .let { value ->
+                _state.update {
+                    it.copy(
+                        name = it.name.copy(
+                            value = value,
+                            valueError = value.isBlank()
+                        )
+                    )
+                }
+            }
     }
 
     private fun setAmount(amount: String) {
+        amount.filter { it.isDigit() }
+            .take(MAX_AMOUNT_LENGTH)
+            .let { value ->
+                val totalAmount =
+                    (value.toDoubleOrNullWithLocale() ?: 0.0) + getCreditAmount()
 
-        val totalAmount = (amount.toDoubleOrNullWithLocale() ?: 0.0) + getCreditAmount()
-
-        _state.update {
-            it.copy(
-                amount = it.amount.copy(value = amount, valueError = amount.isBlank()),
-                totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
-                totalAmount = getAmountValue(totalAmount).amountString ?: ""
-            )
-        }
+                _state.update {
+                    it.copy(
+                        amount = it.amount.copy(value = value, valueError = value.isBlank()),
+                        totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
+                        totalAmount = getAmountValue(totalAmount).amountString ?: ""
+                    )
+                }
+            }
     }
 
     private fun getCreditAmount(): Double {
@@ -285,19 +305,22 @@ class AccountCreateViewModel(
     }
 
     private fun setCreditLimitChange(creditLimit: String) {
+        creditLimit.filter { it.isDigit() }
+            .take(MAX_AMOUNT_LENGTH)
+            .let { value ->
+                val totalAmount = getTotalAmount(value, _state.value.amount.value)
 
-        val totalAmount = getTotalAmount(creditLimit, _state.value.amount.value)
-
-        _state.update {
-            it.copy(
-                creditLimit = it.creditLimit.copy(
-                    value = creditLimit,
-                    valueError = creditLimit.isBlank()
-                ),
-                totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
-                totalAmount = getAmountValue(totalAmount).amountString ?: ""
-            )
-        }
+                _state.update {
+                    it.copy(
+                        creditLimit = it.creditLimit.copy(
+                            value = value,
+                            valueError = value.isBlank()
+                        ),
+                        totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
+                        totalAmount = getAmountValue(totalAmount).amountString ?: ""
+                    )
+                }
+            }
     }
 
     private fun getTotalAmount(creditLimit: String, accountAmount: String): Double {
