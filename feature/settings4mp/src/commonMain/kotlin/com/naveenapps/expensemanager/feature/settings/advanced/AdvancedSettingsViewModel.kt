@@ -13,6 +13,10 @@ import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.openDirectoryPicker
+import io.github.vinceglb.filekit.path
+import io.github.vinceglb.filekit.toKotlinxIoPath
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -132,11 +136,13 @@ class AdvancedSettingsViewModel (
         viewModelScope.launch {
             when (action) {
                 AdvancedSettingAction.Backup -> {
+                    val director = FileKit.openDirectoryPicker()
                     val result =
-                        backupRepository.backupData("/home/khiemnv3/Public/expense_manager_database.db")
+                        backupRepository.backupData(director?.path)
+
                     when (result) {
                         is Resource.Error -> {
-                            logger.warn { "Could not backup the database" }
+                            logger.warn { "Could not backup the database: $result" }
                         }
 
                         is Resource.Success -> {
@@ -154,11 +160,13 @@ class AdvancedSettingsViewModel (
                 }
 
                 AdvancedSettingAction.Restore -> {
+                    val director = FileKit.openDirectoryPicker()
                     val result =
-                        backupRepository.restoreData("/home/khiemnv3/Public/expense_manager_database.db")
+                        backupRepository.restoreData(director?.path)
+
                     when (result) {
                         is Resource.Error -> {
-                            logger.warn { "Could not restore the database" }
+                            logger.warn { "Could not restore the database: $result" }
                         }
 
                         is Resource.Success -> {

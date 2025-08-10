@@ -15,6 +15,7 @@ plugins {
     id("com.google.android.gms.oss-licenses-plugin")
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 
@@ -154,7 +155,7 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            applicationIdSuffix = ".debug"
+//            applicationIdSuffix = ".debug"
             enableUnitTestCoverage = true
         }
         release {
@@ -200,7 +201,7 @@ dependencies {
 //    implementation(project(":feature:currency"))
 //    implementation(project(":feature:about"))
 //
-    debugImplementation(compose.uiTooling)
+//    debugImplementation(compose.uiTooling)
 //    implementation(platform(libs.firebase.bom))
 //    implementation(libs.firebase.crashlytics)
 //    implementation(libs.firebase.analytics)

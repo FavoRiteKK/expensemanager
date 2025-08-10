@@ -17,7 +17,7 @@ internal actual fun appDataStoreModule(): Module = module {
          */
         PreferenceDataStoreFactory.createWithPath(
             produceFile = {
-                val file = File(System.getProperty("java.io.tmpdir"), DATA_STORE_NAME)
+                val file = File(System.getProperty("java.io.tmpdir") + File.separator + "expensemanager", DATA_STORE_NAME)
                 file.absolutePath.toPath()
             }
         )

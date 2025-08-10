@@ -14,7 +14,7 @@ import com.naveenapps.expensemanager.core.database.dao.TransactionDao
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-internal const val DATABASE_NAME = "expense_manager_database.db"
+const val DATABASE_NAME = "expense_manager_database.db"
 
 internal expect fun databaseBuilderModule(): Module
 

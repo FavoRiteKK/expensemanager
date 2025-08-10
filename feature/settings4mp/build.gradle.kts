@@ -34,6 +34,7 @@ kotlin {
                 implementation(libs.androidx.navigation.compose)
 
                 implementation(libs.kottie)
+                implementation(libs.filekit.dialogs.compose)
             }
         }
     }

@@ -10,7 +10,7 @@ import java.io.File
 
 internal actual fun databaseBuilderModule(): Module = module {
     single(qualifier = named("DATABASE_PATH")) {
-        val dbFile = File(System.getProperty("java.io.tmpdir"), DATABASE_NAME)
+        val dbFile = File(System.getProperty("java.io.tmpdir") + File.separator + "expensemanager", DATABASE_NAME)
         dbFile.absolutePath
     }
 

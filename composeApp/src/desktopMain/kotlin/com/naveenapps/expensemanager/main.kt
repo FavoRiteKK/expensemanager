@@ -10,7 +10,7 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "ExpenseManager",
-        alwaysOnTop = true,
+//        alwaysOnTop = true,
         state = rememberWindowState(size = DpSize(640.dp, 640.dp))
     ) {
         koinApp()

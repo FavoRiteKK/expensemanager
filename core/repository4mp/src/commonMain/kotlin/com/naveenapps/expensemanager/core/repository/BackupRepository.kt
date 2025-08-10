@@ -4,7 +4,7 @@ import com.naveenapps.expensemanager.core.model.Resource
 
 interface BackupRepository {
 
-    suspend fun backupData(uri: String?): Resource<Boolean>
+    suspend fun backupData(dir: String?): Resource<Boolean>
 
-    suspend fun restoreData(uri: String?): Resource<Boolean>
+    suspend fun restoreData(dir: String?): Resource<Boolean>
 }
