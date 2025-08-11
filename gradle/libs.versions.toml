@@ -44,9 +44,15 @@ firebaseDistribution = "5.1.1"
 googleOss = "17.1.0"
 mockmp = "2.0.2"
 opencsv = "4.6"
+permissions = "0.19.1"
+permissionsCompose = "0.19.1"
+permissionsNotifications = "0.19.1"
+permissionsStorage = "0.19.1"
+permissionsTest = "0.19.1"
 review = "2.0.2"
 googleOssPlugin = "0.10.6"
 slf4jSimple = "2.0.3"
+slf4jAndroid = "1.7.25"
 spotless = "6.23.0"
 hilt = "2.55"
 hiltExt = "1.2.0"
@@ -127,6 +133,8 @@ androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "li
 filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekitDialogsCompose" }
 koalaplot-core = { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplotCore" }
 kotlin-logging = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlinLogging" }
+kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinLogging" }
+kotlin-logging-android = { module = "io.github.oshai:kotlin-logging-android", version.ref = "kotlinLogging" }
 kottie = { module = "io.github.ismai117:kottie", version.ref = "kottie" }
 lifecycle-viewModelCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 lifecycle-runtimeCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
@@ -162,7 +170,14 @@ google-oss-licenses = { group = "com.google.android.gms", name = "play-services-
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 org-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "jacoco" }
+permissions = { module = "dev.icerock.moko:permissions", version.ref = "permissions" }
+permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "permissionsCompose" }
+permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "permissionsNotifications" }
+permissions-storage = { module = "dev.icerock.moko:permissions-storage", version.ref = "permissionsStorage" }
+permissions-test = { module = "dev.icerock.moko:permissions-test", version.ref = "permissionsTest" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jSimple" }
+slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4jAndroid" }
 spotless = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }

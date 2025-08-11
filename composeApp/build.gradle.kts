@@ -123,6 +123,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewModelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.navigation.compose)
+            implementation(libs.filekit.dialogs.compose)
         }
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
@@ -132,6 +133,7 @@ kotlin {
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.vertexai)
             implementation(libs.firebase.config)
+            implementation(libs.permissions)
         }
         getByName("desktopMain") {
             dependencies {

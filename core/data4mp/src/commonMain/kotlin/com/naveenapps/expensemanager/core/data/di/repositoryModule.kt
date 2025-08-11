@@ -36,6 +36,14 @@ import org.koin.dsl.module
 
 internal expect fun platformRepository(): Module
 
+expect interface LWPermission
+expect interface LWPermissionsController {
+    suspend fun providePermission(permission: LWPermission)
+}
+expect object LWWriteStoragePermission : LWPermission
+expect class LWDeniedAlwaysException : Exception
+expect class LWDeniedException : Exception
+
 val repository = platformRepository() + module {
     singleOf(::AccountRepositoryImpl) bind AccountRepository::class
     singleOf(::BudgetRepositoryImpl) bind BudgetRepository::class

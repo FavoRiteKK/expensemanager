@@ -35,11 +35,6 @@ kotlin {
                 implementation(libs.koalaplot.core)
             }
         }
-        getByName("desktopMain") {
-            dependencies {
-                implementation(libs.slf4j.simple)
-            }
-        }
     }
 }
 

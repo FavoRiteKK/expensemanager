@@ -1,10 +1,11 @@
 package com.naveenapps.expensemanager.core.repository
 
 import com.naveenapps.expensemanager.core.model.Resource
+import io.github.vinceglb.filekit.PlatformFile
 
 interface BackupRepository {
 
-    suspend fun backupData(dir: String?): Resource<Boolean>
+    suspend fun backupData(file: PlatformFile?): Resource<Boolean>
 
-    suspend fun restoreData(dir: String?): Resource<Boolean>
+    suspend fun restoreData(file: PlatformFile?): Resource<Boolean>
 }

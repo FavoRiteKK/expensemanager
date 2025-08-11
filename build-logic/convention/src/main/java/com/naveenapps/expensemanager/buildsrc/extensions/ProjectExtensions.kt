@@ -87,6 +87,23 @@ fun Project.configureBasicMultiplatformExtension() {
                     implementation("de.drick.compose:hotpreview:0.2.0")
                 }
             }
+            getByName("desktopMain") {
+                dependencies {
+                    implementation(
+                        libs.findLibrary("slf4j.api").get()
+                    )
+                    implementation(
+                        libs.findLibrary("slf4j.simple").get()
+                    )
+                }
+            }
+//            androidMain {
+//                dependencies {
+//                    implementation(
+//                        libs.findLibrary("kotlin.logging.android").get()
+//                    )
+//                }
+//            }
         }
     }
 }

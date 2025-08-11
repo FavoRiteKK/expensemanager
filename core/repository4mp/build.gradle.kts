@@ -16,6 +16,8 @@ kotlin {
             dependencies {
                 implementation(project(":core:common4mp"))
                 implementation(project(":core:model4mp"))
+
+                implementation(libs.filekit.dialogs.compose)
             }
         }
     }

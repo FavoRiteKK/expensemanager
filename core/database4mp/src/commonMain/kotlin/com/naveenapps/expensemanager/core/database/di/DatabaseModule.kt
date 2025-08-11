@@ -33,6 +33,7 @@ val database = databaseBuilderModule() + module {
             .fallbackToDestructiveMigrationOnDowngrade(true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(appDispatchers.io)
+            .setJournalMode(RoomDatabase.JournalMode.TRUNCATE)
             .build()
     }
 
