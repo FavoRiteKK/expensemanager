@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.core.datastore.di
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import okio.FileSystem
 import okio.Path.Companion.toPath
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -21,9 +20,5 @@ internal actual fun appDataStoreModule(): Module = module {
                 file.absolutePath.toPath()
             }
         )
-    }
-
-    single<FileSystem> {
-        FileSystem.SYSTEM
     }
 }

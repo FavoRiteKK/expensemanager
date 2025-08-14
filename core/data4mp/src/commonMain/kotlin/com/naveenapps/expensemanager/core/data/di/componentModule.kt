@@ -13,7 +13,6 @@ import org.koin.dsl.module
 val component = module {
     factory<BackupRepository> {
         BackupRepositoryImpl(
-            fileSystem = get(),
             dbAbsPath = get(qualifier = named("DATABASE_PATH")),
             dispatchers = get(),
         )

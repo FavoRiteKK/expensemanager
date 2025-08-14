@@ -134,6 +134,7 @@ kotlin {
             implementation(libs.firebase.vertexai)
             implementation(libs.firebase.config)
             implementation(libs.permissions)
+            implementation(libs.androidx.startup)
         }
         getByName("desktopMain") {
             dependencies {

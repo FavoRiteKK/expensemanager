@@ -2,11 +2,9 @@ package com.naveenapps.expensemanager.feature.settings.advanced
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.data.di.LWPermissionsController
-import com.naveenapps.expensemanager.core.data.di.LWWriteStoragePermission
 import com.naveenapps.expensemanager.core.data.di.LWDeniedAlwaysException
 import com.naveenapps.expensemanager.core.data.di.LWDeniedException
-import com.naveenapps.expensemanager.core.database.di.DATABASE_NAME
+import com.naveenapps.expensemanager.core.data.di.LWPermissionsController
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.model.Account
@@ -19,10 +17,8 @@ import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.vinceglb.filekit.FileKit
-import io.github.vinceglb.filekit.dialogs.openFileSaver
-import io.github.vinceglb.filekit.dialogs.openDirectoryPicker
 import io.github.vinceglb.filekit.dialogs.openFilePicker
-import io.github.vinceglb.filekit.path
+import io.github.vinceglb.filekit.dialogs.openFileSaver
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,6 +52,7 @@ class AdvancedSettingsViewModel(
             expenseCategories = emptyList(),
             selectedExpenseCategory = null,
             showDateFilter = false,
+            message = null,
         )
     )
     val state = _state.asStateFlow()
@@ -144,7 +141,6 @@ class AdvancedSettingsViewModel(
             when (action) {
                 AdvancedSettingAction.Backup -> {
                     try {
-                        logger.warn { "Requesting permission to write to storage." }
                         val file =
                             FileKit.openFileSaver(
                                 suggestedName = "fin-flow", extension = "lws"
@@ -183,11 +179,11 @@ class AdvancedSettingsViewModel(
 
                     when (result) {
                         is Resource.Error -> {
-                            logger.warn { "Could not restore the database: $result" }
+                            _event.send(AdvancedSettingEvent.RestoreFail)
                         }
 
                         is Resource.Success -> {
-                            logger.info { "Database restored successfully.!" } // TODO: emit room db changed to whole app, so ui can be updated?
+                            _event.send(AdvancedSettingEvent.RestoreSuccess)    // TODO: emit room db changed to whole app, so ui can be updated?
                         }
                     }
                 }

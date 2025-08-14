@@ -20,7 +20,7 @@ val defaultCurrency = Currency(
     name = DEFAULT_CURRENCY_NAME,
     symbol = DEFAULT_CURRENCY_SYMBOL,
     position = TextPosition.SUFFIX,
-    format = TextFormat.NONE,
+    format = TextFormat.NUMBER_FORMAT,
 )
 
 class CurrencyRepositoryImpl(

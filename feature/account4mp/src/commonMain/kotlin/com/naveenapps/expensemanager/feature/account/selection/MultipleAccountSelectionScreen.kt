@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.feature.account.selection
 
-import NotificationDuration
-import NotificationType
+import Notify
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.account.list.AccountCheckedItem
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
-import createNotification
 import expensemanager.feature.account4mp.generated.resources.Res
 import expensemanager.feature.account4mp.generated.resources.account_selection_message
 import expensemanager.feature.account4mp.generated.resources.clear_all
@@ -67,8 +65,7 @@ private fun AccountSelectionView(
                     selectedAccounts.size == accounts.size,
                 )
             } else {
-                createNotification(NotificationType.TOAST)
-                    .show(msg, duration = NotificationDuration.LONG)
+                Notify(message = msg)
             }
         },
         onClearChanges = viewModel::clearChanges,

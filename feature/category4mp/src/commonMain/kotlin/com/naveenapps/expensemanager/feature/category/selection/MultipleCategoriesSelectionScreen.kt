@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.feature.category.selection
 
-import NotificationDuration
-import NotificationType
+import Notify
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.category.list.CategoryCheckedItem
 import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
-import createNotification
 import expensemanager.feature.category4mp.generated.resources.Res
 import expensemanager.feature.category4mp.generated.resources.category_selection_message
 import expensemanager.feature.category4mp.generated.resources.clear_all
@@ -67,8 +65,7 @@ private fun CategorySelectionView(
                     selectedCategories.size == categories.size,
                 )
             } else {
-                createNotification(NotificationType.TOAST)
-                    .show(msg, duration = NotificationDuration.LONG)
+                Notify(message = msg)
             }
         },
         onClearChanges = viewModel::clearChanges,

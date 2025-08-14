@@ -9,25 +9,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import expensemanager.core.designsystem4mp.generated.resources.Res
 import expensemanager.core.designsystem4mp.generated.resources.view_all
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DashboardWidgetTitle(
     title: String,
     modifier: Modifier = Modifier,
-    onViewAllClick: (() -> Unit)? = null,
+    onActionClick: (() -> Unit)? = null,
+    onActionText: StringResource = Res.string.view_all,
 ) {
     Box(modifier = modifier) {
         Text(
             text = title,
             style = MaterialTheme.typography.headlineSmall,
         )
-        if (onViewAllClick != null) {
+        if (onActionClick != null) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .clickable { onViewAllClick.invoke() },
-                text = stringResource(resource = Res.string.view_all).uppercase(),
+                    .clickable { onActionClick.invoke() },
+                text = stringResource(resource = onActionText).uppercase(),
                 style = MaterialTheme.typography.labelMedium,
             )
         }
