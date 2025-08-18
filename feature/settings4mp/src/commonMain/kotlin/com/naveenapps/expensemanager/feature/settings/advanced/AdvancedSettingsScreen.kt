@@ -120,8 +120,6 @@ internal fun AdvancedSettingsScaffoldView(
     state: AdvancedSettingState,
     onAction: (AdvancedSettingAction) -> Unit,
 ) {
-    logger.warn { "idk AdvancedSettingsScaffoldView" }
-
     if (state.message != null) {
         Notify(message = state.message)
     }
@@ -134,8 +132,6 @@ internal fun AdvancedSettingsScaffoldView(
             containerColor = MaterialTheme.colorScheme.background,
             tonalElevation = 0.dp,
         ) {
-            logger.warn { "idk AdvancedSettingsScaffoldView.ModalBottomSheet" }
-
             DateFilterSelectionView(
                 onComplete = {
                     onAction.invoke(AdvancedSettingAction.DismissDateFilterDialog)
@@ -154,16 +150,12 @@ internal fun AdvancedSettingsScaffoldView(
             )
         },
     ) { innerPadding ->
-        logger.warn { "idk AdvancedSettingsScaffoldView.Scaffold" }
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
         ) {
-            logger.warn { "idk AdvancedSettingsScaffoldView.Scaffold.Column" }
-
             Text(
                 modifier = Modifier.then(ItemSpecModifier),
                 text = stringResource(resource = Res.string.default_selected_items),
@@ -309,8 +301,6 @@ private fun AccountPreSelectionView(
     onItemSelection: (Account) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    logger.warn { "idk AccountPreSelectionView" }
-
     var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
