@@ -15,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,15 +41,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.common.utils.BLUE_500
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
-import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
 import com.naveenapps.expensemanager.feature.account.selection.AccountSelectionScreen
@@ -66,11 +62,8 @@ import expensemanager.feature.transaction4mp.generated.resources.optional_detail
 import expensemanager.feature.transaction4mp.generated.resources.select_account
 import expensemanager.feature.transaction4mp.generated.resources.select_category
 import expensemanager.feature.transaction4mp.generated.resources.select_date
-import expensemanager.feature.transaction4mp.generated.resources.select_time
 import expensemanager.feature.transaction4mp.generated.resources.to_account
 import expensemanager.feature.transaction4mp.generated.resources.transaction
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -231,26 +224,6 @@ private fun TransactionCreateScreen(
         )
     }
 
-    if (state.showTimeSelection) {
-        val reminder = state.dateTime.toTime()
-        AppTimePickerDialog(
-            reminderTimeState = Triple(reminder.hour, reminder.minute, reminder.is24Hour),
-            onTimeSelected = {
-                val reminderTimeState = ReminderTimeState(it.first, it.second, it.third)
-                onAction.invoke(
-                    TransactionCreateAction.SelectDate(
-                        state.dateTime.toTime(
-                            reminderTimeState
-                        )
-                    )
-                )
-            },
-            onDismiss = {
-                onAction.invoke(TransactionCreateAction.DismissDateSelection)
-            }
-        )
-    }
-
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
@@ -279,17 +252,6 @@ private fun TransactionCreateScreen(
                 onClick = {
                     focusManager.clearFocus(force = true)
                     onAction.invoke(TransactionCreateAction.ShowDateSelection)
-                },
-            )
-            ClickableTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp),
-                value = state.dateTime.toTimeAndMinutes(),
-                label = Res.string.select_time,
-                leadingIcon = Icons.Outlined.AccessTime,
-                onClick = {
-                    onAction.invoke(TransactionCreateAction.ShowTimeSelection)
                 },
             )
         }
@@ -446,24 +408,6 @@ private fun TransactionCreateScreen(
     }
 }
 
-fun LocalDateTime.toTime(): ReminderTimeState {
-//    val cal = Calendar.getInstance()
-//    cal.time = this
-//    val hours = cal.get(Calendar.HOUR_OF_DAY)
-//    val minutes = cal.get(Calendar.MINUTE)
-
-    return ReminderTimeState(
-        hour = hour,
-        minute = minute,
-        is24Hour = true,
-    )
-}
-
-fun LocalDateTime.toTime(reminderTimeState: ReminderTimeState): LocalDateTime {
-    val calendar =
-        LocalDateTime(this.date, LocalTime(reminderTimeState.hour, reminderTimeState.minute))
-    return calendar
-}
 
 //@Preview
 //@Composable
