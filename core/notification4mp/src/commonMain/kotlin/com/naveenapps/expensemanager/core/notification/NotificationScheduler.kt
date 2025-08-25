@@ -8,10 +8,9 @@ import com.tweener.alarmee.model.AndroidNotificationConfiguration
 import com.tweener.alarmee.model.AndroidNotificationPriority
 import com.tweener.alarmee.model.IosNotificationConfiguration
 import kotlinx.coroutines.flow.first
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 class NotificationScheduler(
     private val reminderTimeRepository: ReminderTimeRepository,
@@ -22,7 +21,6 @@ class NotificationScheduler(
         alarmeeService.local
     }
 
-    @OptIn(ExperimentalTime::class)
     suspend fun setReminder(title: String, content: String) {
         cancelReminder()
 
@@ -46,7 +44,6 @@ class NotificationScheduler(
         localService.cancel(NotificationId.UUID)
     }
 
-    @OptIn(ExperimentalTime::class)
     private suspend fun getReminderTime(): LocalDateTime {
         val reminderTimeState = reminderTimeRepository.getReminderTime().first()
         val now = Clock.System.now().asCurrentDateTime()

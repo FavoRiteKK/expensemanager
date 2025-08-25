@@ -32,9 +32,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -51,7 +50,6 @@ class BudgetCreateViewModel(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    @OptIn(ExperimentalTime::class)
     private val _state = MutableStateFlow(
         BudgetCreateState(
             isLoading = true,
@@ -105,7 +103,6 @@ class BudgetCreateViewModel(
         readBudgetInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
     }
 
-    @OptIn(ExperimentalTime::class)
     private suspend fun updateBudgetInfo(budget: Budget) {
         this.budget = budget
 
@@ -181,7 +178,7 @@ class BudgetCreateViewModel(
         }
     }
 
-    @OptIn(ExperimentalUuidApi::class, ExperimentalTime::class)
+    @OptIn(ExperimentalUuidApi::class)
     private fun saveOrUpdateBudget() {
         val name: String = _state.value.name.value
         val color: String = _state.value.color.value

@@ -1,7 +1,9 @@
 package com.naveenapps.expensemanager.core.common.utils
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -13,13 +15,10 @@ import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
-import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 private val logger = KotlinLogging.logger {}
 
@@ -47,11 +46,10 @@ fun getThisWeekRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List
     )
 }
 
-@OptIn(ExperimentalTime::class)
 fun getThisMonthRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
     val clock = Clock.System.now()
     val todayDateTime = clock.toLocalDateTime(timeZone)
-    val startOfTheWeekDay = todayDateTime.date.minus(todayDateTime.day - 1, DateTimeUnit.DAY)
+    val startOfTheWeekDay = todayDateTime.date.minus(todayDateTime.dayOfMonth - 1, DateTimeUnit.DAY)
     val endTimeOfTheWeek = startOfTheWeekDay.plus(1, DateTimeUnit.MONTH)
     return listOf(
         startOfTheWeekDay.atStartOfDayIn(timeZone).toEpochMilliseconds(),
@@ -59,7 +57,6 @@ fun getThisMonthRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): Lis
     )
 }
 
-@OptIn(ExperimentalTime::class)
 fun getThisYearRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
     val clock = Clock.System.now()
     val todayDateTime = clock.toLocalDateTime(timeZone)
@@ -101,38 +98,35 @@ fun Long.toExactStartOfTheDay(): LocalDateTime {
         .toLocalDateTime(TimeZone.currentSystemDefault())
 }
 
-@OptIn(ExperimentalTime::class)
 fun LocalDateTime.getStartOfTheMonth(): Long {
-    return this.date.minus(day, DateTimeUnit.DAY)
+    return this.date.minus(this.dayOfMonth, DateTimeUnit.DAY)
         .atStartOfDayIn(TimeZone.currentSystemDefault())
         .toEpochMilliseconds()
 }
 
-@OptIn(ExperimentalTime::class)
 fun LocalDateTime.getEndOfTheMonth(): Long {
-    val startOfTheWeekDay = this.date.minus(day, DateTimeUnit.DAY)
+    val startOfTheWeekDay = this.date.minus(this.dayOfMonth, DateTimeUnit.DAY)
         .atStartOfDayIn(TimeZone.currentSystemDefault())
     return startOfTheWeekDay.plus(1, DateTimeUnit.MONTH, TimeZone.currentSystemDefault())
         .toEpochMilliseconds()
 }
 
-@OptIn(ExperimentalTime::class)
 fun Long.toCompleteDate(): LocalDateTime {
     return Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.currentSystemDefault())
 }
 
 fun LocalDateTime.toDate(): String {
-    return day.toString().padStart(2, '0')
+    return this.dayOfMonth.toString().padStart(2, '0')
 }
 
 fun LocalDate.toDate(): String {
-    return day.toString().padStart(2, '0')
+    return this.dayOfMonth.toString().padStart(2, '0')
 }
 
 fun LocalDateTime.toDateAndMonth(): String {
-    val day = day.toString().padStart(2, '0')
-    val month = month.number.toString().padStart(2, '0')
+    val day = this.dayOfMonth.toString().padStart(2, '0')
+    val month = this.monthNumber.toString().padStart(2, '0')
     return "$day/$month"
 }
 
@@ -140,7 +134,7 @@ fun LocalDateTime.toCompleteDate(): String {
     return LocalDateTime.Format {   //"MMMM dd, yyyy"
         monthName(MonthNames.ENGLISH_FULL)  // FIXME: idk apply to other languages
         char(' ')
-        day()
+        dayOfMonth()
         chars(", ")
         year()
     }.format(this)
@@ -148,7 +142,7 @@ fun LocalDateTime.toCompleteDate(): String {
 
 fun LocalDateTime.toCompleteDateWithDate(): String {
     return LocalDateTime.Format {   //"dd/MM/yyyy"
-        day()
+        dayOfMonth()
         chars("/")
         monthNumber()
         chars("/")
@@ -156,11 +150,10 @@ fun LocalDateTime.toCompleteDateWithDate(): String {
     }.format(this)
 }
 
-@OptIn(ExperimentalTime::class)
 fun String.fromCompleteDate(): LocalDate {
     return runCatching {        //"dd/MM/yyyy"
         LocalDate.Format {
-            day()
+            dayOfMonth()
             chars("/")
             monthNumber()
             chars("/")
@@ -175,21 +168,20 @@ fun LocalDateTime.toMonthAndYear(): String {
     return this.toMonthYear()
 }
 
-@OptIn(ExperimentalTime::class)
 fun String.fromMonthAndYear(): LocalDateTime? {
     return DateTimeComponents.Format {   //MMMM yyyy
         monthName(MonthNames.ENGLISH_FULL)
         char(' ')
         year()
     }.parseOrNull(this)
-        ?.apply { day = 1 }
+        ?.apply { dayOfMonth = 1 }
         ?.toLocalDate()
         ?.atStartOfDayIn(TimeZone.currentSystemDefault())
         ?.toLocalDateTime(TimeZone.currentSystemDefault())
 }
 
 fun LocalDateTime.toMonth(): Int {
-    return month.number
+    return this.monthNumber
 }
 
 fun LocalDateTime.toYear(): String {
@@ -267,9 +259,9 @@ fun LocalDateTime.toEpochMilliseconds(timeZone: TimeZone = TimeZone.currentSyste
     this.toInstant(timeZone).toEpochMilliseconds()
 
 fun LocalDateTime.lastDayOfMonth(): Int {
-    if (month.number == 12) return 31
-    return date.plus(1, DateTimeUnit.MONTH)
+    if (this.monthNumber == 12) return 31
+    return this.date.plus(1, DateTimeUnit.MONTH)
         .minus(1, DateTimeUnit.DAY)
-        .day
+        .dayOfMonth
 }
 

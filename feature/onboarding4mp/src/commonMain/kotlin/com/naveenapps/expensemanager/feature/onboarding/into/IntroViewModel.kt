@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalTime::class)
-
 package com.naveenapps.expensemanager.feature.onboarding.into
 
 import androidx.lifecycle.ViewModel
@@ -17,8 +15,7 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import kotlinx.coroutines.launch
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+import kotlinx.datetime.Clock
 
 private val BASE_CATEGORY_LIST = listOf(
     Category(

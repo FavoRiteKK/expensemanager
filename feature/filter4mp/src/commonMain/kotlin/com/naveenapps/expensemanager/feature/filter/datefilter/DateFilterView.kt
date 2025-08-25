@@ -43,11 +43,10 @@ import expensemanager.feature.filter4mp.generated.resources.date_filter
 import expensemanager.feature.filter4mp.generated.resources.from_date
 import expensemanager.feature.filter4mp.generated.resources.select
 import expensemanager.feature.filter4mp.generated.resources.to_date
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @Composable
 fun DateFilterSelectionView(
@@ -205,7 +204,6 @@ private fun FilterTypesAndViewContent(
     }
 }
 
-@OptIn(ExperimentalTime::class)
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun FilterNormalViewPreview() {

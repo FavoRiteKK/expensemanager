@@ -48,9 +48,8 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import expensemanager.core.designsystem4mp.generated.resources.Res
 import expensemanager.core.designsystem4mp.generated.resources.cancel
 import expensemanager.core.designsystem4mp.generated.resources.ok
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.stringResource
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @Composable
 fun MonthPicker(
@@ -212,7 +211,6 @@ fun MonthPicker(
     )
 }
 
-@OptIn(ExperimentalTime::class)
 @AppPreviewsLightAndDarkMode
 @Composable
 fun MonthPickerPreview() {

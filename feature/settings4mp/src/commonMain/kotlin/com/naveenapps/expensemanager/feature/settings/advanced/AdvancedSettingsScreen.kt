@@ -67,14 +67,10 @@ import expensemanager.feature.settings4mp.generated.resources.restore_and_backup
 import expensemanager.feature.settings4mp.generated.resources.restore_fail
 import expensemanager.feature.settings4mp.generated.resources.restore_message
 import expensemanager.feature.settings4mp.generated.resources.restore_success
-import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-
-private val logger = KotlinLogging.logger {}
 
 @Composable
 fun AdvancedSettingsScreen(
@@ -422,7 +418,6 @@ fun getRandomCategoryData(totalCount: Int = 10): List<Category> {
     }
 }
 
-@OptIn(ExperimentalTime::class)
 fun getAccountData(
     index: Int,
     accountType: AccountType = AccountType.CREDIT,
@@ -442,7 +437,6 @@ fun getAccountData(
     )
 }
 
-@OptIn(ExperimentalTime::class)
 fun getCategoryData(
     index: Int,
     categoryType: CategoryType = CategoryType.EXPENSE,

@@ -10,13 +10,11 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 val FAKE_CATEGORY = Category(
     id = "1",
     name = "Test",
@@ -29,7 +27,6 @@ val FAKE_CATEGORY = Category(
     updatedOn = Clock.System.now().asCurrentDateTime(),
 )
 
-@OptIn(ExperimentalTime::class)
 val FAKE_SECOND_CATEGORY = Category(
     id = "2",
     name = "Test",
@@ -42,7 +39,6 @@ val FAKE_SECOND_CATEGORY = Category(
     updatedOn = Clock.System.now().asCurrentDateTime(),
 )
 
-@OptIn(ExperimentalTime::class)
 val FAKE_FAVORITE_CATEGORY = Category(
     id = "1",
     name = "Test",
@@ -55,7 +51,6 @@ val FAKE_FAVORITE_CATEGORY = Category(
     updatedOn = Clock.System.now().asCurrentDateTime(),
 )
 
-@OptIn(ExperimentalTime::class)
 val FAKE_ACCOUNT = Account(
     id = "1",
     name = "Test",
@@ -68,7 +63,6 @@ val FAKE_ACCOUNT = Account(
     updatedOn = Clock.System.now().asCurrentDateTime(),
 )
 
-@OptIn(ExperimentalTime::class)
 val FAKE_SECOND_ACCOUNT = Account(
     id = "2",
     name = "Test",
@@ -81,7 +75,6 @@ val FAKE_SECOND_ACCOUNT = Account(
     updatedOn = Clock.System.now().asCurrentDateTime(),
 )
 
-@OptIn(ExperimentalTime::class)
 val FAKE_EXPENSE_TRANSACTION = Transaction(
     id = "1",
     notes = "Test",
@@ -95,7 +88,6 @@ val FAKE_EXPENSE_TRANSACTION = Transaction(
     updatedOn = Clock.System.now().asCurrentDateTime(),
 )
 
-@OptIn(ExperimentalTime::class)
 val FAKE_INCOME_TRANSACTION = Transaction(
     id = "1",
     notes = "Test",
@@ -109,7 +101,6 @@ val FAKE_INCOME_TRANSACTION = Transaction(
     updatedOn = Clock.System.now().asCurrentDateTime(),
 )
 
-@OptIn(ExperimentalTime::class)
 val FAKE_TRANSFER_TRANSACTION = Transaction(
     id = "1",
     notes = "Test",
@@ -123,7 +114,6 @@ val FAKE_TRANSFER_TRANSACTION = Transaction(
     updatedOn = Clock.System.now().asCurrentDateTime(),
 )
 
-@OptIn(ExperimentalTime::class)
 val FAKE_BUDGET = Budget(
     id = "1",
     name = "Sample",

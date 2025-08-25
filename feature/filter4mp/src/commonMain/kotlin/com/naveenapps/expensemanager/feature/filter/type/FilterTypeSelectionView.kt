@@ -41,11 +41,10 @@ import expensemanager.feature.filter4mp.generated.resources.accounts
 import expensemanager.feature.filter4mp.generated.resources.apply
 import expensemanager.feature.filter4mp.generated.resources.categories
 import expensemanager.feature.filter4mp.generated.resources.transaction_type
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @Composable
 fun FilterTypeSelectionView(
@@ -285,7 +284,6 @@ fun getAccount(index: Int): AccountUiModel {
     )
 }
 
-@OptIn(ExperimentalTime::class)
 fun getCategory(index: Int): Category {
     return Category(
         id = index.toString(),
