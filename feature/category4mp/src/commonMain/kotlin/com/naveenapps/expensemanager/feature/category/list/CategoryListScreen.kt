@@ -50,11 +50,10 @@ import expensemanager.feature.category4mp.generated.resources.category
 import expensemanager.feature.category4mp.generated.resources.expense
 import expensemanager.feature.category4mp.generated.resources.income
 import expensemanager.feature.category4mp.generated.resources.no_category_available
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 enum class CategoryTabItems(
     val labelResourceID: StringResource,
@@ -244,7 +243,6 @@ fun CategoryCheckedItem(
     }
 }
 
-@OptIn(ExperimentalTime::class)
 fun getCategoryData(
     index: Int,
     categoryType: CategoryType,

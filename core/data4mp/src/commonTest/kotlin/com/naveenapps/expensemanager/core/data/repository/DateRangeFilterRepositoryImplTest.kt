@@ -15,6 +15,7 @@ import com.naveenapps.expensemanager.core.testing.LWTruth_assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Clock
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.dsl.singleOf
@@ -25,8 +26,6 @@ import org.koin.test.inject
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DateRangeFilterRepositoryImplTest : BaseCoroutineTest(), KoinTest {
@@ -104,7 +103,6 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest(), KoinTest {
         LWTruth_assertThat(firstItem.type).isEqualTo(DateRangeType.entries[0])
     }
 
-    @OptIn(ExperimentalTime::class)
     @Test
     fun getDateRangeTimeFrameShouldReturnTimeFrame() = runTest {
         repository.getDateRangeTimeFrame().test {

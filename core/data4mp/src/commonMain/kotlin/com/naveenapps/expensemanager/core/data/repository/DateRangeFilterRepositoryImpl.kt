@@ -20,14 +20,12 @@ import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.number
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 class DateRangeFilterRepositoryImpl(
     private val dataStore: DateRangeDataStore,
@@ -105,7 +103,6 @@ class DateRangeFilterRepositoryImpl(
         return getCurrentDateRanges(dateRangeType)
     }
 
-    @OptIn(ExperimentalTime::class)
     private fun getCurrentDateRanges(dateRangeType: DateRangeType): List<Long> {
         return when (dateRangeType) {
             DateRangeType.TODAY -> getTodayRange()
@@ -147,7 +144,6 @@ class DateRangeFilterRepositoryImpl(
         }
     }
 
-    @OptIn(ExperimentalTime::class)
     private fun getFormattedDateRangeString(
         fromDate: LocalDateTime,
         toDate: LocalDateTime
@@ -158,7 +154,7 @@ class DateRangeFilterRepositoryImpl(
             toDate.toInstant(TimeZone.currentSystemDefault()).toLocalDateTime(TimeZone.UTC)
 
         return if (fromDateTime.year == toDateTime.year) {
-            if (fromDateTime.month.number == toDateTime.month.number) {
+            if (fromDateTime.monthNumber == toDateTime.monthNumber) {
                 "${fromDate.toDate()} - ${toDate.toCompleteDate()}"
             } else {
                 "${fromDate.toDateAndMonth()} - ${toDate.toCompleteDate()}"
@@ -168,7 +164,6 @@ class DateRangeFilterRepositoryImpl(
         }
     }
 
-    @OptIn(ExperimentalTime::class)
     override suspend fun getTransactionGroupType(
         dateRangeType: DateRangeType,
     ): GroupType = withContext(dispatcher.computation) {
@@ -181,7 +176,7 @@ class DateRangeFilterRepositoryImpl(
         var isCrossingMonths = false
 
         if (fromDateTime.year == toDateTime.year) {
-            if (fromDateTime.month.number != toDateTime.month.number) {
+            if (fromDateTime.monthNumber != toDateTime.monthNumber) {
                 isCrossingMonths = true
             }
         } else {

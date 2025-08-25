@@ -1,11 +1,10 @@
 package com.naveenapps.expensemanager.core.model
 
 import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
-data class Transaction @OptIn(ExperimentalTime::class) constructor(
+data class Transaction(
     val id: String,
     val notes: String,
     val categoryId: String,

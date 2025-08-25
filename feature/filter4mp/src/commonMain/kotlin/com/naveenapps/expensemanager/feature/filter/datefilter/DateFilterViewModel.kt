@@ -19,9 +19,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 class DateFilterViewModel (
     getDateRangeUseCase: GetDateRangeUseCase,
@@ -32,7 +31,6 @@ class DateFilterViewModel (
     private val _event = Channel<DateFilterEvent>()
     val event = _event.receiveAsFlow()
 
-    @OptIn(ExperimentalTime::class)
     private val _state = MutableStateFlow(
         DateFilterState(
             dateRangeType = TextFieldValue(

@@ -61,13 +61,12 @@ import expensemanager.feature.account4mp.generated.resources.Res
 import expensemanager.feature.account4mp.generated.resources.accounts
 import expensemanager.feature.account4mp.generated.resources.available_limit
 import expensemanager.feature.account4mp.generated.resources.no_account_available
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Random
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @Composable
 fun AccountListScreen(
@@ -342,7 +341,6 @@ fun DashBoardAccountItem(
     }
 }
 
-@OptIn(ExperimentalTime::class)
 fun getAccountData(
     index: Int,
     accountType: AccountType,

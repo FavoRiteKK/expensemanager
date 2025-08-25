@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.account.create
 
-import androidx.compose.animation.core.rememberTransition
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,9 +31,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import java.util.UUID
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 private val logger = KotlinLogging.logger {}
 private const val MAX_ACCOUNT_NAME_LENGTH = 30
@@ -185,7 +183,6 @@ class AccountCreateViewModel(
         }
     }
 
-    @OptIn(ExperimentalTime::class)
     private fun saveOrUpdateAccount() {
         val name: String = state.value.name.value
         val currentBalance: String = state.value.amount.value

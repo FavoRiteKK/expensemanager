@@ -5,17 +5,15 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 class MoveDateRangeForwardUseCase (
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 
-    @OptIn(ExperimentalTime::class)
     suspend operator fun invoke(type: DateRangeType): Resource<Boolean> {
         val dateRangeModel = dateRangeFilterRepository.getDateRangeFilterTypeString(type)
         var startTime = Instant.fromEpochMilliseconds(dateRangeModel.dateRanges[0])
@@ -32,7 +30,6 @@ class MoveDateRangeForwardUseCase (
     }
 }
 
-@OptIn(ExperimentalTime::class)
 fun Instant.addRespectiveFrame(
     type: DateRangeType,
     timeZone: TimeZone = TimeZone.currentSystemDefault()
@@ -58,7 +55,6 @@ fun Instant.addRespectiveFrame(
     }
 }
 
-@OptIn(ExperimentalTime::class)
 fun Instant.minusRespectiveFrame(
     type: DateRangeType,
     timeZone: TimeZone = TimeZone.currentSystemDefault()

@@ -60,11 +60,10 @@ import expensemanager.feature.budget4mp.generated.resources.budgets
 import expensemanager.feature.budget4mp.generated.resources.select_account
 import expensemanager.feature.budget4mp.generated.resources.select_category
 import expensemanager.feature.budget4mp.generated.resources.select_date
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @Composable
 fun BudgetCreateScreen(
@@ -306,7 +305,6 @@ fun BudgetCreateScreen(
     }
 }
 
-@OptIn(ExperimentalTime::class)
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun BudgetCreateStatePreview() {

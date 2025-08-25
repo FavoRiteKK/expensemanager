@@ -11,8 +11,7 @@ import com.naveenapps.expensemanager.core.database.entity.BudgetAccountEntity
 import com.naveenapps.expensemanager.core.database.entity.BudgetCategoryEntity
 import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
 import kotlinx.coroutines.flow.Flow
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+import kotlinx.datetime.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -53,7 +52,6 @@ interface BudgetDao : BaseDao<BudgetEntity> {
     @Update(onConflict = OnConflictStrategy.ABORT)
     suspend fun updateBudget(budgetEntity: BudgetEntity)
 
-    @OptIn(ExperimentalTime::class)
     @Transaction
     suspend fun insertBudget(
         budgetEntity: BudgetEntity,
@@ -92,7 +90,6 @@ interface BudgetDao : BaseDao<BudgetEntity> {
         return id
     }
 
-    @OptIn(ExperimentalTime::class)
     @Transaction
     suspend fun updateBudget(
         budgetEntity: BudgetEntity,

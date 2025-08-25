@@ -55,11 +55,10 @@ import com.naveenapps.expensemanager.feature.filter.FilterView
 import expensemanager.feature.transaction4mp.generated.resources.Res
 import expensemanager.feature.transaction4mp.generated.resources.no_transactions_available
 import expensemanager.feature.transaction4mp.generated.resources.transaction
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @Composable
 fun TransactionListScreen(
@@ -404,7 +403,6 @@ val DUMMY_DATA = listOf(
     getTransactionUiState(),
 )
 
-@OptIn(ExperimentalTime::class)
 fun getTransactionItem() = TransactionUiItem(
     id = "1",
     notes = "Sample Description",

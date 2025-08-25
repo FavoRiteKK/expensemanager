@@ -19,11 +19,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 class GetChartDataUseCase(
     private val getCurrencyUseCase: GetCurrencyUseCase,
@@ -33,7 +32,6 @@ class GetChartDataUseCase(
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val dispatcher: AppCoroutineDispatchers,
 ) {
-    @OptIn(ExperimentalTime::class)
     fun invoke(): Flow<AnalysisData> {
         return combine(
             getDateRangeUseCase.invoke(),
@@ -119,7 +117,6 @@ class GetChartDataUseCase(
         }.flowOn(dispatcher.computation)
     }
 
-    @OptIn(ExperimentalTime::class)
     private fun getAdjustedDateTime(
         groupType: GroupType,
         fromDate: Instant,

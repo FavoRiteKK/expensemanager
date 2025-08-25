@@ -1,6 +1,6 @@
 [versions]
 accompanist = "0.34.0"
-alarmee = "2.2.0"
+alarmee = "2.1.2"                   # 2.2.0 not compatible with compose-multiplatform 1.8.2, since it uses kotlinx-datetime-0.7.1
 androidDesugarJdkLibs = "2.0.4"
 androidGradlePlugin = "8.8.0"
 androidxActivity = "1.10.1"
@@ -58,11 +58,11 @@ hilt = "2.55"
 hiltExt = "1.2.0"
 jacoco = "0.8.12"
 junit4 = "4.13.2"
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 kotlinxCoroutines = "1.10.2"
-kotlinxDatetime = "0.7.1"
+kotlinxDatetime = "0.6.2"           # 0.7.1 not compatible with compose-multiplatform 1.8.2
 kotlinxSerializationJson = "1.7.3"
-ksp = "2.1.21-2.0.2"
+ksp = "2.2.0-2.0.2"
 lint = "31.10.0"
 okhttp = "4.12.0"
 retrofit = "2.11.0"

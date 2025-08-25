@@ -25,13 +25,12 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import expensemanager.core.designsystem4mp.generated.resources.Res
 import expensemanager.core.designsystem4mp.generated.resources.cancel
 import expensemanager.core.designsystem4mp.generated.resources.select
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDatePickerDialog(
     selectedDate: LocalDateTime,
@@ -78,7 +77,6 @@ fun AppDatePickerDialog(
     }
 }
 
-@OptIn(ExperimentalTime::class)
 @Composable
 @Preview
 fun AppDatePickerDialogPreview() {
