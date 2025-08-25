@@ -46,6 +46,4 @@ sealed class TransactionCreateAction {
     data object ShowDateSelection : TransactionCreateAction()
 
     data object DismissDateSelection : TransactionCreateAction()
-
-    data object ShowTimeSelection : TransactionCreateAction()
 }

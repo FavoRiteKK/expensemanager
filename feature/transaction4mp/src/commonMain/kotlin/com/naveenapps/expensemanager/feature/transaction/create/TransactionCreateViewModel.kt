@@ -97,7 +97,6 @@ class TransactionCreateViewModel(
             showCategorySelection = false,
             showAccountSelection = false,
             showNumberPad = false,
-            showTimeSelection = false,
             showDateSelection = false,
             accountSelection = AccountSelection.FROM_ACCOUNT
         )
@@ -451,7 +450,6 @@ class TransactionCreateViewModel(
                 _state.update {
                     it.copy(
                         showDateSelection = false,
-                        showTimeSelection = false
                     )
                 }
             }
@@ -461,17 +459,12 @@ class TransactionCreateViewModel(
                     it.copy(
                         dateTime = action.date,
                         showDateSelection = false,
-                        showTimeSelection = false
                     )
                 }
             }
 
             TransactionCreateAction.ShowDateSelection -> {
                 _state.update { it.copy(showDateSelection = true) }
-            }
-
-            TransactionCreateAction.ShowTimeSelection -> {
-                _state.update { it.copy(showTimeSelection = true) }
             }
         }
     }

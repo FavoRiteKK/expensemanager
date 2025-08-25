@@ -25,7 +25,6 @@ data class TransactionCreateState(
     val showCategorySelection: Boolean,
     val showAccountSelection: Boolean,
     val showDateSelection: Boolean,
-    val showTimeSelection: Boolean,
 )
 
 enum class AccountSelection {
