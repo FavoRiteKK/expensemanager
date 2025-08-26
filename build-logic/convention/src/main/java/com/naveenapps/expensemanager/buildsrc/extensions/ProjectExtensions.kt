@@ -97,13 +97,16 @@ fun Project.configureBasicMultiplatformExtension() {
                     )
                 }
             }
-//            androidMain {
-//                dependencies {
-//                    implementation(
-//                        libs.findLibrary("kotlin.logging.android").get()
-//                    )
-//                }
-//            }
+            androidMain {
+                dependencies {
+                    implementation(
+                        libs.findLibrary("slf4j.api").get()
+                    )
+                    implementation(
+                        libs.findLibrary("slf4j.simple").get()
+                    )
+                }
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.core.data.utils
 
-import androidx.compose.ui.graphics.Color
 import com.naveenapps.expensemanager.core.data.repository.defaultCurrency
+import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -32,12 +32,23 @@ class CurrencyExtTest : BaseCoroutineTest() {
         assertEquals("0.0$", formattedAmount)
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
+    /**
+     * Change com.naveenapps.expensemanager.core.common.Platform_androidKt.LWLocale_getDefault
+     * to returns Locale.FRANCE before running this test.
+     */
     @Test
-    fun parseColorTest() {
-        val h = "#ff00ff00"
-        val format = HexFormat { number.prefix = "#" }
+    fun getCurrencyWithFrenchLocale() = runTest {
+        val amount = 1234.5678
+        val formattedAmount = getCurrency(
+            currency = Currency(
+                symbol = "€",
+                name = "Euro",
+            ),
+            amount = amount,
+        )
 
-        assertEquals(Color.Green.value, h.hexToULong(format))
+        assertNotNull(formattedAmount)
+        // Expected :€1 234,6
+        assertEquals("€1 234,6", formattedAmount)
     }
 }

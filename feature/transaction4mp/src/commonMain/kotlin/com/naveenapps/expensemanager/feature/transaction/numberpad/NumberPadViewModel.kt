@@ -2,7 +2,9 @@ package com.naveenapps.expensemanager.feature.transaction.numberpad
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.LWNumberFormat_getNumberInstance
 import com.naveenapps.expensemanager.core.common.LWString_format
+import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -139,7 +141,12 @@ class NumberPadViewModel : ViewModel() {
         kotlin.runCatching {
             evaluate(newString)
         }.onSuccess {
-            _calculatedAmount.value = LWString_format("%.2f", it)
+            _calculatedAmount.value = LWNumberFormat_getNumberInstance().format(
+                LWString_format(
+                    "%.2f",
+                    it,
+                ).toDoubleOrNullWithLocale(),
+            )
             _calculatedAmountString.value = newString
         }.onFailure {
             _calculatedAmountString.value = newString
