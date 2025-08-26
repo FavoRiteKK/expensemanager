@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.notification
 
 import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
+import com.naveenapps.expensemanager.core.repository.PlatformRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.tweener.alarmee.createAlarmeeService
 import com.tweener.alarmee.model.Alarmee
@@ -14,10 +15,15 @@ import kotlinx.datetime.LocalTime
 
 class NotificationScheduler(
     private val reminderTimeRepository: ReminderTimeRepository,
+    private val platformRepository: PlatformRepository,
 ) {
     private val localService by lazy {
         val alarmeeService = createAlarmeeService()
-        alarmeeService.initialize(platformConfiguration = createAlarmPlatformConfiguration())
+        alarmeeService.initialize(
+            platformConfiguration = createAlarmPlatformConfiguration(
+                icon = platformRepository.icLogReminderIdRes,
+            )
+        )
         alarmeeService.local
     }
 
@@ -37,7 +43,6 @@ class NotificationScheduler(
                 iosNotificationConfiguration = IosNotificationConfiguration(),
             )
         )
-
     }
 
     fun cancelReminder() {

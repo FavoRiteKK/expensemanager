@@ -10,17 +10,20 @@ import com.naveenapps.expensemanager.core.data4mp.R
 import com.naveenapps.expensemanager.core.repository.PlatformRepository
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
-import dev.icerock.moko.permissions.Permission
-import dev.icerock.moko.permissions.storage.WriteStoragePermission
 import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.storage.WriteStoragePermission
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 actual fun platformRepository(): Module = module {
-    singleOf(::PlatformRepositoryImpl) bind PlatformRepository::class
+    single<PlatformRepository> {
+        PlatformRepositoryImpl(
+            context = androidContext(),
+            icLogReminderIdRes = get(qualifier = named("ICON_LOG_REMINDER"))
+        )
+    }
     single<LWPermissionsController> {
         val p = PermissionsController(androidContext().applicationContext)
         p.bind(get<ComponentActivity>())
@@ -28,7 +31,10 @@ actual fun platformRepository(): Module = module {
     }
 }
 
-internal class PlatformRepositoryImpl(private val context: Context) : PlatformRepository {
+internal class PlatformRepositoryImpl(
+    private val context: Context,
+    override val icLogReminderIdRes: Int
+) : PlatformRepository {
     override fun openWebPage(url: String) {
         try {
             val intent = Intent(Intent.ACTION_VIEW, url.toUri())
@@ -50,7 +56,7 @@ internal class PlatformRepositoryImpl(private val context: Context) : PlatformRe
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
             context.startActivity(Intent.createChooser(shareIntent, "choose one"))
         } catch (e: Exception) {
-            //e.toString();
+            Log.w(null, "Something went wrong", e)
         }
     }
 
@@ -65,8 +71,7 @@ internal class PlatformRepositoryImpl(private val context: Context) : PlatformRe
             intent.putExtra(Intent.EXTRA_TEXT, "email_body")
             context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            // Define what your app should do if no activity can handle the intent.
-
+            Log.w(null, "Something went wrong", e)
         }
     }
 }

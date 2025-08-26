@@ -2,20 +2,21 @@ package com.naveenapps.expensemanager.core.data.di
 
 import com.naveenapps.expensemanager.core.repository.PlatformRepository
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
 import org.koin.dsl.module
 import java.awt.Desktop
 import java.net.URI
 
 actual fun platformRepository(): Module = module {
-    singleOf(::PlatformRepositoryImpl) bind PlatformRepository::class
+    single<PlatformRepository> {
+        PlatformRepositoryImpl(icLogReminderIdRes = 0x0F)
+    }
     single<LWPermissionsController> {
         LWPermissionsControllerImpl()
     }
 }
 
-internal class PlatformRepositoryImpl : PlatformRepository {
+internal class PlatformRepositoryImpl(override val icLogReminderIdRes: Int) : PlatformRepository {
+
     override fun openWebPage(url: String) {
         val desktop = Desktop.getDesktop()
         if (Desktop.isDesktopSupported() && desktop.isSupported(Desktop.Action.BROWSE)) {
