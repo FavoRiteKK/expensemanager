@@ -15,5 +15,5 @@ object NotificationId {
 }
 
 object NotificationChannelId {
-    const val CHANNEL_GENERAL = "General"
+    const val CHANNEL_GENERAL = "Reminder"
 }

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import io.github.vinceglb.filekit.dialogs.init
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 class MainActivity : ComponentActivity() {
@@ -20,6 +21,9 @@ class MainActivity : ComponentActivity() {
                     modules(
                         module {
                             single<ComponentActivity> { this@MainActivity }
+                            single<Int>(qualifier = named("ICON_LOG_REMINDER")) {
+                                R.drawable.ic_stat_name
+                            }
                         }
                     )
                 }
