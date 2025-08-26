@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.common.utils.GREEN_500
 import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
+import com.naveenapps.expensemanager.core.data.utils.getNumberFormat
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -48,6 +49,8 @@ import kotlinx.datetime.LocalDateTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
+private const val MAX_AMOUNT_LENGTH = 12
+
 class TransactionCreateViewModel(
     savedStateHandle: SavedStateHandle,
     getCurrencyUseCase: GetCurrencyUseCase,
@@ -79,6 +82,7 @@ class TransactionCreateViewModel(
                 valueError = false,
                 onValueChange = this::setAmountOnChange
             ),
+            prettyAmount = "",
             notes = TextFieldValue(
                 value = "",
                 valueError = false,
@@ -305,16 +309,21 @@ class TransactionCreateViewModel(
     }
 
     private fun setAmountOnChange(amount: String) {
-        val amountValue = amount.toDoubleOrNullWithLocale()
-        _state.update {
-            it.copy(
-                amount = it.amount.copy(
-                    value = amount,
-                    valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0
-                ),
-                showNumberPad = false
-            )
-        }
+        amount.filter { !it.isLetter() }
+            .take(MAX_AMOUNT_LENGTH)
+            .let { value ->
+                val amountValue = value.toDoubleOrNullWithLocale()
+                _state.update {
+                    it.copy(
+                        amount = it.amount.copy(
+                            value = value,
+                            valueError = amountValue == null || amountValue <= 0.0
+                        ),
+                        prettyAmount = getNumberFormat(it.currency, value),
+                        showNumberPad = false
+                    )
+                }
+            }
     }
 
     private fun setDate(date: LocalDateTime) {

@@ -46,6 +46,22 @@ class TestMultiplatformPlugin : Plugin<Project> {
                             )
                         }
                     }
+                    getByName("androidHostTest") {
+                        dependencies {
+                            implementation(
+                                libs.findLibrary("androidx.test.core").get()
+                            )
+                            implementation(
+                                libs.findLibrary("androidx.test.ext").get()
+                            )
+                            implementation(
+                                libs.findLibrary("androidx.test.runner").get()
+                            )
+                            implementation(
+                                libs.findLibrary("robolectric").get()
+                            )
+                        }
+                    }
                 }
             }
 

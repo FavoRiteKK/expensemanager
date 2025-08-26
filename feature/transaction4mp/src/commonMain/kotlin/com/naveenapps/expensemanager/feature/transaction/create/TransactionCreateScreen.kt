@@ -265,7 +265,11 @@ private fun TransactionCreateScreen(
             onValueChange = state.amount.onValueChange,
             leadingIconText = state.currency.symbol,
             label = Res.string.amount,
-            errorMessage = stringResource(resource = Res.string.amount_error_message),
+            supportingText = if (state.amount.valueError) {
+                stringResource(resource = Res.string.amount_error_message)
+            } else {
+                state.prettyAmount
+            },
             trailingIcon = {
                 IconButton(
                     onClick = {

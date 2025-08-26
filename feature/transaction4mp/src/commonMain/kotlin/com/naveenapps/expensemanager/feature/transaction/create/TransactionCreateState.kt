@@ -9,6 +9,7 @@ import kotlinx.datetime.LocalDateTime
 
 data class TransactionCreateState(
     val amount: TextFieldValue<String>,
+    val prettyAmount: String,
     val notes: TextFieldValue<String>,
     val dateTime: LocalDateTime,
     val transactionType: TransactionType,

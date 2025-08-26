@@ -43,3 +43,18 @@ fun getCurrency(
         }
     }
 }
+
+fun getNumberFormat(
+    currency: Currency,
+    amount: String,
+): String {
+
+    return "= " + when (currency.format) {
+        TextFormat.NONE -> amount
+        TextFormat.NUMBER_FORMAT -> {
+            LWNumberFormat_getNumberInstance().format(
+                amount.toDoubleOrNullWithLocale(),
+            )
+        }
+    }
+}

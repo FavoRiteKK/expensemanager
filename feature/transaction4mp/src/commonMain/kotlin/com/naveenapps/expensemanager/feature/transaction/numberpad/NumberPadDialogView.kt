@@ -86,17 +86,18 @@ fun NumberPadScreen(
 ) {
     val viewModel: NumberPadViewModel = koinViewModel()
     val calculatedAmount by viewModel.calculatedAmount.collectAsState()
+    val (value, prettyValue) = calculatedAmount
     val calculatedAmountString by viewModel.calculatedAmountString.collectAsState()
 
     NumberPadScreenView(
         modifier = Modifier.wrapContentHeight(),
-        value = calculatedAmount,
+        value = prettyValue,
         amountString = calculatedAmountString,
         onChange = {
             viewModel.appendString(it)
         },
         confirm = {
-            onConfirm.invoke(calculatedAmount)
+            onConfirm.invoke(value)
         },
         cancel = {
             onConfirm.invoke("0")

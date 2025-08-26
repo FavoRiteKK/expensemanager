@@ -8,6 +8,7 @@ import com.naveenapps.expensemanager.core.common.utils.RED_500
 import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
+import com.naveenapps.expensemanager.core.data.utils.getNumberFormat
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
@@ -36,7 +37,7 @@ import java.util.UUID
 
 private val logger = KotlinLogging.logger {}
 private const val MAX_ACCOUNT_NAME_LENGTH = 30
-private const val MAX_AMOUNT_LENGTH = 16
+private const val MAX_AMOUNT_LENGTH = 12
 
 class AccountCreateViewModel(
     savedStateHandle: SavedStateHandle,
@@ -82,6 +83,8 @@ class AccountCreateViewModel(
                 valueError = false,
                 onValueChange = this::setCreditLimitChange
             ),
+            prettyAmount = "",
+            prettyCreditLimit = "",
             totalAmountBackgroundColor = GREEN_500,
             currency = getDefaultCurrencyUseCase.invoke(),
             totalAmount = "",
@@ -277,7 +280,7 @@ class AccountCreateViewModel(
     }
 
     private fun setAmount(amount: String) {
-        amount.filter { it.isDigit() }
+        amount.filter { !it.isLetter() }
             .take(MAX_AMOUNT_LENGTH)
             .let { value ->
                 val totalAmount =
@@ -285,7 +288,11 @@ class AccountCreateViewModel(
 
                 _state.update {
                     it.copy(
-                        amount = it.amount.copy(value = value, valueError = value.isBlank()),
+                        amount = it.amount.copy(
+                            value = value,
+                            valueError = value.toDoubleOrNullWithLocale()
+                                .let { v -> v == null || v <= 0.0 }),
+                        prettyAmount = getNumberFormat(it.currency, value),
                         totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
                         totalAmount = getAmountValue(totalAmount).amountString ?: ""
                     )
@@ -302,7 +309,7 @@ class AccountCreateViewModel(
     }
 
     private fun setCreditLimitChange(creditLimit: String) {
-        creditLimit.filter { it.isDigit() }
+        creditLimit.filter { !it.isLetter() }
             .take(MAX_AMOUNT_LENGTH)
             .let { value ->
                 val totalAmount = getTotalAmount(value, _state.value.amount.value)
@@ -311,8 +318,10 @@ class AccountCreateViewModel(
                     it.copy(
                         creditLimit = it.creditLimit.copy(
                             value = value,
-                            valueError = value.isBlank()
+                            valueError = value.toDoubleOrNullWithLocale()
+                                .let { v -> v == null || v < 0.0 }
                         ),
+                        prettyCreditLimit = getNumberFormat(it.currency, value),
                         totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
                         totalAmount = getAmountValue(totalAmount).amountString ?: ""
                     )

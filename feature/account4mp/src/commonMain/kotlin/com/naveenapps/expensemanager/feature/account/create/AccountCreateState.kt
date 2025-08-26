@@ -11,6 +11,8 @@ data class AccountCreateState(
     val icon: TextFieldValue<String>,
     val creditLimit: TextFieldValue<String>,
     val amount: TextFieldValue<String>,
+    val prettyAmount: String,
+    val prettyCreditLimit: String,
     val currency: Currency,
     val totalAmount: String,
     val totalAmountBackgroundColor: Int,

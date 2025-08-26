@@ -3,8 +3,8 @@ package com.naveenapps.expensemanager.core.common
 expect fun platform(): String
 
 expect abstract class LWNumberFormat {
-    fun format(number: Double): String?
-    fun format(number: Any?): String?
+    fun format(number: Double): String
+    fun format(number: Any?): String
 }
 
 expect class LWLocale

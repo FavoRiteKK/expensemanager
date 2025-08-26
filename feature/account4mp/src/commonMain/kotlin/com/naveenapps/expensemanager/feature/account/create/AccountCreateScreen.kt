@@ -7,11 +7,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -102,11 +106,13 @@ private fun AccountCreateScaffoldView(
                 .padding(innerPadding),
             name = state.name,
             amount = state.amount,
+            prettyAmount = state.prettyAmount,
             type = state.type,
             currency = state.currency,
             color = state.color,
             icon = state.icon,
             creditLimit = state.creditLimit,
+            prettyCreditLimit = state.prettyCreditLimit,
             totalAmount = state.totalAmount,
             totalAmountBackgroundColor = state.totalAmountBackgroundColor
         )
@@ -118,15 +124,17 @@ private fun AccountCreateScreen(
     modifier: Modifier = Modifier,
     name: TextFieldValue<String>,
     amount: TextFieldValue<String>,
+    prettyAmount: String,
     type: TextFieldValue<AccountType>,
     currency: Currency,
     color: TextFieldValue<String>,
     icon: TextFieldValue<String>,
     creditLimit: TextFieldValue<String>,
+    prettyCreditLimit: String,
     totalAmount: String,
     totalAmountBackgroundColor: Int,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         AccountTypeSelectionView(
             modifier = Modifier
                 .fillMaxWidth()
@@ -144,6 +152,14 @@ private fun AccountCreateScreen(
             onValueChange = name.onValueChange,
             label = Res.string.account_name,
             errorMessage = stringResource(resource = Res.string.account_name_error),
+            trailingIcon = {
+                IconButton(onClick = { name.onValueChange?.invoke("") }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Clear,
+                        contentDescription = "",
+                    )
+                }
+            },
         )
 
         IconAndColorComponent(
@@ -162,9 +178,21 @@ private fun AccountCreateScreen(
                 .fillMaxWidth(),
             value = amount.value,
             isError = amount.valueError,
-            errorMessage = stringResource(resource = Res.string.current_balance_error),
+            supportingText = if (amount.valueError) {
+                stringResource(resource = Res.string.current_balance_error)
+            } else {
+                prettyAmount
+            },
             onValueChange = amount.onValueChange,
             leadingIconText = currency.symbol,
+            trailingIcon = {
+                IconButton(onClick = { amount.onValueChange?.invoke("") }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Clear,
+                        contentDescription = "",
+                    )
+                }
+            },
             label = Res.string.current_balance,
         )
 
@@ -175,9 +203,21 @@ private fun AccountCreateScreen(
                     .fillMaxWidth(),
                 value = creditLimit.value,
                 isError = creditLimit.valueError,
-                errorMessage = stringResource(resource = Res.string.credit_limit_error),
+                supportingText = if (creditLimit.valueError) {
+                    stringResource(resource = Res.string.credit_limit_error)
+                } else {
+                    prettyCreditLimit
+                },
                 onValueChange = creditLimit.onValueChange,
                 leadingIconText = currency.symbol,
+                trailingIcon = {
+                    IconButton(onClick = { creditLimit.onValueChange?.invoke("") }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription = "",
+                        )
+                    }
+                },
                 label = Res.string.credit_limit,
             )
         }
@@ -236,10 +276,12 @@ private fun AccountCreateStatePreview() {
                 color = selectedColorField,
                 icon = selectedIconField,
                 creditLimit = nameField,
+                prettyCreditLimit = "",
                 currency = Currency("$", ""),
                 totalAmount = "$ 0.0",
                 totalAmountBackgroundColor = GREEN_500,
                 amount = nameField,
+                prettyAmount = "",
                 showDeleteButton = false,
                 showDeleteDialog = false,
             ),

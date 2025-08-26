@@ -106,6 +106,7 @@ fun StringTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     singleLine: Boolean = true,
     errorMessage: String = "",
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -124,6 +125,7 @@ fun StringTextField(
         } else {
             null
         },
+        trailingIcon = trailingIcon,
     )
 }
 
@@ -174,6 +176,57 @@ fun DecimalTextField(
             { Text(text = errorMessage) }
         } else {
             null
+        },
+    )
+}
+
+@Composable
+fun DecimalTextField(
+    value: String,
+    isError: Boolean,
+    onValueChange: ((String) -> Unit)?,
+    leadingIconText: String?,
+    label: StringResource,
+    modifier: Modifier = Modifier,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    supportingText: String? = null,
+) {
+    val focusManager = LocalFocusManager.current
+
+    OutlinedTextField(
+        modifier = modifier,
+        value = value,
+        singleLine = true,
+        leadingIcon = if (leadingIconText != null) {
+            {
+                Text(
+                    text = leadingIconText,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            }
+        } else {
+            null
+        },
+        trailingIcon = trailingIcon,
+        label = {
+            Text(text = stringResource(resource = label))
+        },
+        onValueChange = {
+            onValueChange?.invoke(it)
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Decimal,
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus(force = true)
+            },
+        ),
+        isError = isError,
+        supportingText = if (supportingText.isNullOrEmpty()) {
+            null
+        } else {
+            { Text(text = supportingText) }
         },
     )
 }

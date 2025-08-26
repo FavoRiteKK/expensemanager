@@ -2,7 +2,9 @@ package com.naveenapps.expensemanager.feature.transaction.numberpad
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.LWNumberFormat_getNumberInstance
 import com.naveenapps.expensemanager.core.common.LWString_format
+import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -14,7 +16,7 @@ import kotlin.math.tan
 
 class NumberPadViewModel : ViewModel() {
 
-    private val _calculatedAmount = MutableStateFlow("0")
+    private val _calculatedAmount = MutableStateFlow("0" to "0")
     val calculatedAmount = _calculatedAmount.asStateFlow()
 
     private val _calculatedAmountString = MutableStateFlow("")
@@ -139,7 +141,14 @@ class NumberPadViewModel : ViewModel() {
         kotlin.runCatching {
             evaluate(newString)
         }.onSuccess {
-            _calculatedAmount.value = LWString_format("%.2f", it)
+            val amountStr = LWString_format("%.2f", it)
+            _calculatedAmount.value = Pair(
+                first = amountStr,  //origin
+                second =            //pretty
+                    LWNumberFormat_getNumberInstance().format(
+                        amountStr.toDoubleOrNullWithLocale(),
+                    )
+            )
             _calculatedAmountString.value = newString
         }.onFailure {
             _calculatedAmountString.value = newString
@@ -163,7 +172,7 @@ class NumberPadViewModel : ViewModel() {
 
     fun clearAmount() {
         viewModelScope.launch {
-            _calculatedAmount.value = "0"
+            _calculatedAmount.value = "0" to "0"
             _calculatedAmountString.value = ""
         }
     }
