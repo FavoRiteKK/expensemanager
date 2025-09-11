@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.common.utils.GREEN_500
 import com.naveenapps.expensemanager.core.common.utils.RED_500
+import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.designsystem.AppPreviews
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
@@ -40,9 +41,12 @@ import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianMeasuringContext
+import com.patrykandpatrick.vico.multiplatform.cartesian.axis.Axis
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.multiplatform.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.multiplatform.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.multiplatform.cartesian.layer.rememberLine
@@ -203,6 +207,16 @@ private fun AverageAmountItems(
     }
 }
 
+private val startAxisValueFormatter = object : CartesianValueFormatter {
+    override fun format(
+        context: CartesianMeasuringContext,
+        value: Double,
+        verticalAxisPosition: Axis.Position.Vertical?
+    ): CharSequence {
+        return value.toStringWithLocale()
+    }
+}
+
 @Composable
 fun ChartScreen(
     chart: AnalysisUiChartData?,
@@ -227,7 +241,7 @@ fun ChartScreen(
     }
     ProvideVicoTheme(rememberChartTheme(chartColors, isDarkTheme)) {
         CartesianChartHost(
-            modifier = modifier,
+            modifier = modifier.padding(top = 16.dp),
             chart = rememberCartesianChart(
                 rememberLineCartesianLayer(
                     lineProvider = LineCartesianLayer.LineProvider.series(
@@ -259,9 +273,13 @@ fun ChartScreen(
                         ),
                     )
                 ),
-                startAxis = VerticalAxis.rememberStart(),
+                startAxis = VerticalAxis.rememberStart(
+                    valueFormatter = remember {
+                        startAxisValueFormatter
+                    }
+                ),
                 bottomAxis = HorizontalAxis.rememberBottom(),
-                marker = marker
+                marker = marker,
             ),
             modelProducer = modelProducer,
         )

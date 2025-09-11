@@ -7,11 +7,14 @@ const val ORANGE_500 = 0xFFFF9800.toInt()
 const val BLACK_100 = 0x10000000    //below 0x80xxxxxx is Int
 const val BLUE_500 = 0xFF166EF7.toInt()
 
-fun Double.getAmountTextColor() = if (this < 0) {
-    RED_500
-} else {
-    GREEN_500
-}.toInt()
+fun Double.getAmountTextColor(): Int {
+    val d: Double = this
+    return if (d < 0) {
+        RED_500
+    } else {
+        GREEN_500
+    }.toInt()
+}
 
 fun Int.toColorString(): String {
     val hex = (this.toLong() and 0xFFFFFFFF).toString(16).uppercase()

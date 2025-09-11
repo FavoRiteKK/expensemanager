@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.core.common.utils
 
+import com.naveenapps.expensemanager.core.common.LWNumberFormat_getNumberInstance
 import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.pow
@@ -69,7 +70,7 @@ fun String?.toDoubleOrNullWithLocale(): Double? {
 
 fun Double.toStringWithLocale(): String {
     return try {
-        return this.toString()
+        return LWNumberFormat_getNumberInstance().format(this)
     } catch (e: Exception) {
         "0.0"
     }

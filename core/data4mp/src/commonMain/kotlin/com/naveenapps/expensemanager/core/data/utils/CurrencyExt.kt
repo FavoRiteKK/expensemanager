@@ -47,9 +47,10 @@ fun getCurrency(
 fun getNumberFormat(
     currency: Currency,
     amount: String,
+    prefix: String = "= ",
 ): String {
 
-    return "= " + when (currency.format) {
+    return prefix + when (currency.format) {
         TextFormat.NONE -> amount
         TextFormat.NUMBER_FORMAT -> {
             LWNumberFormat_getNumberInstance().format(
