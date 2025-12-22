@@ -22,7 +22,13 @@ class CurrencyExtTest : BaseCoroutineTest() {
 
     @Test
     fun getCurrencyWithDefaultLocale() = runTest {
-        val amount = 0.0
+        //Account(id=1, name=Cash, type=REGULAR, storedIcon=StoredIcon(name=savings, backgroundColor=#4CAF50),
+        // createdOn=2025-11-29T09:58:43.370, updatedOn=2025-11-29T09:58:43.370, sequence=2147483647,
+        // amount=-90000.0, creditLimit=0.0)
+        //AccountUiModel(id=1, name=Cash, storedIcon=StoredIcon(name=savings, backgroundColor=#4CAF50),
+        // amount=Amount(amount=-90000.0, amountString=0$, currency=Currency(symbol=$, name=US Dollars,
+        // position=SUFFIX, format=NUMBER_FORMAT, namePlural=, nativeSymbol=)), amountTextColor=-769226, type=REGULAR, availableCreditLimit=null)
+        val amount = 90_000.0
         val formattedAmount = getCurrency(
             defaultCurrency,
             amount,

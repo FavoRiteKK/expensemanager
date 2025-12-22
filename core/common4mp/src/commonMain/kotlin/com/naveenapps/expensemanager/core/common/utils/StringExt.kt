@@ -64,6 +64,7 @@ fun String?.toDoubleOrNullWithLocale(): Double? {
     return try {
         this.toDoubleOrNull() ?: 0.0
     } catch (e: Exception) {
+        println("Parse failed: ${e.message}")
         null
     }
 }

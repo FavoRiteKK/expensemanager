@@ -16,12 +16,7 @@ fun getCurrency(
     val currencyFormatted = when (currency.format) {
         TextFormat.NONE -> LWString_format(reduceDigitFormat, amount)
         TextFormat.NUMBER_FORMAT -> {
-            LWNumberFormat_getNumberInstance().format(
-                LWString_format(
-                    reduceDigitFormat,
-                    amount,
-                ).toDoubleOrNullWithLocale(),
-            )
+            LWNumberFormat_getNumberInstance().format(amount)
         }
     }
 

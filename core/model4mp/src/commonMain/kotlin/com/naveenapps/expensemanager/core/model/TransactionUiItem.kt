@@ -26,11 +26,11 @@ data class TransactionUiItem(
 
 fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem {
     return TransactionUiItem(
-        this.id,
-        amount,
-        this.notes,
-        this.category.name,
-        this.type,
+        id = this.id,
+        amount = amount,
+        notes = this.notes,
+        categoryName = this.category.name,
+        transactionType = this.type,
         categoryIcon = this.category.storedIcon,
         date = this.createdOn.toCompleteDateWithDate(),
         fromAccountName = this.fromAccount.name,
