@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.GREEN_500
 import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
-import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
+import com.naveenapps.expensemanager.core.common.utils.toSimpleString
 import com.naveenapps.expensemanager.core.data.utils.getNumberFormat
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
@@ -78,7 +78,7 @@ class TransactionCreateViewModel(
     private val _state = MutableStateFlow(
         TransactionCreateState(
             amount = TextFieldValue(
-                value = 0.0.toStringWithLocale(),
+                value = 0.0.toSimpleString(),
                 valueError = false,
                 onValueChange = this::setAmountOnChange
             ),
@@ -219,7 +219,7 @@ class TransactionCreateViewModel(
                     this@TransactionCreateViewModel.transactionType.value = transaction.type
                     _state.update {
                         it.copy(
-                            amount = it.amount.copy(value = transaction.amount.amount.toStringWithLocale()),
+                            amount = it.amount.copy(value = transaction.amount.amount.toSimpleString()),
                             transactionType = transaction.type,
                             dateTime = transaction.createdOn,
                             notes = it.notes.copy(value = transaction.notes),

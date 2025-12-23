@@ -110,29 +110,29 @@ fun NewColorIconAmountView(
     }
 }
 
-@Preview
-@Composable
-private fun AmountStatusViewPreview() {
-    val amount = "10000000.0$"
-    ExpenseManagerTheme {
-        Column {
-            AmountStatusView(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                expenseAmount = amount,
-                incomeAmount = amount,
-                balanceAmount = amount,
-            )
-            AmountStatusView(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                expenseAmount = amount,
-                incomeAmount = amount,
-                balanceAmount = amount,
-                showBalance = true,
-            )
-        }
-    }
-}
+//@Preview
+//@Composable
+//private fun AmountStatusViewPreview() {
+//    val amount = "10000000.0$"
+//    ExpenseManagerTheme {
+//        Column {
+//            AmountStatusView(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(16.dp),
+//                expenseAmount = amount,
+//                incomeAmount = amount,
+//                balanceAmount = amount,
+//            )
+//            AmountStatusView(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(16.dp),
+//                expenseAmount = amount,
+//                incomeAmount = amount,
+//                balanceAmount = amount,
+//                showBalance = true,
+//            )
+//        }
+//    }
+//}

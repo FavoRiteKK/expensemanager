@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.common.utils
 
 import com.naveenapps.expensemanager.core.common.LWNumberFormat_getNumberInstance
+import com.naveenapps.expensemanager.core.common.LWString_format
 import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.pow
@@ -76,3 +77,6 @@ fun Double.toStringWithLocale(): String {
         "0.0"
     }
 }
+
+fun Double.toSimpleString() =
+    if (this % 1.0 == 0.0) this.toLong().toString() else LWString_format("%.3f", this)

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.LWNumberFormat_getNumberInstance
 import com.naveenapps.expensemanager.core.common.LWString_format
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
+import com.naveenapps.expensemanager.core.common.utils.toSimpleString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -141,7 +142,7 @@ class NumberPadViewModel : ViewModel() {
         kotlin.runCatching {
             evaluate(newString)
         }.onSuccess {
-            val amountStr = LWString_format("%.2f", it)
+            val amountStr = it.toSimpleString()
             _calculatedAmount.value = Pair(
                 first = amountStr,  //origin
                 second =            //pretty

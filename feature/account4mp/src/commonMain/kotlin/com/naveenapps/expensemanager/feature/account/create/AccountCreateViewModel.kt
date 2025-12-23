@@ -7,7 +7,7 @@ import com.naveenapps.expensemanager.core.common.utils.GREEN_500
 import com.naveenapps.expensemanager.core.common.utils.RED_500
 import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
-import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
+import com.naveenapps.expensemanager.core.common.utils.toSimpleString
 import com.naveenapps.expensemanager.core.data.utils.getNumberFormat
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
@@ -142,8 +142,8 @@ class AccountCreateViewModel(
                     type = it.type.copy(value = accountItem.type),
                     color = it.color.copy(value = accountItem.storedIcon.backgroundColor),
                     icon = it.icon.copy(value = accountItem.storedIcon.name),
-                    amount = it.amount.copy(value = accountItem.amount.toStringWithLocale()),
-                    creditLimit = it.creditLimit.copy(value = accountItem.creditLimit.toStringWithLocale()),
+                    amount = it.amount.copy(value = accountItem.amount.toSimpleString()),
+                    creditLimit = it.creditLimit.copy(value = accountItem.creditLimit.toSimpleString()),
                     totalAmount = getAmountValue(totalAmount, _state.value.currency).amountString
                         ?: "",
                     totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),

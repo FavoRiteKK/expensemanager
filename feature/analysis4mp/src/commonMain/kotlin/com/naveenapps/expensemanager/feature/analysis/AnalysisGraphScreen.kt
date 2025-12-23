@@ -207,15 +207,8 @@ private fun AverageAmountItems(
     }
 }
 
-private val startAxisValueFormatter = object : CartesianValueFormatter {
-    override fun format(
-        context: CartesianMeasuringContext,
-        value: Double,
-        verticalAxisPosition: Axis.Position.Vertical?
-    ): CharSequence {
-        return value.toStringWithLocale()
-    }
-}
+private val startAxisValueFormatter =
+    CartesianValueFormatter { _, value, _ -> value.toStringWithLocale() }
 
 @Composable
 fun ChartScreen(

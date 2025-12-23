@@ -7,7 +7,7 @@ import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
 import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
-import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
+import com.naveenapps.expensemanager.core.common.utils.toSimpleString
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.DeleteBudgetUseCase
@@ -136,12 +136,12 @@ class BudgetCreateViewModel(
         _state.update {
             it.copy(
                 isLoading = false,
-                name = it.name.copy(budget.name),
-                amount = it.amount.copy(budget.amount.toStringWithLocale()),
-                icon = it.icon.copy(budget.storedIcon.name),
-                color = it.color.copy(budget.storedIcon.backgroundColor),
+                name = it.name.copy(value = budget.name),
+                amount = it.amount.copy(value = budget.amount.toSimpleString()),
+                icon = it.icon.copy(value = budget.storedIcon.name),
+                color = it.color.copy(value = budget.storedIcon.backgroundColor),
                 month = it.month.copy(
-                    budget.selectedMonth.fromMonthAndYear() ?: Clock.System.now()
+                    value = budget.selectedMonth.fromMonthAndYear() ?: Clock.System.now()
                         .asCurrentDateTime()
                 ),
                 isAllAccountSelected = budget.isAllAccountsSelected,
