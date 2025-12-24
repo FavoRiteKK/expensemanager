@@ -65,29 +65,29 @@ fun AppTopNavigationBar(
         )
     }
 }
-
-@Preview
-@Composable
-private fun AppTopPreview() {
-    ExpenseManagerTheme {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            AppTopNavigationBar(
-                title = "Home",
-                navigationIcon = null,
-                actions = {
-                    IconButton(onClick = {}) {
-                        Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
-                    }
-                }
-            )
-            AppTopNavigationBar(
-                title = "",
-                navigationIcon = null,
-                actions = {}
-            )
-        }
-    }
-}
+//
+//@Preview
+//@Composable
+//private fun AppTopPreview() {
+//    ExpenseManagerTheme {
+//        Column(
+//            modifier = Modifier.fillMaxSize(),
+//            verticalArrangement = Arrangement.spacedBy(16.dp)
+//        ) {
+//            AppTopNavigationBar(
+//                title = "Home",
+//                navigationIcon = null,
+//                actions = {
+//                    IconButton(onClick = {}) {
+//                        Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
+//                    }
+//                }
+//            )
+//            AppTopNavigationBar(
+//                title = "",
+//                navigationIcon = null,
+//                actions = {}
+//            )
+//        }
+//    }
+//}

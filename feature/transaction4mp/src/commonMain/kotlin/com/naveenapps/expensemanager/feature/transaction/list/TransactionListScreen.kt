@@ -38,11 +38,9 @@ import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
 import com.naveenapps.expensemanager.core.designsystem.utils.Exports
@@ -195,7 +193,7 @@ private fun TransactionListScreen(
 }
 
 @Composable
-fun TransactionHeaderItem(
+private fun TransactionHeaderItem(
     date: String,
     textColor: Int,
     totalAmount: String,
@@ -386,16 +384,16 @@ private fun AccountNameWithIcon(
 //    }
 //}
 
-@AppPreviewsLightAndDarkMode
-@Composable
-fun TransactionListItemEmptyStatePreview() {
-    ExpenseManagerTheme {
-        TransactionListScreen(
-            state = TransactionListState(emptyList()),
-            modifier = Modifier.fillMaxSize(),
-        )
-    }
-}
+//@AppPreviewsLightAndDarkMode
+//@Composable
+//fun TransactionListItemEmptyStatePreview() {
+//    ExpenseManagerTheme {
+//        TransactionListScreen(
+//            state = TransactionListState(emptyList()),
+//            modifier = Modifier.fillMaxSize(),
+//        )
+//    }
+//}
 
 val DUMMY_DATA = listOf(
     getTransactionUiState(),
@@ -432,14 +430,14 @@ private fun getTransactionUiState() = TransactionGroup(
     },
 )
 
-@AppPreviewsLightAndDarkMode
-@Composable
-fun TransactionListItemSuccessStatePreview() {
-    ExpenseManagerTheme {
-        TransactionListScreenContent(
-            state = TransactionListState(DUMMY_DATA.convertGroupToTransactionListItems()),
-            showBackNavigationIcon = true,
-            onAction = {}
-        )
-    }
-}
+//@AppPreviewsLightAndDarkMode
+//@Composable
+//fun TransactionListItemSuccessStatePreview() {
+//    ExpenseManagerTheme {
+//        TransactionListScreenContent(
+//            state = TransactionListState(DUMMY_DATA.convertGroupToTransactionListItems()),
+//            showBackNavigationIcon = true,
+//            onAction = {}
+//        )
+//    }
+//}

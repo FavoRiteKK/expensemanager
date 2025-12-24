@@ -19,4 +19,6 @@ sealed class DashboardAction {
     data class OpenAccountEdit(val account: AccountUiModel) : DashboardAction()
 
     data object OpenAccountList : DashboardAction()
+
+    data class OpenTransactionListByAccount(val accountId: String) : DashboardAction()
 }

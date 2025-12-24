@@ -78,32 +78,32 @@ fun TransactionTypeSelectionView(
     }
 }
 
-@Preview
-@Composable
-private fun TransactionTypeSelectionViewPreview() {
-    ExpenseManagerTheme {
-        Column {
-            TransactionTypeSelectionView(
-                modifier = Modifier
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-                    .fillMaxWidth(),
-                selectedTransactionType = TransactionType.INCOME,
-                onTransactionTypeChange = {},
-            )
-            TransactionTypeSelectionView(
-                modifier = Modifier
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-                    .fillMaxWidth(),
-                selectedTransactionType = TransactionType.EXPENSE,
-                onTransactionTypeChange = {},
-            )
-            TransactionTypeSelectionView(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                selectedTransactionType = TransactionType.TRANSFER,
-                onTransactionTypeChange = {},
-            )
-        }
-    }
-}
+//@Preview
+//@Composable
+//private fun TransactionTypeSelectionViewPreview() {
+//    ExpenseManagerTheme {
+//        Column {
+//            TransactionTypeSelectionView(
+//                modifier = Modifier
+//                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+//                    .fillMaxWidth(),
+//                selectedTransactionType = TransactionType.INCOME,
+//                onTransactionTypeChange = {},
+//            )
+//            TransactionTypeSelectionView(
+//                modifier = Modifier
+//                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+//                    .fillMaxWidth(),
+//                selectedTransactionType = TransactionType.EXPENSE,
+//                onTransactionTypeChange = {},
+//            )
+//            TransactionTypeSelectionView(
+//                modifier = Modifier
+//                    .padding(16.dp)
+//                    .fillMaxWidth(),
+//                selectedTransactionType = TransactionType.TRANSFER,
+//                onTransactionTypeChange = {},
+//            )
+//        }
+//    }
+//}

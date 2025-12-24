@@ -180,52 +180,6 @@ android {
     }
 }
 
-dependencies {
-//    implementation(project(":core:common"))
-//    implementation(project(":core:model"))
-//    implementation(project(":core:designsystem"))
-//    implementation(project(":core:domain"))
-//    implementation(project(":core:navigation"))
-//    implementation(project(":core:notification"))
-//    implementation(project(":core:repository"))
-//
-//    implementation(project(":feature:account"))
-//    implementation(project(":feature:analysis"))
-//    implementation(project(":feature:budget"))
-//    implementation(project(":feature:category"))
-//    implementation(project(":feature:dashboard"))
-//    implementation(project(":feature:transaction"))
-//    implementation(project(":feature:onboarding"))
-//
-//    implementation(project(":feature:settings"))
-//    implementation(project(":feature:theme"))
-//    implementation(project(":feature:export"))
-//    implementation(project(":feature:reminder"))
-//    implementation(project(":feature:currency"))
-//    implementation(project(":feature:about"))
-//
-//    debugImplementation(compose.uiTooling)
-//    implementation(platform(libs.firebase.bom))
-//    implementation(libs.firebase.crashlytics)
-//    implementation(libs.firebase.analytics)
-//
-//    implementation(libs.androidx.splash.screen)
-//
-//    implementation(libs.androidx.appcompat)
-//    implementation(libs.androidx.material)
-//    implementation(libs.androidx.profileinstaller)
-//
-//    implementation(libs.kotlinx.coroutines.android)
-//    implementation(libs.hilt.ext.work)
-//
-//    implementation(libs.google.oss.licenses)
-//
-//    implementation(libs.app.update.ktx)
-//
-//    testImplementation(project(":core:testing"))
-//    androidTestImplementation(project(":core:testing"))
-}
-
 compose.desktop {
     application {
         mainClass = "com.naveenapps.expensemanager.MainKt"

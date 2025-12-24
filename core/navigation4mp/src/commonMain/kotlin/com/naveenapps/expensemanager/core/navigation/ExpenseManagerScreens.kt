@@ -52,6 +52,9 @@ sealed class ExpenseManagerScreens {
     data object AccountReOrderScreen : ExpenseManagerScreens()
 
     @Serializable
+    data class TransactionListByAccount(val accId: String) : ExpenseManagerScreens()
+
+    @Serializable
     data class AccountCreate(val id: String?) : ExpenseManagerScreens()
 
     @Serializable

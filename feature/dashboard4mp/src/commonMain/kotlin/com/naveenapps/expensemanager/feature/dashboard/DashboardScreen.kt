@@ -162,7 +162,7 @@ private fun DashboardScreenContent(
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .clickable {
-                                    onAction.invoke(DashboardAction.OpenAccountEdit(it))
+                                    onAction.invoke(DashboardAction.OpenTransactionListByAccount(it.id))
                                 },
                             name = it.name,
                             icon = it.storedIcon.name,

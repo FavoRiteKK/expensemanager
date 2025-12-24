@@ -97,20 +97,20 @@ fun RoundIconView(
     }
 }
 
-@Preview
-@Composable
-fun IconAndBackgroundViewPreview() {
-    ExpenseManagerTheme {
-        Column {
-            IconAndBackgroundView(
-                icon = "account_balance_wallet",
-                iconBackgroundColor = "#FF000000",
-            )
-            SmallIconAndBackgroundView(
-                icon = "account_balance_wallet",
-                iconBackgroundColor = "#FF000000",
-                iconSize = 12.dp,
-            )
-        }
-    }
-}
+//@Preview
+//@Composable
+//fun IconAndBackgroundViewPreview() {
+//    ExpenseManagerTheme {
+//        Column {
+//            IconAndBackgroundView(
+//                icon = "account_balance_wallet",
+//                iconBackgroundColor = "#FF000000",
+//            )
+//            SmallIconAndBackgroundView(
+//                icon = "account_balance_wallet",
+//                iconBackgroundColor = "#FF000000",
+//                iconSize = 12.dp,
+//            )
+//        }
+//    }
+//}

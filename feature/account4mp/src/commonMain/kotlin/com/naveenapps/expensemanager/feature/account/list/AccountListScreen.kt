@@ -385,84 +385,84 @@ fun getRandomAccountUiModel(count: Int) = getRandomAccountData(count).map {
     it.toAccountUiModel(Amount(it.amount, "${it.amount}$"))
 }
 
-@AppPreviewsLightAndDarkMode
-@Composable
-private fun DashBoardAccountItemPreview() {
-    ExpenseManagerTheme {
-        DashBoardAccountItem(
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(16.dp),
-            name = "Utilities is having a lengthy one",
-            icon = "credit_card",
-            amount = "100.00$",
-            availableCreditLimit = "Available Limit 100.00$",
-            amountTextColor = Color(color = GREEN_500),
-            backgroundColor = Color(color = BLACK_100),
-        )
-    }
-}
+//@AppPreviewsLightAndDarkMode
+//@Composable
+//private fun DashBoardAccountItemPreview() {
+//    ExpenseManagerTheme {
+//        DashBoardAccountItem(
+//            modifier = Modifier
+//                .wrapContentWidth()
+//                .padding(16.dp),
+//            name = "Utilities is having a lengthy one",
+//            icon = "credit_card",
+//            amount = "100.00$",
+//            availableCreditLimit = "Available Limit 100.00$",
+//            amountTextColor = Color(color = GREEN_500),
+//            backgroundColor = Color(color = BLACK_100),
+//        )
+//    }
+//}
 
-@Preview
-@Composable
-private fun AccountItemPreview() {
-    ExpenseManagerTheme {
-        AccountItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
-            name = "Utilities",
-            icon = "credit_card",
-            iconBackgroundColor = "#FF000000",
-            amount = "$100.00",
-            availableCreditLimit = "Available limit ₹ 5,14,000.00",
-            amountTextColor = GREEN_500,
-        )
-    }
-}
+//@Preview
+//@Composable
+//private fun AccountItemPreview() {
+//    ExpenseManagerTheme {
+//        AccountItem(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+//            name = "Utilities",
+//            icon = "credit_card",
+//            iconBackgroundColor = "#FF000000",
+//            amount = "$100.00",
+//            availableCreditLimit = "Available limit ₹ 5,14,000.00",
+//            amountTextColor = GREEN_500,
+//        )
+//    }
+//}
 
-@Preview
-@Composable
-private fun AccountCheckedItemPreview() {
-    ExpenseManagerTheme {
-        AccountCheckedItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
-            name = "First Account",
-            icon = "savings",
-            iconBackgroundColor = "#FF000000",
-            isSelected = true,
-        )
-    }
-}
-
-
-@Preview
-@Composable
-private fun AccountListItemEmptyStatePreview() {
-
-    ExpenseManagerTheme {
-        AccountListContentView(
-            state = AccountListState(
-                accounts = emptyList(),
-                showReOrder = true
-            ),
-            onAction = {},
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun AccountListItemSuccessStatePreview() {
-    ExpenseManagerTheme {
-        AccountListContentView(
-            state = AccountListState(
-                accounts = getRandomAccountUiModel(10),
-                showReOrder = true
-            ),
-            onAction = {},
-        )
-    }
-}
+//@Preview
+//@Composable
+//private fun AccountCheckedItemPreview() {
+//    ExpenseManagerTheme {
+//        AccountCheckedItem(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+//            name = "First Account",
+//            icon = "savings",
+//            iconBackgroundColor = "#FF000000",
+//            isSelected = true,
+//        )
+//    }
+//}
+//
+//
+//@Preview
+//@Composable
+//private fun AccountListItemEmptyStatePreview() {
+//
+//    ExpenseManagerTheme {
+//        AccountListContentView(
+//            state = AccountListState(
+//                accounts = emptyList(),
+//                showReOrder = true
+//            ),
+//            onAction = {},
+//        )
+//    }
+//}
+//
+//@Preview
+//@Composable
+//private fun AccountListItemSuccessStatePreview() {
+//    ExpenseManagerTheme {
+//        AccountListContentView(
+//            state = AccountListState(
+//                accounts = getRandomAccountUiModel(10),
+//                showReOrder = true
+//            ),
+//            onAction = {},
+//        )
+//    }
+//}

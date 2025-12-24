@@ -39,6 +39,7 @@ import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
+import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreenByAccount
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -80,6 +81,9 @@ fun NavGraphBuilder.expenseManagerNavigation(
     }
     composable<ExpenseManagerScreens.TransactionList> {
         TransactionListScreen(showBackNavigationIcon = true)
+    }
+    composable<ExpenseManagerScreens.TransactionListByAccount> {
+        TransactionListScreenByAccount()
     }
     composable<ExpenseManagerScreens.TransactionCreate> {
         TransactionCreateScreen()

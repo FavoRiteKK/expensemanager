@@ -161,6 +161,10 @@ class DashboardViewModel(
         appComposeNavigator.navigate(ExpenseManagerScreens.TransactionList)
     }
 
+    private fun openTransactionListByAccount(accId: String) {
+        appComposeNavigator.navigate(ExpenseManagerScreens.TransactionListByAccount(accId))
+    }
+
     private fun openTransactionCreate(transactionId: String? = null) {
         appComposeNavigator.navigate(ExpenseManagerScreens.TransactionCreate(transactionId))
     }
@@ -174,6 +178,7 @@ class DashboardViewModel(
             DashboardAction.OpenSettings -> openSettings()
             is DashboardAction.OpenTransactionEdit -> openTransactionCreate(action.transaction?.id)
             DashboardAction.OpenTransactionList -> openTransactionList()
+            is DashboardAction.OpenTransactionListByAccount -> openTransactionListByAccount(action.accountId)
         }
     }
 
