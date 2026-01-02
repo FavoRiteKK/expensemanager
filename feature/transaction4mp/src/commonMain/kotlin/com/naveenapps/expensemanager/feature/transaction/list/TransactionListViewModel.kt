@@ -32,7 +32,7 @@ class TransactionListViewModel(
     accId: String,
 ) : ViewModel() {
 
-    private val _transactions = MutableStateFlow(TransactionListState(emptyList()))
+    private val _transactions = MutableStateFlow(TransactionListState(emptyList(), ""))
     val state = _transactions.asStateFlow()
 
     init {
@@ -79,11 +79,18 @@ class TransactionListViewModel(
         appComposeNavigator.popBackStack()
     }
 
+    private fun checkBalanceUpTo(transactionId: String) {
+        _transactions.update {
+            it.copy(selectedId = transactionId)
+        }
+    }
+
     fun processAction(action: TransactionListAction) {
         when (action) {
             TransactionListAction.ClosePage -> closePage()
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
             is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
+            is TransactionListAction.BalanceAsLastTransaction -> checkBalanceUpTo(action.transactionId)
         }
     }
 }

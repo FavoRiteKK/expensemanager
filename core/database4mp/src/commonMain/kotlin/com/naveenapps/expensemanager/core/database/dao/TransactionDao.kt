@@ -38,7 +38,10 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Query(
         """
         SELECT * FROM `transaction`
-        WHERE `transaction`.from_account_id IN(:accounts) 
+        WHERE (
+                `transaction`.from_account_id IN(:accounts)
+                OR `transaction`.to_account_id IN(:accounts)
+        )
         AND `transaction`.category_id IN(:categories)
         AND `transaction`.type IN(:transactionTypes)
         AND `transaction`.created_on BETWEEN :fromDate AND :toDate

@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.mapLatest
 
 class GetTransactionWithFilterUseCase(
     private val accountRepository: AccountRepository,
@@ -26,25 +25,26 @@ class GetTransactionWithFilterUseCase(
     @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(accId: String = ""): Flow<List<Transaction>?> {
         val flows = if ("" != accId) {
-            getDateRangeUseCase.invoke()
-                .mapLatest { dateRangeModel ->
+            combine(
+                getDateRangeUseCase.invoke(),
+                settingsRepository.getFilterByAccount(accId)
+            ) { dateRangeModel, accId ->
+                val transactionTypes: List<Int> = TransactionType.entries.map { it.ordinal }
 
-                    val transactionTypes: List<Int> = TransactionType.entries.map { it.ordinal }
+                val accounts: List<String> = listOf(accId)
 
-                    val accounts: List<String> = listOf(accId)
+                val categories: List<String> =
+                    categoryRepository.getCategories().firstOrNull()?.map { it.id }
+                        ?: emptyList()
 
-                    val categories: List<String> =
-                        categoryRepository.getCategories().firstOrNull()?.map { it.id }
-                            ?: emptyList()
-
-                    FilterValue(
-                        dateRangeModel.type,
-                        dateRangeModel.dateRanges,
-                        accounts,
-                        categories,
-                        transactionTypes,
-                    )
-                }
+                FilterValue(
+                    dateRangeModel.type,
+                    dateRangeModel.dateRanges,
+                    accounts,
+                    categories,
+                    transactionTypes,
+                )
+            }
         } else {
             combine(
                 settingsRepository.getTransactionTypes(),

@@ -1,20 +1,27 @@
 package com.naveenapps.expensemanager.feature.transaction.list
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -82,11 +89,12 @@ private fun TransactionListScreenContent(
                 .padding(top = innerPadding.calculateTopPadding()),
             statePrv = statePrv,
         ) { transaction ->
-            onAction.invoke(TransactionListAction.OpenEdiTransaction(transaction.id))
+            onAction.invoke(TransactionListAction.BalanceAsLastTransaction(transaction.id))
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TransactionListScreen(
     accId: String,
@@ -137,27 +145,34 @@ private fun TransactionListScreen(
 
                     is TransactionListItem.TransactionItem -> {
                         val item = transactionListItem.date
-                        TransactionItem(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    onItemClick?.invoke(item)
-                                }
-                                .then(ItemSpecModifier),
-                            categoryName = item.categoryName,
-                            categoryColor = item.categoryIcon.backgroundColor,
-                            categoryIcon = item.categoryIcon.name,
-                            amount = item.amount,
-                            date = item.date,
-                            notes = item.notes,
-                            transactionType = item.transactionType,
-                            fromAccountName = item.fromAccountName,
-                            fromAccountIcon = item.fromAccountIcon.name,
-                            fromAccountColor = item.fromAccountIcon.backgroundColor,
-                            toAccountName = item.toAccountName,
-                            toAccountIcon = item.toAccountIcon?.name,
-                            toAccountColor = item.toAccountIcon?.backgroundColor,
-                        )
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            TransactionItem(
+                                modifier = Modifier
+                                    .clickable {
+                                        onItemClick?.invoke(item)
+                                    }
+                                    .then(ItemSpecModifier),
+                                categoryName = item.categoryName,
+                                categoryColor = item.categoryIcon.backgroundColor,
+                                categoryIcon = item.categoryIcon.name,
+                                amount = item.amount,
+                                date = item.date,
+                                notes = item.notes,
+                                transactionType = item.transactionType,
+                                fromAccountName = item.fromAccountName,
+                                fromAccountIcon = item.fromAccountIcon.name,
+                                fromAccountColor = item.fromAccountIcon.backgroundColor,
+                                toAccountName = item.toAccountName,
+                                toAccountIcon = item.toAccountIcon?.name,
+                                toAccountColor = item.toAccountIcon?.backgroundColor,
+                            )
+                            //Overlay
+                            BalanceItem(item.id) {
+                                statePrv().selectedId
+                            }
+                        }
                     }
                 }
             }
@@ -208,5 +223,36 @@ private fun TransactionHeaderItem(
             color = Color(color = textColor),
             style = MaterialTheme.typography.titleMedium,
         )
+    }
+}
+
+@Composable
+private fun BoxScope.BalanceItem(itemId: String, selectedIdPrv: () -> String) {
+    if (itemId == selectedIdPrv()) {
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier.align(Alignment.TopCenter)
+                .offset(y = (-16).dp)
+        ) {
+            SegmentedButton(
+                shape = SegmentedButtonDefaults.itemShape(
+                    index = 0,
+                    count = 2
+                ),
+                onClick = {},
+                selected = false,
+                label = @Composable { Text(text = "Balance") },
+            )
+
+            SegmentedButton(
+                shape = SegmentedButtonDefaults.itemShape(
+                    index = 1,
+                    count = 2
+                ),
+                onClick = {},
+                selected = true,
+                label = @Composable { Text(text = "$900") },
+                icon = @Composable { }
+            )
+        }
     }
 }
