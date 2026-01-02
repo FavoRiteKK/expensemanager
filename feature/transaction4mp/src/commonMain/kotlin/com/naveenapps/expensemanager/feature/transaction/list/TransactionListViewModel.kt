@@ -29,6 +29,7 @@ class TransactionListViewModel(
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     appCoroutineDispatchers: AppCoroutineDispatchers,
     private val appComposeNavigator: AppComposeNavigator,
+    accId: String,
 ) : ViewModel() {
 
     private val _transactions = MutableStateFlow(TransactionListState(emptyList()))
@@ -37,7 +38,7 @@ class TransactionListViewModel(
     init {
         combine(
             getCurrencyUseCase.invoke(),
-            getTransactionWithFilterUseCase.invoke(),
+            getTransactionWithFilterUseCase.invoke(accId),
         ) { currency, transactions ->
 
             val groupedItem = transactions?.groupBy {

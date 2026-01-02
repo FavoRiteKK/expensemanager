@@ -37,7 +37,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.toColor
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
-import com.naveenapps.expensemanager.feature.filter.FilterView
+import com.naveenapps.expensemanager.feature.filter.FullFilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import expensemanager.feature.account4mp.generated.resources.accounts
 import expensemanager.feature.account4mp.generated.resources.no_account_available_short
@@ -123,7 +123,7 @@ private fun DashboardScreenContent(
 ) {
     LazyColumn(modifier = modifier) {
         item {
-            FilterView(
+            FullFilterView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 6.dp),

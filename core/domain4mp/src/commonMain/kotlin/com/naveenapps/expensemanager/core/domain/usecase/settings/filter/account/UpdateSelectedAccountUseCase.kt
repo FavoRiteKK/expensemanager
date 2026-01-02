@@ -8,6 +8,10 @@ class UpdateSelectedAccountUseCase(
 ) {
 
     suspend operator fun invoke(accountId: List<String>?): Resource<Boolean> {
-        return settingsRepository.setAccounts(accountId)
+        return settingsRepository.setSelectedAccounts(accountId)
+    }
+
+    suspend operator fun invoke(accId: String): Resource<Boolean> {
+        return settingsRepository.setFilterByAccount(accId)
     }
 }

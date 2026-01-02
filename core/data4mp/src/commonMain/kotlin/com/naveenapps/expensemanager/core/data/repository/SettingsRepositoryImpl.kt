@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 
 internal class SettingsRepositoryImpl(
@@ -22,15 +23,31 @@ internal class SettingsRepositoryImpl(
             return@withContext Resource.Success(true)
         }
 
-    override fun getAccounts(): Flow<List<String>?> {
-        return dataStore.getAccounts()
+    override fun getSelectedAccounts(): Flow<List<String>?> {
+        return dataStore.getSelectedAccounts()
     }
 
-    override suspend fun setAccounts(accounts: List<String>?): Resource<Boolean> =
+    private val _filterByAccount = MutableStateFlow("")
+
+    override suspend fun setSelectedAccounts(accounts: List<String>?): Resource<Boolean> =
         withContext(dispatcher.io) {
-            dataStore.setAccounts(accounts)
+            dataStore.setSelectedAccounts(accounts)
             return@withContext Resource.Success(true)
         }
+
+    override fun getFilterByAccount(accId: String): Flow<String> {
+        if (_filterByAccount.value != accId) {
+            _filterByAccount.value = accId
+        }
+        return _filterByAccount
+    }
+
+    override suspend fun setFilterByAccount(accId: String): Resource<Boolean> {
+        if (_filterByAccount.value != accId) {
+            _filterByAccount.value = accId
+        }
+        return Resource.Success(true)
+    }
 
     override fun getCategories(): Flow<List<String>?> {
         return dataStore.getCategories()

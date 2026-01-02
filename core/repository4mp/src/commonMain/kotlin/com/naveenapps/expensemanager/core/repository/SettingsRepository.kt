@@ -10,9 +10,13 @@ interface SettingsRepository {
 
     suspend fun setTransactionTypes(transactionTypes: List<TransactionType>?): Resource<Boolean>
 
-    fun getAccounts(): Flow<List<String>?>
+    fun getSelectedAccounts(): Flow<List<String>?>
 
-    suspend fun setAccounts(accounts: List<String>?): Resource<Boolean>
+    fun getFilterByAccount(accId: String): Flow<String>
+
+    suspend fun setSelectedAccounts(accounts: List<String>?): Resource<Boolean>
+
+    suspend fun setFilterByAccount(accId: String): Resource<Boolean>
 
     fun getCategories(): Flow<List<String>?>
 

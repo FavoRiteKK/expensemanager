@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.AppPreviews
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.feature.filter.FilterView
+import com.naveenapps.expensemanager.feature.filter.FullFilterView
 import expensemanager.feature.analysis4mp.generated.resources.Res
 import expensemanager.feature.analysis4mp.generated.resources.analysis
 import org.jetbrains.compose.resources.stringResource
@@ -43,7 +43,7 @@ private fun AnalysisScreenScaffoldView() {
 @Composable
 private fun AnalysisScreenContent(modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        FilterView(
+        FullFilterView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(end = 6.dp),

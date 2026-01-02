@@ -55,7 +55,7 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.PieChartData
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
-import com.naveenapps.expensemanager.feature.filter.FilterView
+import com.naveenapps.expensemanager.feature.filter.FullFilterView
 import expensemanager.feature.category4mp.generated.resources.Res
 import expensemanager.feature.category4mp.generated.resources.categories
 import expensemanager.feature.category4mp.generated.resources.change_chart
@@ -170,7 +170,7 @@ private fun CategoryTransactionListScreenContent(
 
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 item {
-                    FilterView(
+                    FullFilterView(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(end = 6.dp),

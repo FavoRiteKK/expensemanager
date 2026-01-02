@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -15,6 +16,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AppComponentProvider
 import com.naveenapps.expensemanager.feature.about.AboutScreen
@@ -83,7 +85,8 @@ fun NavGraphBuilder.expenseManagerNavigation(
         TransactionListScreen(showBackNavigationIcon = true)
     }
     composable<ExpenseManagerScreens.TransactionListByAccount> {
-        TransactionListScreenByAccount()
+        val accId = it.toRoute<ExpenseManagerScreens.TransactionListByAccount>().accId
+        TransactionListScreenByAccount(accId)
     }
     composable<ExpenseManagerScreens.TransactionCreate> {
         TransactionCreateScreen()
@@ -149,7 +152,13 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
                                 stringResource(uiSystem.labelResourceID),
                             )
                         },
-                        label = { Text(stringResource(uiSystem.labelResourceID)) },
+                        label = {
+                            Text(
+                                text = stringResource(uiSystem.labelResourceID),
+                                style = MaterialTheme.typography.labelSmall,
+                            )
+                        },
+                        alwaysShowLabel = false,
                     )
                 }
             }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.mapLatest
 
 class GetTransactionWithFilterUseCase(
     private val accountRepository: AccountRepository,
@@ -21,41 +22,66 @@ class GetTransactionWithFilterUseCase(
     private val getDateRangeUseCase: GetDateRangeUseCase,
     private val transactionRepository: TransactionRepository,
 ) {
+
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun invoke(): Flow<List<Transaction>?> {
-        return combine(
-            settingsRepository.getTransactionTypes(),
-            settingsRepository.getCategories(),
-            settingsRepository.getAccounts(),
-            getDateRangeUseCase.invoke(),
-        ) { selectedTransactionTypes, selectedCategories, selectedAccounts, dateRangeModel ->
+    operator fun invoke(accId: String = ""): Flow<List<Transaction>?> {
+        val flows = if ("" != accId) {
+            getDateRangeUseCase.invoke()
+                .mapLatest { dateRangeModel ->
 
-            val transactionTypes: List<Int> = if (selectedTransactionTypes.isNullOrEmpty()) {
-                TransactionType.entries.map { it.ordinal }
-            } else {
-                selectedTransactionTypes.map { it.ordinal }
+                    val transactionTypes: List<Int> = TransactionType.entries.map { it.ordinal }
+
+                    val accounts: List<String> = listOf(accId)
+
+                    val categories: List<String> =
+                        categoryRepository.getCategories().firstOrNull()?.map { it.id }
+                            ?: emptyList()
+
+                    FilterValue(
+                        dateRangeModel.type,
+                        dateRangeModel.dateRanges,
+                        accounts,
+                        categories,
+                        transactionTypes,
+                    )
+                }
+        } else {
+            combine(
+                settingsRepository.getTransactionTypes(),
+                settingsRepository.getCategories(),
+                settingsRepository.getSelectedAccounts(),
+                getDateRangeUseCase.invoke(),
+            ) { selectedTransactionTypes, selectedCategories, selectedAccounts, dateRangeModel ->
+
+                val transactionTypes: List<Int> = if (selectedTransactionTypes.isNullOrEmpty()) {
+                    TransactionType.entries.map { it.ordinal }
+                } else {
+                    selectedTransactionTypes.map { it.ordinal }
+                }
+
+                val accounts: List<String> = if (selectedAccounts.isNullOrEmpty()) {
+                    accountRepository.getAccounts().firstOrNull()?.map { it.id } ?: emptyList()
+                } else {
+                    selectedAccounts
+                }
+
+                val categories: List<String> = if (selectedCategories.isNullOrEmpty()) {
+                    categoryRepository.getCategories().firstOrNull()?.map { it.id } ?: emptyList()
+                } else {
+                    selectedCategories
+                }
+
+                FilterValue(
+                    dateRangeModel.type,
+                    dateRangeModel.dateRanges,
+                    accounts,
+                    categories,
+                    transactionTypes,
+                )
             }
+        }
 
-            val accounts: List<String> = if (selectedAccounts.isNullOrEmpty()) {
-                accountRepository.getAccounts().firstOrNull()?.map { it.id } ?: emptyList()
-            } else {
-                selectedAccounts
-            }
-
-            val categories: List<String> = if (selectedCategories.isNullOrEmpty()) {
-                categoryRepository.getCategories().firstOrNull()?.map { it.id } ?: emptyList()
-            } else {
-                selectedCategories
-            }
-
-            FilterValue(
-                dateRangeModel.type,
-                dateRangeModel.dateRanges,
-                accounts,
-                categories,
-                transactionTypes,
-            )
-        }.flatMapLatest {
+        return flows.flatMapLatest {
             return@flatMapLatest if (it.dateRangeType == DateRangeType.ALL) {
                 transactionRepository.getAllFilteredTransaction(
                     it.accounts,

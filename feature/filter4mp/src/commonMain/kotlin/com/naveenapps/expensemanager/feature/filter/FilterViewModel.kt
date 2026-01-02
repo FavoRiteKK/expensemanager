@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.filter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.account.GetSelectedAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.account.UpdateSelectedAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.category.GetSelectedCategoriesUseCase
@@ -30,11 +31,13 @@ class FilterViewModel(
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
     getSelectedCategoriesUseCase: GetSelectedCategoriesUseCase,
     getDateRangeUseCase: GetDateRangeUseCase,
+    getAllAccountsUseCase: GetAllAccountsUseCase,
     private val moveDateRangeBackwardUseCase: MoveDateRangeBackwardUseCase,
     private val moveDateRangeForwardUseCase: MoveDateRangeForwardUseCase,
     private val updateSelectedTransactionTypesUseCase: UpdateSelectedTransactionTypesUseCase,
     private val updateSelectedCategoryUseCase: UpdateSelectedCategoryUseCase,
     private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase,
+    accId: String,
 ) : ViewModel() {
 
     private val _filterState = MutableStateFlow(
@@ -42,6 +45,7 @@ class FilterViewModel(
             date = "",
             dateRangeType = DateRangeType.THIS_MONTH,
             selectedTransactionTypes = emptyList(),
+            allAccounts = emptyList(),
             selectedAccounts = emptyList(),
             selectedCategories = emptyList(),
             showBackward = true,
@@ -53,15 +57,25 @@ class FilterViewModel(
     val filterState = _filterState.asStateFlow()
 
     init {
-        getSelectedTransactionTypesUseCase.invoke().onEach { types ->
+        if ("" == accId) {
+            getSelectedTransactionTypesUseCase.invoke().onEach { types ->
+                _filterState.update {
+                    it.copy(
+                        selectedTransactionTypes = types
+                    )
+                }
+            }.launchIn(viewModelScope)
+        }
+
+        getAllAccountsUseCase.invoke().onEach { accounts ->
             _filterState.update {
-                it.copy(
-                    selectedTransactionTypes = types
-                )
+                it.copy(allAccounts = accounts.map { acc ->
+                    acc.toAccountUiModel(Amount(amount = acc.amount))
+                })
             }
         }.launchIn(viewModelScope)
 
-        getSelectedAccountUseCase.invoke().onEach { accounts ->
+        getSelectedAccountUseCase.invoke(accId).onEach { accounts ->
             _filterState.update {
                 it.copy(
                     selectedAccounts = accounts?.map { account ->
@@ -71,11 +85,13 @@ class FilterViewModel(
             }
         }.launchIn(viewModelScope)
 
-        getSelectedCategoriesUseCase.invoke().onEach { categories ->
-            _filterState.update {
-                it.copy(selectedCategories = categories)
-            }
-        }.launchIn(viewModelScope)
+        if ("" == accId) {
+            getSelectedCategoriesUseCase.invoke().onEach { categories ->
+                _filterState.update {
+                    it.copy(selectedCategories = categories)
+                }
+            }.launchIn(viewModelScope)
+        }
 
         getDateRangeUseCase.invoke().onEach {
             val dateRangeType = it.type
@@ -153,6 +169,12 @@ class FilterViewModel(
         }
     }
 
+    private fun updateFilterAccount(accId: String) {
+        viewModelScope.launch {
+            updateSelectedAccountUseCase.invoke(accId)
+        }
+    }
+
     fun processAction(action: FilterAction) {
         when (action) {
             FilterAction.MoveDateBackward -> moveDateRangeBackward()
@@ -160,6 +182,7 @@ class FilterViewModel(
             is FilterAction.RemoveAccount -> removeAccount(action.account)
             is FilterAction.RemoveCategory -> removeCategory(action.category)
             is FilterAction.RemoveTransactionType -> removeTransaction(action.transactionType)
+            is FilterAction.UpdateFilterAccount -> updateFilterAccount(action.accId)
             FilterAction.ShowDateFilter -> {
                 _filterState.update { it.copy(showDateFilter = true) }
             }

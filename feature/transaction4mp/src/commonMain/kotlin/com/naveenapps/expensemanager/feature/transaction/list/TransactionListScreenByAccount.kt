@@ -32,30 +32,37 @@ import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
-import com.naveenapps.expensemanager.feature.filter.FilterView
+import com.naveenapps.expensemanager.feature.filter.DateFilterView
 import expensemanager.feature.transaction4mp.generated.resources.Res
 import expensemanager.feature.transaction4mp.generated.resources.no_transactions_available
 import expensemanager.feature.transaction4mp.generated.resources.transaction
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
+
+private typealias StateProvider = () -> TransactionListState
 
 @Composable
 fun TransactionListScreenByAccount(
-    viewModel: TransactionListViewModel = koinViewModel()
+    accId: String,
+    viewModel: TransactionListViewModel = koinViewModel(parameters = { parametersOf(accId) })
 ) {
 
     val state by viewModel.state.collectAsState()
 
     TransactionListScreenContent(
-        state,
+        accId,
         viewModel::processAction
-    )
+    ) {
+        state
+    }
 }
 
 @Composable
 private fun TransactionListScreenContent(
-    state: TransactionListState,
-    onAction: (TransactionListAction) -> Unit
+    accId: String,
+    onAction: (TransactionListAction) -> Unit,
+    statePrv: StateProvider
 ) {
     Scaffold(
         topBar = {
@@ -69,10 +76,11 @@ private fun TransactionListScreenContent(
         },
     ) { innerPadding ->
         TransactionListScreen(
+            accId = accId,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
-            state = state,
+            statePrv = statePrv,
         ) { transaction ->
             onAction.invoke(TransactionListAction.OpenEdiTransaction(transaction.id))
         }
@@ -81,20 +89,22 @@ private fun TransactionListScreenContent(
 
 @Composable
 private fun TransactionListScreen(
-    state: TransactionListState,
+    accId: String,
+    statePrv: StateProvider,
     modifier: Modifier = Modifier,
     onItemClick: ((TransactionUiItem) -> Unit)? = null,
 ) {
 
     LazyColumn(modifier = modifier.fillMaxWidth()) {
         item {
-            FilterView(
+            DateFilterView(
+                accId = accId,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 6.dp),
             )
         }
-        if (state.transactionListItem.isEmpty()) {
+        if (statePrv().transactionListItem.isEmpty()) {
             item {
                 EmptyItem(
                     modifier = Modifier
@@ -106,7 +116,7 @@ private fun TransactionListScreen(
             }
         } else {
 
-            items(state.transactionListItem) { transactionListItem ->
+            items(statePrv().transactionListItem) { transactionListItem ->
                 when (transactionListItem) {
                     TransactionListItem.Divider -> {
                         HorizontalDivider(

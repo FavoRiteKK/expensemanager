@@ -120,6 +120,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
@@ -200,11 +201,34 @@ private val appModule = module {
     viewModelOf(::CategoryTransactionListViewModel)
     viewModelOf(::CountryListViewModel)
     viewModelOf(::DashboardViewModel)
-    viewModelOf(::FilterViewModel)
+    viewModel { (accId: String) ->
+        FilterViewModel(
+            getSelectedTransactionTypesUseCase = get(),
+            getSelectedAccountUseCase = get(),
+            getSelectedCategoriesUseCase = get(),
+            getDateRangeUseCase = get(),
+            getAllAccountsUseCase = get(),
+            moveDateRangeBackwardUseCase = get(),
+            moveDateRangeForwardUseCase = get(),
+            updateSelectedTransactionTypesUseCase = get(),
+            updateSelectedCategoryUseCase = get(),
+            updateSelectedAccountUseCase = get(),
+            accId = accId
+        )
+    }
     viewModelOf(::HomeViewModel)
     viewModelOf(::IntroViewModel)
     viewModelOf(::OnboardingViewModel)
-    viewModelOf(::TransactionListViewModel)
+    viewModel { (accId: String) ->
+        TransactionListViewModel(
+            getCurrencyUseCase = get(),
+            getFormattedAmountUseCase = get(),
+            getTransactionWithFilterUseCase = get(),
+            appCoroutineDispatchers = get(),
+            appComposeNavigator = get(),
+            accId = accId
+        )
+    }
     viewModelOf(::TransactionCreateViewModel)
     viewModelOf(::IconSelectionViewModel)
     viewModelOf(::DateFilterViewModel)

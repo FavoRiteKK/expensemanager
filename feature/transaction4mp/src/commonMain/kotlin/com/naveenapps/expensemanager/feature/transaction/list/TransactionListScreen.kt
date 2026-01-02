@@ -49,7 +49,7 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
-import com.naveenapps.expensemanager.feature.filter.FilterView
+import com.naveenapps.expensemanager.feature.filter.FullFilterView
 import expensemanager.feature.transaction4mp.generated.resources.Res
 import expensemanager.feature.transaction4mp.generated.resources.no_transactions_available
 import expensemanager.feature.transaction4mp.generated.resources.transaction
@@ -57,11 +57,12 @@ import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun TransactionListScreen(
     showBackNavigationIcon: Boolean = false,
-    viewModel: TransactionListViewModel = koinViewModel()
+    viewModel: TransactionListViewModel = koinViewModel(parameters = { parametersOf("") })
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -122,7 +123,7 @@ private fun TransactionListScreen(
 
     LazyColumn(modifier = modifier.fillMaxWidth()) {
         item {
-            FilterView(
+            FullFilterView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 6.dp),

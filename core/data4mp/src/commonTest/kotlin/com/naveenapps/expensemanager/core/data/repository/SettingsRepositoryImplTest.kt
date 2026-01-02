@@ -96,7 +96,7 @@ class SettingsRepositoryImplTest : BaseCoroutineTest(), KoinTest {
 
     @Test
     fun `when getAccounts for first time should return null`() = runTest {
-        repository.getAccounts().test {
+        repository.getSelectedAccounts().test {
             val item = awaitItem()
             LWTruth_assertThat(item).isNotNull()
             LWTruth_assertThat(item).isEmpty()
@@ -106,7 +106,7 @@ class SettingsRepositoryImplTest : BaseCoroutineTest(), KoinTest {
     @Test
     fun `when setAccounts with account id should return the success`() = runTest {
         val accounts = listOf("sampleId")
-        val response = repository.setAccounts(accounts)
+        val response = repository.setSelectedAccounts(accounts)
         LWTruth_assertThat(response).isNotNull()
         LWTruth_assertThat(response).isInstanceOf(Resource.Success::class)
         LWTruth_assertThat((response as Resource.Success).data).isTrue()
@@ -115,8 +115,8 @@ class SettingsRepositoryImplTest : BaseCoroutineTest(), KoinTest {
     @Test
     fun `when getAccounts after saving the item should return the saved value`() = runTest {
         val accounts = listOf("sampleId")
-        repository.setAccounts(accounts)
-        repository.getAccounts().test {
+        repository.setSelectedAccounts(accounts)
+        repository.getSelectedAccounts().test {
             val item = awaitItem()
             LWTruth_assertThat(item).isNotNull()
             LWTruth_assertThat(item).isNotEmpty()

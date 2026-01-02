@@ -23,11 +23,11 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
             ?: emptyList()
     }
 
-    suspend fun setAccounts(accounts: List<String>?) = dataStore.edit { preferences ->
+    suspend fun setSelectedAccounts(accounts: List<String>?) = dataStore.edit { preferences ->
         preferences[KEY_SELECTED_ACCOUNTS] = accounts?.toSet() ?: emptySet()
     }
 
-    fun getAccounts(): Flow<List<String>?> = dataStore.data.map { preferences ->
+    fun getSelectedAccounts(): Flow<List<String>?> = dataStore.data.map { preferences ->
         preferences[KEY_SELECTED_ACCOUNTS]?.toList() ?: emptyList()
     }
 

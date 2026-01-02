@@ -23,4 +23,6 @@ sealed class FilterAction {
     data class RemoveCategory(val category: Category) : FilterAction()
 
     data class RemoveTransactionType(val transactionType: TransactionType) : FilterAction()
+
+    data class UpdateFilterAccount(val accId: String) : FilterAction()
 }

@@ -9,6 +9,7 @@ data class FilterState(
     val date: String,
     val dateRangeType: DateRangeType,
     val selectedCategories: List<Category>,
+    val allAccounts: List<AccountUiModel>,
     val selectedAccounts: List<AccountUiModel>,
     val selectedTransactionTypes: List<TransactionType>,
     val showForward: Boolean,

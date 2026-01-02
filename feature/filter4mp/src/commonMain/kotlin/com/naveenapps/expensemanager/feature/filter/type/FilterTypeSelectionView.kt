@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ElevatedAssistChip
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -20,6 +23,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -253,6 +259,50 @@ fun InputChipView(
             )
         },
     )
+}
+
+@Composable
+fun AccountChipWithDropdown(
+    initialAcc: AccountUiModel,
+    accounts: List<AccountUiModel>,
+    onSelected: (AccountUiModel) -> Unit,
+    iconName: String,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf(initialAcc) }
+
+    Box {
+        ElevatedAssistChip(
+            onClick = { expanded = true },
+            label = @Composable {
+                Text(selectedOption.name, style = MaterialTheme.typography.bodySmall)
+            },
+            leadingIcon = if ("" != iconName) {
+                @Composable {
+                    Icon(
+                        painter = painterResource(resource = Exports.drawableBy(iconName)),
+                        contentDescription = "Localized description",
+                        modifier = Modifier.size(FilterChipDefaults.IconSize),
+                    )
+                }
+            } else null,
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            accounts.forEach { acc ->
+                DropdownMenuItem(
+                    text = { Text(acc.name) },
+                    onClick = {
+                        selectedOption = acc
+                        expanded = false
+                        onSelected.invoke(acc)
+                    }
+                )
+            }
+        }
+    }
 }
 
 //@AppPreviewsLightAndDarkMode

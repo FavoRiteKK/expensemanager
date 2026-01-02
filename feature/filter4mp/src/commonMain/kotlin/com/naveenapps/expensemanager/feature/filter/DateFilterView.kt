@@ -13,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.EditCalendar
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,22 +27,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.common.utils.toCapitalize
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.model.DateRangeType
-import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
-import com.naveenapps.expensemanager.feature.filter.type.FilterTypeSelectionView
-import com.naveenapps.expensemanager.feature.filter.type.InputChipView
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import com.naveenapps.expensemanager.feature.filter.type.AccountChipWithDropdown
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
+
+private typealias StateProvider = () -> FilterState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterView(
+fun DateFilterView(
+    accId: String,
     modifier: Modifier = Modifier,
-    viewModel: FilterViewModel = koinViewModel()
+    viewModel: FilterViewModel = koinViewModel(parameters = { parametersOf(accId) })
 ) {
     val filterState by viewModel.filterState.collectAsState()
 
@@ -66,40 +63,25 @@ fun FilterView(
         }
     }
 
-    if (filterState.showTypeFilter) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                viewModel.processAction(FilterAction.DismissTypeFilter)
-            },
-            sheetState = bottomSheetState,
-            containerColor = MaterialTheme.colorScheme.background,
-            tonalElevation = 0.dp,
-        ) {
-            FilterTypeSelectionView(
-                applyChanges = {
-                    viewModel.processAction(FilterAction.DismissTypeFilter)
-                },
-            )
-        }
-    }
-
     Column(modifier = modifier) {
         FilterContentView(
             modifier = modifier,
-            filterState = filterState,
+            filterStatePrv = { filterState },
             onAction = viewModel::processAction,
         )
         TypeFilter(
             modifier = Modifier.padding(horizontal = 16.dp),
-            filterState = filterState,
-            onAction = viewModel::processAction,
+            filterStatePrv = { filterState },
+            onSelected = {
+                viewModel.processAction(FilterAction.UpdateFilterAccount(it.id))
+            }
         )
     }
 }
 
 @Composable
 private fun FilterContentView(
-    filterState: FilterState,
+    filterStatePrv: StateProvider,
     onAction: (FilterAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -124,7 +106,7 @@ private fun FilterContentView(
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .align(Alignment.CenterVertically),
-                text = filterState.date,
+                text = filterStatePrv().date,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 style = MaterialTheme.typography.bodyMedium,
@@ -134,7 +116,7 @@ private fun FilterContentView(
             onClick = {
                 onAction.invoke(FilterAction.MoveDateBackward)
             },
-            enabled = filterState.showBackward,
+            enabled = filterStatePrv().showBackward,
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
@@ -145,18 +127,10 @@ private fun FilterContentView(
             onClick = {
                 onAction.invoke(FilterAction.MoveDateForward)
             },
-            enabled = filterState.showForward,
+            enabled = filterStatePrv().showForward,
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = null,
-            )
-        }
-        IconButton(onClick = {
-            onAction.invoke(FilterAction.ShowTypeFilter)
-        }) {
-            Icon(
-                imageVector = Icons.Default.FilterList,
                 contentDescription = null,
             )
         }
@@ -164,9 +138,9 @@ private fun FilterContentView(
 }
 
 @Composable
-fun TypeFilter(
-    filterState: FilterState,
-    onAction: (FilterAction) -> Unit,
+private fun TypeFilter(
+    filterStatePrv: StateProvider,
+    onSelected: (AccountUiModel) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -175,61 +149,13 @@ fun TypeFilter(
             .horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        filterState.selectedTransactionTypes.forEach { type ->
-            InputChipView(
-                label = type.toCapitalize(),
-                selected = true,
-            ) {
-                onAction.invoke(FilterAction.RemoveTransactionType(type))
-            }
-        }
-        filterState.selectedAccounts.forEach { account ->
-            InputChipView(account.name, true, iconName = account.storedIcon.name) {
-                onAction.invoke(FilterAction.RemoveAccount(account))
-            }
-        }
-        filterState.selectedCategories.forEach { category ->
-            InputChipView(category.name, true, iconName = category.storedIcon.name) {
-                onAction.invoke(FilterAction.RemoveCategory(category))
-            }
-        }
-    }
-}
-
-@AppPreviewsLightAndDarkMode
-@Composable
-fun FilterViewPreview() {
-    ExpenseManagerTheme {
-        Column {
-            FilterContentView(
-                filterState = FilterState(
-                    date = "This Month (11/2023)",
-                    showBackward = false,
-                    showForward = false,
-                    selectedTransactionTypes = emptyList(),
-                    selectedAccounts = emptyList(),
-                    selectedCategories = emptyList(),
-                    showDateFilter = false,
-                    showTypeFilter = false,
-                    dateRangeType = DateRangeType.ALL
-                ),
-                onAction = {},
-                modifier = Modifier.fillMaxWidth(),
-            )
-            FilterContentView(
-                filterState = FilterState(
-                    date = "This Month (11/2023)",
-                    showBackward = false,
-                    showForward = false,
-                    selectedTransactionTypes = listOf(TransactionType.TRANSFER, TransactionType.INCOME),
-                    selectedAccounts = emptyList(),
-                    selectedCategories = emptyList(),
-                    showDateFilter = false,
-                    showTypeFilter = false,
-                    dateRangeType = DateRangeType.ALL
-                ),
-                onAction = {},
-                modifier = Modifier.fillMaxWidth(),
+        //
+        filterStatePrv().selectedAccounts.firstOrNull()?.let { account ->
+            AccountChipWithDropdown(
+                initialAcc = account,
+                accounts = filterStatePrv().allAccounts,
+                onSelected = onSelected,
+                iconName = account.storedIcon.name,
             )
         }
     }
