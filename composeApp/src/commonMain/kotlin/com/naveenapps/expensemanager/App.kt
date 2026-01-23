@@ -221,6 +221,7 @@ private val appModule = module {
     viewModelOf(::OnboardingViewModel)
     viewModel { (accId: String) ->
         TransactionListViewModel(
+            getSelectedAccountUseCase = get(),
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
             getTransactionWithFilterUseCase = get(),

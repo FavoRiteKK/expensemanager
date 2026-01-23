@@ -161,7 +161,7 @@ private fun TransactionListScreen(
                     }
 
                     is TransactionListItem.TransactionItem -> {
-                        val item = transactionListItem.date
+                        val item = transactionListItem.item
                         TransactionItem(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -404,6 +404,7 @@ val DUMMY_DATA = listOf(
 
 fun getTransactionItem() = TransactionUiItem(
     id = "1",
+    customPos = 1,
     notes = "Sample Description",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     categoryName = "Clothing",

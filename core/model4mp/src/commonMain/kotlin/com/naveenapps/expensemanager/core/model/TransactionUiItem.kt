@@ -20,13 +20,15 @@ data class TransactionUiItem(
     val date: String,
     val fromAccountName: String,
     val fromAccountIcon: StoredIcon,
+    val customPos: Int,
     val toAccountName: String? = null,
     val toAccountIcon: StoredIcon? = null,
 )
 
-fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem {
+fun Transaction.toTransactionUIModel(amount: Amount, customPos: Int = -1): TransactionUiItem {
     return TransactionUiItem(
         id = this.id,
+        customPos = customPos,
         amount = amount,
         notes = this.notes,
         categoryName = this.category.name,

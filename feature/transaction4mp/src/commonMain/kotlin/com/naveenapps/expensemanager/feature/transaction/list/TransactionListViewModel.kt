@@ -8,7 +8,9 @@ import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.account.GetSelectedAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -19,11 +21,13 @@ import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 
 class TransactionListViewModel(
+    getSelectedAccountUseCase: GetSelectedAccountUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
@@ -32,14 +36,19 @@ class TransactionListViewModel(
     accId: String,
 ) : ViewModel() {
 
-    private val _transactions = MutableStateFlow(TransactionListState(emptyList(), ""))
+    private val _transactions = MutableStateFlow(TransactionListState(emptyList(), 0, ""))
     val state = _transactions.asStateFlow()
 
     init {
         combine(
             getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke(accId),
-        ) { currency, transactions ->
+            if (accId != "") {
+                getSelectedAccountUseCase.invoke(accId)
+            } else {
+                flowOf<List<Account>?>(null)
+            }
+        ) { currency, transactions, filteredAccount ->
 
             val groupedItem = transactions?.groupBy {
                 it.createdOn.toCompleteDateWithDate()
@@ -60,10 +69,17 @@ class TransactionListViewModel(
                 )
             }
 
+            //default to first transaction
+            val balance: String = filteredAccount?.first()?.amount?.let {
+                getFormattedAmountUseCase.invoke(it, currency)
+                    .amountString
+            } ?: ""
+
             _transactions.update {
                 it.copy(
                     transactionListItem = groupedItem?.convertGroupToTransactionListItems()
-                        ?: emptyList()
+                        ?: emptyList(),
+                    netBalance = balance
                 )
             }
         }.flowOn(appCoroutineDispatchers.computation).launchIn(viewModelScope)
@@ -79,9 +95,34 @@ class TransactionListViewModel(
         appComposeNavigator.popBackStack()
     }
 
-    private fun checkBalanceUpTo(transactionId: String) {
-        _transactions.update {
-            it.copy(selectedId = transactionId)
+    private fun checkBalanceUpTo(pos: Int) {
+        _transactions.value.selectedPos.let { currPos ->
+            if (currPos != pos) {
+                val upward = currPos - pos > 0
+                if (upward) {
+                    calcNetWorthUpward(pos, currPos)
+                } else {
+                    calcNetWorthDownward(currPos, pos)
+                }
+                _transactions.update {
+                    it.copy(selectedPos = pos)
+                }
+            }
+        }
+    }
+
+    private fun calcNetWorthUpward(pos: Int, currPos: Int) {
+//        val netBalance =
+        _transactions.value.netBalance
+        for (i in pos until currPos) {
+            (_transactions.value.transactionListItem[i] as TransactionListItem.TransactionItem).item.amount.amount
+            println("upward at $i")
+        }
+    }
+
+    private fun calcNetWorthDownward(currPos: Int, newPos: Int) {
+        for (i in newPos downTo currPos + 1) {
+            println("downward at $i")
         }
     }
 
@@ -90,7 +131,7 @@ class TransactionListViewModel(
             TransactionListAction.ClosePage -> closePage()
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
             is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
-            is TransactionListAction.BalanceAsLastTransaction -> checkBalanceUpTo(action.transactionId)
+            is TransactionListAction.BalanceAsLastTransaction -> checkBalanceUpTo(action.pos)
         }
     }
 }
@@ -124,10 +165,16 @@ fun List<TransactionGroup>.convertGroupToTransactionListItems(): List<Transactio
             )
 
             it.transactions.forEach {
-                add(TransactionListItem.TransactionItem(date = it))
+                add(TransactionListItem.TransactionItem(item = it))
             }
 
             add(TransactionListItem.Divider)
+        }
+    }.mapIndexed { ix, item ->
+        if (item is TransactionListItem.TransactionItem) {
+            item.copy(item = item.item.copy(customPos = ix))
+        } else {
+            item
         }
     }
 }
@@ -141,7 +188,7 @@ sealed class TransactionListItem {
     ) : TransactionListItem()
 
     data class TransactionItem(
-        val date: TransactionUiItem,
+        val item: TransactionUiItem,
     ) : TransactionListItem()
 
     data object Divider : TransactionListItem()

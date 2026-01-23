@@ -38,9 +38,9 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthYear
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.filter.DateFilterView
 import expensemanager.feature.transaction4mp.generated.resources.Res
+import expensemanager.feature.transaction4mp.generated.resources.balance
 import expensemanager.feature.transaction4mp.generated.resources.no_transactions_available
 import expensemanager.feature.transaction4mp.generated.resources.transaction
 import org.jetbrains.compose.resources.stringResource
@@ -88,8 +88,8 @@ private fun TransactionListScreenContent(
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
             statePrv = statePrv,
-        ) { transaction ->
-            onAction.invoke(TransactionListAction.BalanceAsLastTransaction(transaction.id))
+        ) { pos ->
+            onAction.invoke(TransactionListAction.BalanceAsLastTransaction(pos))
         }
     }
 }
@@ -100,7 +100,7 @@ private fun TransactionListScreen(
     accId: String,
     statePrv: StateProvider,
     modifier: Modifier = Modifier,
-    onItemClick: ((TransactionUiItem) -> Unit)? = null,
+    onItemClick: ((Int) -> Unit)? = null,
 ) {
 
     LazyColumn(modifier = modifier.fillMaxWidth()) {
@@ -144,14 +144,14 @@ private fun TransactionListScreen(
                     }
 
                     is TransactionListItem.TransactionItem -> {
-                        val item = transactionListItem.date
+                        val item = transactionListItem.item
                         Box(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             TransactionItem(
                                 modifier = Modifier
                                     .clickable {
-                                        onItemClick?.invoke(item)
+                                        onItemClick?.invoke(item.customPos)
                                     }
                                     .then(ItemSpecModifier),
                                 categoryName = item.categoryName,
@@ -169,8 +169,9 @@ private fun TransactionListScreen(
                                 toAccountColor = item.toAccountIcon?.backgroundColor,
                             )
                             //Overlay
-                            BalanceItem(item.id) {
-                                statePrv().selectedId
+                            println("wth customPos:${item.customPos}")
+                            BalanceItem(item.customPos, statePrv().netBalance) {
+                                statePrv().selectedPos
                             }
                         }
                     }
@@ -227,8 +228,9 @@ private fun TransactionHeaderItem(
 }
 
 @Composable
-private fun BoxScope.BalanceItem(itemId: String, selectedIdPrv: () -> String) {
-    if (itemId == selectedIdPrv()) {
+private fun BoxScope.BalanceItem(itemPos: Int, netBalance: String, selectedPosPrv: () -> Int) {
+    println("wth $itemPos, s: ${selectedPosPrv()}")
+    if (itemPos == selectedPosPrv()) {
         SingleChoiceSegmentedButtonRow(
             modifier = Modifier.align(Alignment.TopCenter)
                 .offset(y = (-16).dp)
@@ -240,7 +242,9 @@ private fun BoxScope.BalanceItem(itemId: String, selectedIdPrv: () -> String) {
                 ),
                 onClick = {},
                 selected = false,
-                label = @Composable { Text(text = "Balance") },
+                label = @Composable {
+                    Text(text = stringResource(resource = Res.string.balance))
+                },
             )
 
             SegmentedButton(
@@ -250,7 +254,7 @@ private fun BoxScope.BalanceItem(itemId: String, selectedIdPrv: () -> String) {
                 ),
                 onClick = {},
                 selected = true,
-                label = @Composable { Text(text = "$900") },
+                label = @Composable { Text(text = netBalance) },
                 icon = @Composable { }
             )
         }

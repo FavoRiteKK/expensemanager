@@ -7,5 +7,5 @@ sealed class TransactionListAction {
     data object OpenCreateTransaction : TransactionListAction()
 
     data class OpenEdiTransaction(val transactionId: String) : TransactionListAction()
-    data class BalanceAsLastTransaction(val transactionId: String) : TransactionListAction()
+    data class BalanceAsLastTransaction(val pos: Int) : TransactionListAction()
 }
