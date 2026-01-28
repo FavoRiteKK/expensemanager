@@ -404,21 +404,22 @@ val DUMMY_DATA = listOf(
 
 fun getTransactionItem() = TransactionUiItem(
     id = "1",
-    customPos = 1,
-    notes = "Sample Description",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+    notes = "Sample Description",
     categoryName = "Clothing",
     transactionType = TransactionType.EXPENSE,
     categoryIcon = StoredIcon(
         name = "agriculture",
         backgroundColor = "#FF000000",
     ),
+    date = Clock.System.now().asCurrentDateTime().toCompleteDateWithDate(),
+    fromAccountId = "this",
     fromAccountName = "DB Bank xxxx",
     fromAccountIcon = StoredIcon(
         name = "account_balance",
         backgroundColor = "#FF000000",
     ),
-    date = Clock.System.now().asCurrentDateTime().toCompleteDateWithDate(),
+    customPos = 1,
 )
 
 private fun getTransactionUiState() = TransactionGroup(

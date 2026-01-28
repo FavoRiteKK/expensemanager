@@ -11,6 +11,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.account.GetSelectedAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -29,15 +30,22 @@ import kotlinx.coroutines.flow.update
 class TransactionListViewModel(
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
-    getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     appCoroutineDispatchers: AppCoroutineDispatchers,
+    private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val appComposeNavigator: AppComposeNavigator,
     accId: String,
 ) : ViewModel() {
 
-    private val _transactions = MutableStateFlow(TransactionListState(emptyList(), 0, ""))
+    private val _transactions = MutableStateFlow(
+        TransactionListState(
+            transactionListItem = emptyList(),
+            selectedPos = 0,
+            netBalanceString = ""
+        )
+    )
     val state = _transactions.asStateFlow()
+    private lateinit var byAccount: ByAccount
 
     init {
         combine(
@@ -70,18 +78,29 @@ class TransactionListViewModel(
             }
 
             //default to first transaction
-            val balance: String = filteredAccount?.first()?.amount?.let {
-                getFormattedAmountUseCase.invoke(it, currency)
-                    .amountString
-            } ?: ""
-
-            _transactions.update {
-                it.copy(
-                    transactionListItem = groupedItem?.convertGroupToTransactionListItems()
-                        ?: emptyList(),
-                    netBalance = balance
-                )
+            filteredAccount?.first()?.let {
+                val amount = getFormattedAmountUseCase.invoke(it.amount, currency)
+                byAccount = ByAccount(account = it, netAmount = amount)
+                amount
+            }.let { amount ->
+                if (null != amount) {
+                    _transactions.update {
+                        it.copy(
+                            transactionListItem = groupedItem?.convertGroupToTransactionListItems()
+                                ?: emptyList(),
+                            netBalanceString = amount.amountString ?: ""
+                        )
+                    }
+                } else {
+                    _transactions.update {
+                        it.copy(
+                            transactionListItem = groupedItem?.convertGroupToTransactionListItems()
+                                ?: emptyList(),
+                        )
+                    }
+                }
             }
+
         }.flowOn(appCoroutineDispatchers.computation).launchIn(viewModelScope)
     }
 
@@ -99,31 +118,78 @@ class TransactionListViewModel(
         _transactions.value.selectedPos.let { currPos ->
             if (currPos != pos) {
                 val upward = currPos - pos > 0
-                if (upward) {
+                val netBalanceAtPos = if (upward) {
                     calcNetWorthUpward(pos, currPos)
                 } else {
                     calcNetWorthDownward(currPos, pos)
                 }
-                _transactions.update {
-                    it.copy(selectedPos = pos)
+
+                byAccount = byAccount.copy(netAmount = netBalanceAtPos)
+                netBalanceAtPos.currency?.let { currency ->
+                    getFormattedAmountUseCase.invoke(netBalanceAtPos.amount, currency)
+                }?.amountString?.let { amnStr ->
+                    _transactions.update {
+                        it.copy(netBalanceString = amnStr, selectedPos = pos)
+                    }
                 }
             }
         }
     }
 
-    private fun calcNetWorthUpward(pos: Int, currPos: Int) {
-//        val netBalance =
-        _transactions.value.netBalance
-        for (i in pos until currPos) {
-            (_transactions.value.transactionListItem[i] as TransactionListItem.TransactionItem).item.amount.amount
-            println("upward at $i")
+    private fun calcNetWorthUpward(newPos: Int, currPos: Int): Amount {
+        var newByAccount = byAccount
+        for (i in newPos until currPos) {
+            _transactions.value.transactionListItem[i].let {
+                it as? TransactionListItem.TransactionItem
+            }?.item?.let {
+                newByAccount = when (it.transactionType) {
+                    TransactionType.INCOME -> {
+                        newByAccount.addTransactionAmount(it)
+                    }
+                    TransactionType.EXPENSE -> {
+                        newByAccount.subtractTransactionAmount(it)
+                    }
+
+                    TransactionType.TRANSFER -> {
+                        if (it.fromAccountId == newByAccount.account.id) {
+                            newByAccount.subtractTransactionAmount(it)
+                        } else {
+                            newByAccount.addTransactionAmount(it)
+                        }
+                    }
+                }
+            }
         }
+
+        return newByAccount.netAmount
     }
 
-    private fun calcNetWorthDownward(currPos: Int, newPos: Int) {
-        for (i in newPos downTo currPos + 1) {
-            println("downward at $i")
+    private fun calcNetWorthDownward(currPos: Int, newPos: Int): Amount {
+        var newByAccount = byAccount
+        for (i in currPos until newPos) {
+            _transactions.value.transactionListItem[i].let {
+                it as? TransactionListItem.TransactionItem
+            }?.item?.let {
+                newByAccount = when (it.transactionType) {
+                    TransactionType.INCOME -> {
+                        newByAccount.subtractTransactionAmount(it)
+                    }
+                    TransactionType.EXPENSE -> {
+                        newByAccount.addTransactionAmount(it)
+                    }
+
+                    TransactionType.TRANSFER -> {
+                        if (it.fromAccountId == newByAccount.account.id) {
+                            newByAccount.addTransactionAmount(it)
+                        } else {
+                            newByAccount.subtractTransactionAmount(it)
+                        }
+                    }
+                }
+            }
         }
+
+        return newByAccount.netAmount
     }
 
     fun processAction(action: TransactionListAction) {
@@ -134,6 +200,31 @@ class TransactionListViewModel(
             is TransactionListAction.BalanceAsLastTransaction -> checkBalanceUpTo(action.pos)
         }
     }
+}
+
+private data class ByAccount(
+    val account: Account,
+    val netAmount: Amount
+)
+
+private fun ByAccount.subtractTransactionAmount(
+    item: TransactionUiItem
+): ByAccount {
+    val newAmount =
+        (netAmount.amount - item.amount.amount).let { newAmount ->
+            netAmount.copy(amount = newAmount)
+        }
+    return this.copy(netAmount = newAmount)
+}
+
+private fun ByAccount.addTransactionAmount(
+    item: TransactionUiItem
+): ByAccount {
+    val newAmount =
+        (netAmount.amount + item.amount.amount).let { newAmount ->
+            netAmount.copy(amount = newAmount)
+        }
+    return this.copy(netAmount = newAmount)
 }
 
 fun List<Transaction>.toTransactionSum() =

@@ -170,7 +170,7 @@ private fun TransactionListScreen(
                             )
                             //Overlay
                             println("wth customPos:${item.customPos}")
-                            BalanceItem(item.customPos, statePrv().netBalance) {
+                            BalanceItem(item.customPos, statePrv().netBalanceString) {
                                 statePrv().selectedPos
                             }
                         }
@@ -243,7 +243,10 @@ private fun BoxScope.BalanceItem(itemPos: Int, netBalance: String, selectedPosPr
                 onClick = {},
                 selected = false,
                 label = @Composable {
-                    Text(text = stringResource(resource = Res.string.balance))
+                    Text(
+                        text = stringResource(resource = Res.string.balance),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                 },
             )
 
