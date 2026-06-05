@@ -8,4 +8,7 @@ sealed class TransactionListAction {
 
     data class OpenEdiTransaction(val transactionId: String) : TransactionListAction()
     data class BalanceAsLastTransaction(val pos: Int) : TransactionListAction()
+    data class ShowDeleteDialog(val transactionId: String) : TransactionListAction()
+    data class Delete(val transactionId: String) : TransactionListAction()
+    data object DismissDeleteDialog : TransactionListAction()
 }

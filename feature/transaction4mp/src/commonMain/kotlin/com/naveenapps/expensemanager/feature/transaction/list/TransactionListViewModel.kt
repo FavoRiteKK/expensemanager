@@ -9,9 +9,12 @@ import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.account.GetSelectedAccountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -26,6 +29,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class TransactionListViewModel(
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
@@ -33,6 +37,8 @@ class TransactionListViewModel(
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     appCoroutineDispatchers: AppCoroutineDispatchers,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
+    private val findTransactionByIdUseCase: FindTransactionByIdUseCase,
+    private val deleteTransactionUseCase: DeleteTransactionUseCase,
     private val appComposeNavigator: AppComposeNavigator,
     accId: String,
 ) : ViewModel() {
@@ -41,7 +47,9 @@ class TransactionListViewModel(
         TransactionListState(
             transactionListItem = emptyList(),
             selectedPos = 0,
-            netBalanceString = ""
+            netBalanceString = "",
+            opTransactionId = "",
+            showDeleteDialog = false,
         )
     )
     val state = _transactions.asStateFlow()
@@ -192,12 +200,40 @@ class TransactionListViewModel(
         return newByAccount.netAmount
     }
 
+    private fun showDeleteDialog(transactionId: String) {
+        _transactions.update { it.copy(showDeleteDialog = true, opTransactionId = transactionId) }
+    }
+
+    private fun dismissDeleteDialog() {
+        _transactions.update { it.copy(showDeleteDialog = false) }
+    }
+
+    private fun deleteTransaction(transactionId: String) {
+        viewModelScope.launch {
+            when (val response = findTransactionByIdUseCase.invoke(transactionId)) {
+                is Resource.Error -> Unit
+                is Resource.Success -> {
+                    val transaction = response.data
+                    when (deleteTransactionUseCase.invoke(transaction)) {
+                        is Resource.Error -> Unit
+                        is Resource.Success -> {
+                            dismissDeleteDialog()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     fun processAction(action: TransactionListAction) {
         when (action) {
             TransactionListAction.ClosePage -> closePage()
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
             is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
             is TransactionListAction.BalanceAsLastTransaction -> checkBalanceUpTo(action.pos)
+            is TransactionListAction.ShowDeleteDialog -> showDeleteDialog(action.transactionId)
+            is TransactionListAction.Delete -> deleteTransaction(action.transactionId)
+            TransactionListAction.DismissDeleteDialog -> dismissDeleteDialog()
         }
     }
 }

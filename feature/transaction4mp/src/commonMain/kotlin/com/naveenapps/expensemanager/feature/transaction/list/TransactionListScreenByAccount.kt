@@ -154,6 +154,7 @@ private fun TransactionListScreen(
                                         onItemClick?.invoke(item.customPos)
                                     }
                                     .then(ItemSpecModifier),
+                                transactionId = item.id,
                                 categoryName = item.categoryName,
                                 categoryColor = item.categoryIcon.backgroundColor,
                                 categoryIcon = item.categoryIcon.name,
@@ -167,6 +168,7 @@ private fun TransactionListScreen(
                                 toAccountName = item.toAccountName,
                                 toAccountIcon = item.toAccountIcon?.name,
                                 toAccountColor = item.toAccountIcon?.backgroundColor,
+                                onAction = { /* noop */}
                             )
                             //Overlay
                             println("wth customPos:${item.customPos}")
