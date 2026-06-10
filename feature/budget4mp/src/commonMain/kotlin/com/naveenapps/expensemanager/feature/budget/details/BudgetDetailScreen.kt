@@ -172,6 +172,8 @@ private fun BudgetDetailContent(
                         toAccountName = item.toAccountName,
                         toAccountIcon = item.toAccountIcon?.name,
                         toAccountColor = item.toAccountIcon?.backgroundColor,
+//                        actionAllowed = false,
+//                        onAction = ,
                     )
                 }
                 item {

@@ -209,6 +209,7 @@ private fun TransactionListScreen(
                             toAccountName = item.toAccountName,
                             toAccountIcon = item.toAccountIcon?.name,
                             toAccountColor = item.toAccountIcon?.backgroundColor,
+                            actionAllowed = true,
                             onAction = onAction,
                         )
                     }
@@ -281,9 +282,9 @@ fun TransactionItem(
     toAccountIcon: String? = null,
     toAccountColor: String? = null,
     transactionType: TransactionType = TransactionType.EXPENSE,
+    actionAllowed: Boolean = false,
     onAction: (TransactionListAction) -> Unit = { /* noop */ },
 ) {
-    var expanded by remember { mutableStateOf(false) }
     val isTransfer = toAccountName?.isNotBlank()
 
     Row(modifier = modifier) {
@@ -365,30 +366,35 @@ fun TransactionItem(
                 style = MaterialTheme.typography.labelMedium,
             )
         }
-        Box(modifier = Modifier.wrapContentSize()) {
-            IconButton(onClick = { expanded = !expanded }) {
-                Icon(Icons.Default.MoreVert, contentDescription = "More options")
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                DropdownMenuItem(
-                    text = { Text(text = stringResource(Res.string.clone)) },
-                    trailingIcon = { Icon(Icons.Default.ContentCopy, contentDescription = "Clone") },
-                    onClick = {
-                        expanded = false
-                        onAction.invoke(TransactionListAction.OpenCloneTransaction(transactionId))
-                    }
-                )
-                DropdownMenuItem(
-                    text = { Text(text = stringResource(Res.string.delete)) },
-                    trailingIcon = { Icon(Icons.Default.Delete, contentDescription = "Delete") },
-                    onClick = {
-                        expanded = false
-                        onAction.invoke(TransactionListAction.ShowDeleteDialog(transactionId))
-                    }
-                )
+
+        if (actionAllowed) {
+            var expanded by remember { mutableStateOf(false) }
+
+            Box(modifier = Modifier.wrapContentSize()) {
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(Res.string.clone)) },
+                        trailingIcon = { Icon(Icons.Default.ContentCopy, contentDescription = "Clone") },
+                        onClick = {
+                            expanded = false
+                            onAction.invoke(TransactionListAction.OpenCloneTransaction(transactionId))
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(Res.string.delete)) },
+                        trailingIcon = { Icon(Icons.Default.Delete, contentDescription = "Delete") },
+                        onClick = {
+                            expanded = false
+                            onAction.invoke(TransactionListAction.ShowDeleteDialog(transactionId))
+                        }
+                    )
+                }
             }
         }
     }

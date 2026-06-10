@@ -168,7 +168,8 @@ private fun TransactionListScreen(
                                 toAccountName = item.toAccountName,
                                 toAccountIcon = item.toAccountIcon?.name,
                                 toAccountColor = item.toAccountIcon?.backgroundColor,
-                                onAction = { /* noop */}
+//                                actionAllowed = false,
+//                                onAction = { /* noop */}
                             )
                             //Overlay
                             println("wth customPos:${item.customPos}")

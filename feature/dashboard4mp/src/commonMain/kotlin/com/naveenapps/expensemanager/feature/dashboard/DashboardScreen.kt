@@ -274,6 +274,8 @@ private fun DashboardScreenContent(
                     toAccountName = transaction.toAccountName,
                     toAccountIcon = transaction.toAccountIcon?.name,
                     toAccountColor = transaction.toAccountIcon?.backgroundColor,
+//                    actionAllowed = false,
+//                    onAction = {}
                 )
             }
         } else {
