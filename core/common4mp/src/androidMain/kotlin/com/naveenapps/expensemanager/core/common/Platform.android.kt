@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.common
 
-import timber.log.Timber
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -21,6 +20,6 @@ actual fun LWString_format(
 
 actual fun LWLocale_getDefault(): LWLocale = Locale.getDefault()
 
-actual fun log(message: String?, vararg args: Any?) {
-    Timber.w(message, args)
+actual fun log(message: String?) {
+    println(message)
 }

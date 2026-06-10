@@ -16,6 +16,7 @@ import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionCreateMode
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
@@ -115,6 +116,14 @@ class TransactionListViewModel(
     private fun openCreateScreen(transactionId: String? = null) {
         appComposeNavigator.navigate(
             ExpenseManagerScreens.TransactionCreate(transactionId),
+        )
+    }
+
+    private fun openCloneScreen(transactionId: String? = null) {
+        if (transactionId.isNullOrEmpty()) return
+
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.TransactionClone(transactionId, TransactionCreateMode.CLONE),
         )
     }
 
@@ -230,6 +239,7 @@ class TransactionListViewModel(
             TransactionListAction.ClosePage -> closePage()
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
             is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
+            is TransactionListAction.OpenCloneTransaction -> openCloneScreen(action.transactionId)
             is TransactionListAction.BalanceAsLastTransaction -> checkBalanceUpTo(action.pos)
             is TransactionListAction.ShowDeleteDialog -> showDeleteDialog(action.transactionId)
             is TransactionListAction.Delete -> deleteTransaction(action.transactionId)

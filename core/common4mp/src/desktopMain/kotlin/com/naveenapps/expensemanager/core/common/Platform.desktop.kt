@@ -20,7 +20,7 @@ actual fun LWString_format(
 
 actual fun LWLocale_getDefault(): LWLocale = Locale.getDefault()
 
-actual fun log(message: String?, vararg args: Any?) {
+actual fun log(message: String?) {
     println(generateTag() + "\t]" + message)
 }
 

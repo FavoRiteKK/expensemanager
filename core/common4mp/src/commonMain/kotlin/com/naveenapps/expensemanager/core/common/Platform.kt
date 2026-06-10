@@ -15,4 +15,4 @@ expect fun LWNumberFormat_getNumberInstance(): LWNumberFormat
 
 expect fun LWLocale_getDefault(): LWLocale
 
-expect fun log(message: String?, vararg args: Any?)
+expect fun log(message: String?)

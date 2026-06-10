@@ -91,6 +91,9 @@ fun NavGraphBuilder.expenseManagerNavigation(
     composable<ExpenseManagerScreens.TransactionCreate> {
         TransactionCreateScreen()
     }
+    composable<ExpenseManagerScreens.TransactionClone> {
+        TransactionCreateScreen()
+    }
     composable<ExpenseManagerScreens.AccountList> {
         AccountListScreen()
     }

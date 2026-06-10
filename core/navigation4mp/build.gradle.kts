@@ -16,6 +16,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":core:model4mp"))
+                
                 implementation(libs.androidx.navigation.compose)
                 implementation(libs.kotlinx.serialization.json)
             }

@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.transaction.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.log
 import com.naveenapps.expensemanager.core.common.utils.GREEN_500
 import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
@@ -26,6 +27,7 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionCreateMode
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.isExpense
@@ -65,6 +67,12 @@ class TransactionCreateViewModel(
     private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
+
+    private val mode = if (savedStateHandle.contains("mode")) {
+        savedStateHandle.get<TransactionCreateMode>("mode")!!
+    } else {
+        TransactionCreateMode.CREATE
+    }
 
     private val transactionType = MutableStateFlow(TransactionType.EXPENSE)
 
@@ -110,7 +118,7 @@ class TransactionCreateViewModel(
     private var transaction: Transaction? = null
 
     init {
-
+        log("transaction create mode: $mode")
         setDate(Clock.System.now().asCurrentDateTime())
 
         combine(
@@ -221,7 +229,11 @@ class TransactionCreateViewModel(
                         it.copy(
                             amount = it.amount.copy(value = transaction.amount.amount.toSimpleString()),
                             transactionType = transaction.type,
-                            dateTime = transaction.createdOn,
+                            dateTime = if (mode == TransactionCreateMode.UPDATE) {
+                                transaction.createdOn
+                            } else {
+                                it.dateTime
+                            },
                             notes = it.notes.copy(value = transaction.notes),
                             selectedFromAccount = transaction.fromAccount.toAccountUiModel(
                                 getFormattedAmountUseCase.invoke(
@@ -276,7 +288,11 @@ class TransactionCreateViewModel(
         }
 
         val transaction = Transaction(
-            id = this.transaction?.id ?: Uuid.random().toString(),
+            id = when (mode) {
+                TransactionCreateMode.CREATE,
+                TransactionCreateMode.CLONE -> Uuid.random().toString()
+                TransactionCreateMode.UPDATE -> transaction!!.id
+            },
             notes = _state.value.notes.value,
             categoryId = _state.value.selectedCategory.id,
             fromAccountId = _state.value.selectedFromAccount.id,
@@ -294,10 +310,10 @@ class TransactionCreateViewModel(
         )
 
         viewModelScope.launch {
-            val response = if (this@TransactionCreateViewModel.transaction != null) {
-                updateTransactionUseCase.invoke(transaction)
-            } else {
-                addTransactionUseCase.invoke(transaction)
+            val response = when (mode) {
+                TransactionCreateMode.CREATE,
+                TransactionCreateMode.CLONE -> addTransactionUseCase.invoke(transaction)
+                TransactionCreateMode.UPDATE -> updateTransactionUseCase.invoke(transaction)
             }
             when (response) {
                 is Resource.Error -> Unit

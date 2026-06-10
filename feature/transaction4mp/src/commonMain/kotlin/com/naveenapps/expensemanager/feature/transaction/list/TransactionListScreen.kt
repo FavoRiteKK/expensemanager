@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
@@ -374,8 +375,10 @@ fun TransactionItem(
             ) {
                 DropdownMenuItem(
                     text = { Text(text = stringResource(Res.string.clone)) },
+                    trailingIcon = { Icon(Icons.Default.ContentCopy, contentDescription = "Clone") },
                     onClick = {
                         expanded = false
+                        onAction.invoke(TransactionListAction.OpenCloneTransaction(transactionId))
                     }
                 )
                 DropdownMenuItem(
