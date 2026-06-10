@@ -44,7 +44,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         )
         AND `transaction`.category_id IN(:categories)
         AND `transaction`.type IN(:transactionTypes)
-        AND `transaction`.created_on BETWEEN :fromDate AND :toDate
+        AND `transaction`.created_on >= :fromDate AND `transaction`.created_on < :toDate
         ORDER BY `transaction`.created_on DESC
         """,
     )
