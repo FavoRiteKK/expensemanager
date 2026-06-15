@@ -26,16 +26,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.model.DateRangeType
-import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.feature.filter.type.FilterTypeSelectionView
 import com.naveenapps.expensemanager.feature.filter.type.InputChipView
+import expensemanager.feature.filter4mp.generated.resources.Res
+import expensemanager.feature.filter4mp.generated.resources.warning_filter_out_scope
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -169,6 +169,19 @@ private fun TypeFilter(
     onAction: (FilterAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    if (!filterState.todayIncluded) {
+        Row(modifier = modifier) {
+            Text(
+                text = stringResource(Res.string.warning_filter_out_scope),
+                modifier = Modifier.weight(1f)
+                    .padding(start = 8.dp)
+                    .align(Alignment.CenterVertically),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    }
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -196,43 +209,45 @@ private fun TypeFilter(
     }
 }
 
-@AppPreviewsLightAndDarkMode
-@Composable
-fun FilterViewPreview() {
-    ExpenseManagerTheme {
-        Column {
-            FilterContentView(
-                filterState = FilterState(
-                    date = "This Month (11/2023)",
-                    showBackward = false,
-                    showForward = false,
-                    selectedTransactionTypes = emptyList(),
-                    allAccounts = emptyList(),
-                    selectedAccounts = emptyList(),
-                    selectedCategories = emptyList(),
-                    showDateFilter = false,
-                    showTypeFilter = false,
-                    dateRangeType = DateRangeType.ALL
-                ),
-                onAction = {},
-                modifier = Modifier.fillMaxWidth(),
-            )
-            FilterContentView(
-                filterState = FilterState(
-                    date = "This Month (11/2023)",
-                    showBackward = false,
-                    showForward = false,
-                    selectedTransactionTypes = listOf(TransactionType.TRANSFER, TransactionType.INCOME),
-                    allAccounts = emptyList(),
-                    selectedAccounts = emptyList(),
-                    selectedCategories = emptyList(),
-                    showDateFilter = false,
-                    showTypeFilter = false,
-                    dateRangeType = DateRangeType.ALL
-                ),
-                onAction = {},
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-    }
-}
+//@AppPreviewsLightAndDarkMode
+//@Composable
+//fun FilterViewPreview() {
+//    ExpenseManagerTheme {
+//        Column {
+//            FilterContentView(
+//                filterState = FilterState(
+//                    date = "This Month (11/2023)",
+//                    dateRangeType = DateRangeType.ALL,
+//                    selectedCategories = emptyList(),
+//                    allAccounts = emptyList(),
+//                    selectedAccounts = emptyList(),
+//                    selectedTransactionTypes = emptyList(),
+//                    showForward = false,
+//                    showBackward = false,
+//                    showDateFilter = false,
+//                    showTypeFilter = false,
+//                    todayIncluded = false
+//                ),
+//                onAction = {},
+//                modifier = Modifier.fillMaxWidth(),
+//            )
+//            FilterContentView(
+//                filterState = FilterState(
+//                    date = "This Month (11/2023)",
+//                    dateRangeType = DateRangeType.ALL,
+//                    selectedCategories = emptyList(),
+//                    allAccounts = emptyList(),
+//                    selectedAccounts = emptyList(),
+//                    selectedTransactionTypes = listOf(TransactionType.TRANSFER, TransactionType.INCOME),
+//                    showForward = false,
+//                    showBackward = false,
+//                    showDateFilter = false,
+//                    showTypeFilter = false,
+//                    todayIncluded = true
+//                ),
+//                onAction = {},
+//                modifier = Modifier.fillMaxWidth(),
+//            )
+//        }
+//    }
+//}

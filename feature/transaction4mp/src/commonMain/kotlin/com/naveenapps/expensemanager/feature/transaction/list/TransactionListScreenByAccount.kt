@@ -172,7 +172,7 @@ private fun TransactionListScreen(
 //                                onAction = { /* noop */}
                             )
                             //Overlay
-                            println("wth customPos:${item.customPos}")
+                            println("customPos:${item.customPos}")
                             BalanceItem(item.customPos, statePrv().netBalanceString) {
                                 statePrv().selectedPos
                             }
@@ -232,7 +232,7 @@ private fun TransactionHeaderItem(
 
 @Composable
 private fun BoxScope.BalanceItem(itemPos: Int, netBalance: String, selectedPosPrv: () -> Int) {
-    println("wth $itemPos, s: ${selectedPosPrv()}")
+    println("$itemPos, s: ${selectedPosPrv()}")
     if (itemPos == selectedPosPrv()) {
         SingleChoiceSegmentedButtonRow(
             modifier = Modifier.align(Alignment.TopCenter)
