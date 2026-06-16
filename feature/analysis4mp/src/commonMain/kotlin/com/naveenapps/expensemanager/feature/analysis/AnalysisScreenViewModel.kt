@@ -73,7 +73,8 @@ class AnalysisScreenViewModel(
                         }
                     }
                     AnalysisUiChartData(
-                        chartData = listOf(expenses, incomes),
+                        expenses = expenses,
+                        incomes = incomes,
                         dates = chart.dates,
                     )
                 },
@@ -99,7 +100,8 @@ data class AnalysisUiData(
 )
 
 data class AnalysisUiChartData(
-    val chartData: List<Map<Int, Double>>,
+    val expenses: Map<Int, Double>,
+    val incomes: Map<Int, Double>,
     val dates: List<String>,
     val title: String? = null,
 )

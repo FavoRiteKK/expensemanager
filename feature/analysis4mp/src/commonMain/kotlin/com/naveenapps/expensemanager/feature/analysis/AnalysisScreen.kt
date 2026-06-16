@@ -8,9 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.AppPreviews
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.feature.filter.FullFilterView
 import expensemanager.feature.analysis4mp.generated.resources.Res
 import expensemanager.feature.analysis4mp.generated.resources.analysis
@@ -52,10 +50,10 @@ private fun AnalysisScreenContent(modifier: Modifier = Modifier) {
     }
 }
 
-@AppPreviews
-@Composable
-fun AnalysisScreenPreview() {
-    ExpenseManagerTheme {
-        AnalysisScreen()
-    }
-}
+//@AppPreviews
+//@Composable
+//fun AnalysisScreenPreview() {
+//    ExpenseManagerTheme {
+//        AnalysisScreen()
+//    }
+//}
