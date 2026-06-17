@@ -123,7 +123,7 @@ class NumberPadViewModel : ViewModel() {
 
             val currentString = _calculatedAmountString.value
 
-            if (currentString == character || (currentString == "0" && character == "00")) {
+            if (currentString + character in listOf("0", "00", "000")) {
                 return@launch
             }
 
