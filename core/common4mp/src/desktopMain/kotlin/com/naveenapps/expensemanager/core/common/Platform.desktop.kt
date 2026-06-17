@@ -19,3 +19,16 @@ actual fun LWString_format(
 }
 
 actual fun LWLocale_getDefault(): LWLocale = Locale.getDefault()
+
+actual fun log(message: String?) {
+    println(generateTag() + "\t]" + message)
+}
+
+private fun generateTag(): String {
+    val stackTraceElement = Thread.currentThread().stackTrace[4]
+    val callerClazzName = stackTraceElement.className.run {
+//        substring(lastIndexOf(".") + 1)
+    }
+    val tag = "$callerClazzName:${stackTraceElement.lineNumber}#${stackTraceElement.methodName}".ifEmpty { "" }
+    return tag
+}

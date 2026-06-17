@@ -16,4 +16,5 @@ data class FilterState(
     val showBackward: Boolean,
     val showDateFilter: Boolean,
     val showTypeFilter: Boolean,
+    val todayIncluded: Boolean,
 )

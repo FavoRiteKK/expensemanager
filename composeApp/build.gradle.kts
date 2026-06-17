@@ -192,3 +192,6 @@ compose.desktop {
     }
 }
 
+dependencies {
+    debugImplementation("com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:1.0.7")
+}

@@ -25,15 +25,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.feature.filter.type.AccountChipWithDropdown
+import expensemanager.feature.filter4mp.generated.resources.Res
+import expensemanager.feature.filter4mp.generated.resources.warning_filter_out_scope
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
-
-private typealias StateProvider = () -> FilterState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,12 +68,12 @@ fun DateFilterView(
     Column(modifier = modifier) {
         FilterContentView(
             modifier = modifier,
-            filterStatePrv = { filterState },
+            filterState = filterState,
             onAction = viewModel::processAction,
         )
         TypeFilter(
             modifier = Modifier.padding(horizontal = 16.dp),
-            filterStatePrv = { filterState },
+            filterState = filterState,
             onSelected = {
                 viewModel.processAction(FilterAction.UpdateFilterAccount(it.id))
             }
@@ -81,7 +83,7 @@ fun DateFilterView(
 
 @Composable
 private fun FilterContentView(
-    filterStatePrv: StateProvider,
+    filterState: FilterState,
     onAction: (FilterAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -106,7 +108,7 @@ private fun FilterContentView(
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .align(Alignment.CenterVertically),
-                text = filterStatePrv().date,
+                text = filterState.date,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 style = MaterialTheme.typography.bodyMedium,
@@ -116,7 +118,7 @@ private fun FilterContentView(
             onClick = {
                 onAction.invoke(FilterAction.MoveDateBackward)
             },
-            enabled = filterStatePrv().showBackward,
+            enabled = filterState.showBackward,
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
@@ -127,7 +129,7 @@ private fun FilterContentView(
             onClick = {
                 onAction.invoke(FilterAction.MoveDateForward)
             },
-            enabled = filterStatePrv().showForward,
+            enabled = filterState.showForward,
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
@@ -139,7 +141,7 @@ private fun FilterContentView(
 
 @Composable
 private fun TypeFilter(
-    filterStatePrv: StateProvider,
+    filterState: FilterState,
     onSelected: (AccountUiModel) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -150,12 +152,23 @@ private fun TypeFilter(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         //
-        filterStatePrv().selectedAccounts.firstOrNull()?.let { account ->
+        filterState.selectedAccounts.firstOrNull()?.let { account ->
             AccountChipWithDropdown(
                 initialAcc = account,
-                accounts = filterStatePrv().allAccounts,
+                accounts = filterState.allAccounts,
                 onSelected = onSelected,
                 iconName = account.storedIcon.name,
+            )
+        }
+        if (!filterState.todayIncluded) {
+            Text(
+                text = stringResource(Res.string.warning_filter_out_scope),
+                modifier = Modifier.weight(1f)
+                    .padding(start = 8.dp)
+                    .align(Alignment.CenterVertically),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error,
+                fontWeight = FontWeight.Bold,
             )
         }
     }

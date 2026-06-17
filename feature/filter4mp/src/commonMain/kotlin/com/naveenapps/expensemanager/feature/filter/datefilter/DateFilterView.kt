@@ -25,28 +25,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.common.utils.asCurrentDateTime
-import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
-import com.naveenapps.expensemanager.core.model.DateRangeModel
-import com.naveenapps.expensemanager.core.model.DateRangeType
-import com.naveenapps.expensemanager.core.model.TextFieldValue
 import expensemanager.feature.filter4mp.generated.resources.Res
 import expensemanager.feature.filter4mp.generated.resources.cancel
 import expensemanager.feature.filter4mp.generated.resources.date_filter
 import expensemanager.feature.filter4mp.generated.resources.from_date
 import expensemanager.feature.filter4mp.generated.resources.select
 import expensemanager.feature.filter4mp.generated.resources.to_date
-import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import java.util.Date
 
 @Composable
 fun DateFilterSelectionView(
@@ -204,31 +195,30 @@ private fun FilterTypesAndViewContent(
     }
 }
 
-@AppPreviewsLightAndDarkMode
-@Composable
-private fun FilterNormalViewPreview() {
-    ExpenseManagerTheme {
-        val dateRange = TextFieldValue(DateRangeType.THIS_MONTH, false, {})
-        val dateFilter = TextFieldValue(Clock.System.now().asCurrentDateTime(), false) {}
-        FilterTypesAndViewContent(
-            state = DateFilterState(
-                dateFilterType = DateFilterType.FROM_DATE,
-                showCustomRangeSelection = false,
-                showDateFilter = false,
-                dateRangeTypeList = DateRangeType.entries.map {
-                    DateRangeModel(
-                        name = it.toCapitalize(),
-                        description = "Sample",
-                        type = it,
-                        listOf(Date().time, Date().time)
-                    )
-                },
-                dateRangeType = dateRange,
-                fromDate = dateFilter,
-                toDate = dateFilter
-            ),
-            onAction = {}
-        )
-    }
-}
-
+//@AppPreviewsLightAndDarkMode
+//@Composable
+//private fun FilterNormalViewPreview() {
+//    ExpenseManagerTheme {
+//        val dateRange = TextFieldValue(DateRangeType.THIS_MONTH, false, {})
+//        val dateFilter = TextFieldValue(Clock.System.now().asCurrentDateTime(), false) {}
+//        FilterTypesAndViewContent(
+//            state = DateFilterState(
+//                dateFilterType = DateFilterType.FROM_DATE,
+//                showCustomRangeSelection = false,
+//                showDateFilter = false,
+//                dateRangeTypeList = DateRangeType.entries.map {
+//                    DateRangeModel(
+//                        name = it.toCapitalize(),
+//                        description = "Sample",
+//                        type = it,
+//                        listOf(Date().time, Date().time)
+//                    )
+//                },
+//                dateRangeType = dateRange,
+//                fromDate = dateFilter,
+//                toDate = dateFilter
+//            ),
+//            onAction = {}
+//        )
+//    }
+//}

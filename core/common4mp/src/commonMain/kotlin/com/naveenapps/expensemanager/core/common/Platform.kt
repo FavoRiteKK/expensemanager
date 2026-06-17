@@ -14,3 +14,5 @@ expect fun LWString_format(s: String, vararg args: Any?): String
 expect fun LWNumberFormat_getNumberInstance(): LWNumberFormat
 
 expect fun LWLocale_getDefault(): LWLocale
+
+expect fun log(message: String?)

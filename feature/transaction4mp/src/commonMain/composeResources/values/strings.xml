@@ -46,4 +46,8 @@
     <string name="amount">Amount</string>
     <string name="from_account">From Account</string>
     <string name="to_account">To Account</string>
+    <string name="balance">Net/Bal.</string>
+
+    <string name="clone">Clone</string>
+    <string name="delete">Delete</string>
 </resources>

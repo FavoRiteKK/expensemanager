@@ -28,12 +28,9 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.common.utils.GREEN_500
 import com.naveenapps.expensemanager.core.common.utils.RED_500
 import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
-import com.naveenapps.expensemanager.core.designsystem.AppPreviews
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
@@ -41,8 +38,6 @@ import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianChartHost
-import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianMeasuringContext
-import com.patrykandpatrick.vico.multiplatform.cartesian.axis.Axis
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianChartModelProducer
@@ -221,14 +216,18 @@ fun ChartScreen(
     val expenseColor = getExpenseColor()
     val incomeColor = getIncomeColor()
     val marker = rememberMarker()
-    val modelProducer = remember { CartesianChartModelProducer() }
+    val expenseProducer = remember { CartesianChartModelProducer() }
+    val incomeProducer = remember { CartesianChartModelProducer() }
 
     LaunchedEffect(chart) {
-        modelProducer.runTransaction {
+        expenseProducer.runTransaction {
             lineSeries {
-                chart.chartData.onEach { line ->
-                    series(line.keys, line.values)
-                }
+                series(chart.expenses.keys, chart.expenses.values)
+            }
+        }
+        incomeProducer.runTransaction {
+            lineSeries {
+                series(chart.incomes.keys, chart.incomes.values)
             }
         }
     }
@@ -251,6 +250,23 @@ fun ChartScreen(
                                 )
                             )
                         ),
+                    )
+                ),
+                startAxis = VerticalAxis.rememberStart(
+                    valueFormatter = remember {
+                        startAxisValueFormatter
+                    }
+                ),
+                bottomAxis = HorizontalAxis.rememberBottom(),
+                marker = marker,
+            ),
+            modelProducer = expenseProducer,
+        )
+        CartesianChartHost(
+            modifier = modifier.padding(top = 16.dp),
+            chart = rememberCartesianChart(
+                rememberLineCartesianLayer(
+                    lineProvider = LineCartesianLayer.LineProvider.series(
                         LineCartesianLayer.rememberLine(
                             fill = LineCartesianLayer.LineFill.single(fill(incomeColor)),
                             areaFill = LineCartesianLayer.AreaFill.single(
@@ -274,92 +290,92 @@ fun ChartScreen(
                 bottomAxis = HorizontalAxis.rememberBottom(),
                 marker = marker,
             ),
-            modelProducer = modelProducer,
+            modelProducer = incomeProducer,
         )
     }
 }
 
-@AppPreviews
-@Composable
-fun ChartScreenPreview() {
-    ExpenseManagerTheme {
-        ChartScreen(
-            isDarkTheme = true,
-            chart = AnalysisUiChartData(
-                chartData = listOf(
-                    mapOf(
-                        Pair(0, 1.0),
-                        Pair(1, 2.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                    ),
-                    mapOf(
-                        Pair(0, 4.0),
-                        Pair(1, 3.0),
-                        Pair(2, 2.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                        Pair(2, 3.0),
-                    ),
-                ),
-                dates = listOf(
-                    "08/09",
-                    "18/09",
-                    "21/09",
-                    "24/09",
-                    "28/09",
-                    "18/09",
-                    "21/09",
-                    "24/09",
-                    "28/09",
-                    "28/09",
-                ),
-            ),
-        )
-    }
-}
-
-@AppPreviewsLightAndDarkMode
-@Composable
-fun TransactionAverageItemPreview() {
-    ExpenseManagerTheme {
-        TransactionAverageItem(
-            WholeAverageData(
-                AverageData(
-                    "10.0$",
-                    "10.0$",
-                ),
-                AverageData(
-                    "10.0$",
-                    "10.0$",
-                ),
-            ),
-        )
-    }
-}
-
-@AppPreviewsLightAndDarkMode
-@Composable
-fun AmountSummaryPreview() {
-    val AMOUNT_VALUE = "1000000"
-    ExpenseManagerTheme {
-        AmountInfoWidget(
-            expenseAmount = AMOUNT_VALUE,
-            incomeAmount = AMOUNT_VALUE,
-            balanceAmount = AMOUNT_VALUE,
-            transactionPeriod = "This Month(Oct 2023)",
-        )
-    }
-}
+//@AppPreviews
+//@Composable
+//fun ChartScreenPreview() {
+//    ExpenseManagerTheme {
+//        ChartScreen(
+//            isDarkTheme = true,
+//            chart = AnalysisUiChartData(
+//                chartData = listOf(
+//                    mapOf(
+//                        Pair(0, 1.0),
+//                        Pair(1, 2.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                    ),
+//                    mapOf(
+//                        Pair(0, 4.0),
+//                        Pair(1, 3.0),
+//                        Pair(2, 2.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                        Pair(2, 3.0),
+//                    ),
+//                ),
+//                dates = listOf(
+//                    "08/09",
+//                    "18/09",
+//                    "21/09",
+//                    "24/09",
+//                    "28/09",
+//                    "18/09",
+//                    "21/09",
+//                    "24/09",
+//                    "28/09",
+//                    "28/09",
+//                ),
+//            ),
+//        )
+//    }
+//}
+//
+//@AppPreviewsLightAndDarkMode
+//@Composable
+//fun TransactionAverageItemPreview() {
+//    ExpenseManagerTheme {
+//        TransactionAverageItem(
+//            WholeAverageData(
+//                AverageData(
+//                    "10.0$",
+//                    "10.0$",
+//                ),
+//                AverageData(
+//                    "10.0$",
+//                    "10.0$",
+//                ),
+//            ),
+//        )
+//    }
+//}
+//
+//@AppPreviewsLightAndDarkMode
+//@Composable
+//fun AmountSummaryPreview() {
+//    val AMOUNT_VALUE = "1000000"
+//    ExpenseManagerTheme {
+//        AmountInfoWidget(
+//            expenseAmount = AMOUNT_VALUE,
+//            incomeAmount = AMOUNT_VALUE,
+//            balanceAmount = AMOUNT_VALUE,
+//            transactionPeriod = "This Month(Oct 2023)",
+//        )
+//    }
+//}

@@ -105,6 +105,7 @@ fun Project.configureBasicMultiplatformExtension() {
                     implementation(
                         libs.findLibrary("slf4j.simple").get()
                     )
+                    implementation("com.jakewharton.timber:timber:5.0.1")
                 }
             }
         }

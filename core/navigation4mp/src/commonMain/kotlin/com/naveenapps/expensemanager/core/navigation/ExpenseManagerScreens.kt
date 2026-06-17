@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.core.navigation
 
+import com.naveenapps.expensemanager.core.model.TransactionCreateMode
 import kotlinx.serialization.Serializable
 
 sealed class ExpenseManagerScreens {
@@ -70,7 +71,17 @@ sealed class ExpenseManagerScreens {
     data class BudgetDetails(val id: String?) : ExpenseManagerScreens()
 
     @Serializable
-    data class TransactionCreate(val id: String?) : ExpenseManagerScreens()
+    data class TransactionCreate(
+        val id: String?,
+        val mode: TransactionCreateMode = if (id.isNullOrEmpty()) {
+            TransactionCreateMode.CREATE
+        } else {
+            TransactionCreateMode.UPDATE
+        }
+    ) : ExpenseManagerScreens()
+
+    @Serializable
+    data class TransactionClone(val id: String, val mode: TransactionCreateMode) : ExpenseManagerScreens()
 }
 
 object ExpenseManagerArgsNames {

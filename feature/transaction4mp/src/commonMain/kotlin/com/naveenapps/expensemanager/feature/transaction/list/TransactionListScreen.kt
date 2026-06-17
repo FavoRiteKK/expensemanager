@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.transaction.list
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,15 +16,24 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +48,7 @@ import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
+import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
@@ -51,6 +62,8 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.filter.FullFilterView
 import expensemanager.feature.transaction4mp.generated.resources.Res
+import expensemanager.feature.transaction4mp.generated.resources.clone
+import expensemanager.feature.transaction4mp.generated.resources.delete
 import expensemanager.feature.transaction4mp.generated.resources.no_transactions_available
 import expensemanager.feature.transaction4mp.generated.resources.transaction
 import kotlinx.datetime.Clock
@@ -80,6 +93,17 @@ private fun TransactionListScreenContent(
     state: TransactionListState,
     onAction: (TransactionListAction) -> Unit
 ) {
+    if (state.showDeleteDialog) {
+        DeleteDialogItem(
+            confirm = {
+                onAction.invoke(TransactionListAction.Delete(state.opTransactionId))
+            },
+            dismiss = {
+                onAction.invoke(TransactionListAction.DismissDeleteDialog)
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             AppTopNavigationBar(
@@ -108,6 +132,7 @@ private fun TransactionListScreenContent(
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
             state = state,
+            onAction = onAction,
         ) { transaction ->
             onAction.invoke(TransactionListAction.OpenEdiTransaction(transaction.id))
         }
@@ -118,6 +143,7 @@ private fun TransactionListScreenContent(
 private fun TransactionListScreen(
     state: TransactionListState,
     modifier: Modifier = Modifier,
+    onAction: (TransactionListAction) -> Unit,
     onItemClick: ((TransactionUiItem) -> Unit)? = null,
 ) {
 
@@ -161,7 +187,7 @@ private fun TransactionListScreen(
                     }
 
                     is TransactionListItem.TransactionItem -> {
-                        val item = transactionListItem.date
+                        val item = transactionListItem.item
                         TransactionItem(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -169,6 +195,7 @@ private fun TransactionListScreen(
                                     onItemClick?.invoke(item)
                                 }
                                 .then(ItemSpecModifier),
+                            transactionId = item.id,
                             categoryName = item.categoryName,
                             categoryColor = item.categoryIcon.backgroundColor,
                             categoryIcon = item.categoryIcon.name,
@@ -182,6 +209,8 @@ private fun TransactionListScreen(
                             toAccountName = item.toAccountName,
                             toAccountIcon = item.toAccountIcon?.name,
                             toAccountColor = item.toAccountIcon?.backgroundColor,
+                            actionAllowed = true,
+                            onAction = onAction,
                         )
                     }
                 }
@@ -238,6 +267,7 @@ private fun TransactionHeaderItem(
 
 @Composable
 fun TransactionItem(
+    transactionId: String,
     categoryName: String,
     fromAccountName: String,
     fromAccountIcon: String,
@@ -252,6 +282,8 @@ fun TransactionItem(
     toAccountIcon: String? = null,
     toAccountColor: String? = null,
     transactionType: TransactionType = TransactionType.EXPENSE,
+    actionAllowed: Boolean = false,
+    onAction: (TransactionListAction) -> Unit = { /* noop */ },
 ) {
     val isTransfer = toAccountName?.isNotBlank()
 
@@ -334,6 +366,37 @@ fun TransactionItem(
                 style = MaterialTheme.typography.labelMedium,
             )
         }
+
+        if (actionAllowed) {
+            var expanded by remember { mutableStateOf(false) }
+
+            Box(modifier = Modifier.wrapContentSize()) {
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(Res.string.clone)) },
+                        trailingIcon = { Icon(Icons.Default.ContentCopy, contentDescription = "Clone") },
+                        onClick = {
+                            expanded = false
+                            onAction.invoke(TransactionListAction.OpenCloneTransaction(transactionId))
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(Res.string.delete)) },
+                        trailingIcon = { Icon(Icons.Default.Delete, contentDescription = "Delete") },
+                        onClick = {
+                            expanded = false
+                            onAction.invoke(TransactionListAction.ShowDeleteDialog(transactionId))
+                        }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -404,20 +467,22 @@ val DUMMY_DATA = listOf(
 
 fun getTransactionItem() = TransactionUiItem(
     id = "1",
-    notes = "Sample Description",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+    notes = "Sample Description",
     categoryName = "Clothing",
     transactionType = TransactionType.EXPENSE,
     categoryIcon = StoredIcon(
         name = "agriculture",
         backgroundColor = "#FF000000",
     ),
+    date = Clock.System.now().asCurrentDateTime().toCompleteDateWithDate(),
+    fromAccountId = "this",
     fromAccountName = "DB Bank xxxx",
     fromAccountIcon = StoredIcon(
         name = "account_balance",
         backgroundColor = "#FF000000",
     ),
-    date = Clock.System.now().asCurrentDateTime().toCompleteDateWithDate(),
+    customPos = 1,
 )
 
 private fun getTransactionUiState() = TransactionGroup(

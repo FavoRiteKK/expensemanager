@@ -158,6 +158,7 @@ private fun BudgetDetailContent(
                                 onItemClick.invoke(item.id)
                             }
                             .then(ItemSpecModifier),
+                        transactionId = item.id,
                         categoryName = item.categoryName,
                         categoryColor = item.categoryIcon.backgroundColor,
                         categoryIcon = item.categoryIcon.name,
@@ -171,6 +172,8 @@ private fun BudgetDetailContent(
                         toAccountName = item.toAccountName,
                         toAccountIcon = item.toAccountIcon?.name,
                         toAccountColor = item.toAccountIcon?.backgroundColor,
+//                        actionAllowed = false,
+//                        onAction = ,
                     )
                 }
                 item {

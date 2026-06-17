@@ -19,3 +19,7 @@ actual fun LWString_format(
 }
 
 actual fun LWLocale_getDefault(): LWLocale = Locale.getDefault()
+
+actual fun log(message: String?) {
+    println(message)
+}

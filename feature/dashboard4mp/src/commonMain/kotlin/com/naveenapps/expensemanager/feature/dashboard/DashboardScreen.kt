@@ -260,6 +260,7 @@ private fun DashboardScreenContent(
                             onAction.invoke(DashboardAction.OpenTransactionEdit(transaction))
                         }
                         .then(ItemSpecModifier),
+                    transactionId = transaction.id,
                     categoryName = transaction.categoryName,
                     categoryColor = transaction.categoryIcon.backgroundColor,
                     categoryIcon = transaction.categoryIcon.name,
@@ -273,6 +274,8 @@ private fun DashboardScreenContent(
                     toAccountName = transaction.toAccountName,
                     toAccountIcon = transaction.toAccountIcon?.name,
                     toAccountColor = transaction.toAccountIcon?.backgroundColor,
+//                    actionAllowed = false,
+//                    onAction = {}
                 )
             }
         } else {

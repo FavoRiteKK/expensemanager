@@ -17,6 +17,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.includeToday
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.feature.filter.type.addOrRemove
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,14 +45,15 @@ class FilterViewModel(
         FilterState(
             date = "",
             dateRangeType = DateRangeType.THIS_MONTH,
-            selectedTransactionTypes = emptyList(),
+            selectedCategories = emptyList(),
             allAccounts = emptyList(),
             selectedAccounts = emptyList(),
-            selectedCategories = emptyList(),
-            showBackward = true,
+            selectedTransactionTypes = emptyList(),
             showForward = true,
+            showBackward = true,
             showDateFilter = false,
-            showTypeFilter = false
+            showTypeFilter = false,
+            todayIncluded = true,
         )
     )
     val filterState = _filterState.asStateFlow()
@@ -127,7 +129,8 @@ class FilterViewModel(
                     showForward = showForward,
                     showBackward = showBackward,
                     dateRangeType = dateRangeType,
-                    date = date
+                    date = date,
+                    todayIncluded = it.includeToday
                 )
             }
         }.launchIn(viewModelScope)

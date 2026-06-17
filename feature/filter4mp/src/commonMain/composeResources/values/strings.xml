@@ -9,4 +9,6 @@
     <string name="accounts">Accounts</string>
     <string name="categories">Categories</string>
     <string name="apply">Apply</string>
+
+    <string name="warning_filter_out_scope">Note: Today not included in this filter range!</string>
 </resources>
