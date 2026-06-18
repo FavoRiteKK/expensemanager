@@ -214,9 +214,10 @@ fun ChartScreen(
     chart ?: return
 
     val expenseColor = getExpenseColor()
-    val incomeColor = getIncomeColor()
-    val marker = rememberMarker()
+    val expenseMarker = rememberMarker(isExpense = true)
     val expenseProducer = remember { CartesianChartModelProducer() }
+    val incomeColor = getIncomeColor()
+    val incomeMarker = rememberMarker(isExpense = false)
     val incomeProducer = remember { CartesianChartModelProducer() }
 
     LaunchedEffect(chart) {
@@ -258,7 +259,7 @@ fun ChartScreen(
                     }
                 ),
                 bottomAxis = HorizontalAxis.rememberBottom(),
-                marker = marker,
+                marker = expenseMarker,
             ),
             modelProducer = expenseProducer,
         )
@@ -288,7 +289,7 @@ fun ChartScreen(
                     }
                 ),
                 bottomAxis = HorizontalAxis.rememberBottom(),
-                marker = marker,
+                marker = incomeMarker,
             ),
             modelProducer = incomeProducer,
         )

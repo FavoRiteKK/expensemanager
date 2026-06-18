@@ -33,55 +33,56 @@ import com.patrykandpatrick.vico.multiplatform.common.shape.CorneredShape.Corner
 import com.patrykandpatrick.vico.multiplatform.common.shape.DashedShape
 import com.patrykandpatrick.vico.multiplatform.common.shape.MarkerCorneredShape
 
-private val currencyFormatter: DefaultCartesianMarker.ValueFormatter =
-    object : DefaultCartesianMarker.ValueFormatter {
-        private fun AnnotatedString.Builder.append(
-            prefix: String,
-            y: Double,
-            color: Color? = null
-        ) {
-            if (color != null) {
-                withStyle(SpanStyle(color = color, fontWeight = FontWeight.Bold)) {
-                    append(prefix + y.toStringWithLocale())
-                }
-            } else {
+private class CurrencyFormatter(isExpense: Boolean) : DefaultCartesianMarker.ValueFormatter {
+
+    private val color = if (isExpense) RED_500 else GREEN_500
+    private val prefix = if (isExpense) "⤵ " else "⤴ "
+
+    private fun AnnotatedString.Builder.append(
+        prefix: String,
+        y: Double,
+        color: Color? = null
+    ) {
+        if (color != null) {
+            withStyle(SpanStyle(color = color, fontWeight = FontWeight.Bold)) {
                 append(prefix + y.toStringWithLocale())
             }
-        }
-
-        private fun AnnotatedString.Builder.append(
-            target: CartesianMarker.Target,
-        ) {
-            when (target) {
-                is LineCartesianLayerMarkerTarget -> {
-                    target.points.forEachIndexed { index, point ->
-                        //the color is set since it is known implicitly we have 2 points, first is expense and second is income
-                        val color = if (index == 0) RED_500 else GREEN_500
-                        val prefix = if (index == 0) "⤵ " else "⤴ "
-                        append(prefix, point.entry.y, Color(color = color))
-                        if (index != target.points.lastIndex) append("\n")
-                    }
-                }
-
-                else -> throw IllegalArgumentException("Unexpected `CartesianMarker.Target` implementation.")
-            }
-        }
-
-        override fun format(
-            context: CartesianDrawingContext,
-            targets: List<CartesianMarker.Target>
-        ): CharSequence {
-            return buildAnnotatedString {
-                targets.forEachIndexed { index, target ->
-                    append(target = target)
-                    if (index != targets.lastIndex) append("; ")
-                }
-            }
+        } else {
+            append(prefix + y.toStringWithLocale())
         }
     }
 
+    private fun AnnotatedString.Builder.append(
+        target: CartesianMarker.Target,
+    ) {
+        when (target) {
+            is LineCartesianLayerMarkerTarget -> {
+                target.points.forEachIndexed { index, point ->
+                    //the color is set since it is known implicitly we have 2 points, first is expense and second is income
+                    append(prefix, point.entry.y, Color(color = color))
+                    if (index != target.points.lastIndex) append("\n")
+                }
+            }
+
+            else -> throw IllegalArgumentException("Unexpected `CartesianMarker.Target` implementation.")
+        }
+    }
+
+    override fun format(
+        context: CartesianDrawingContext,
+        targets: List<CartesianMarker.Target>
+    ): CharSequence {
+        return buildAnnotatedString {
+            targets.forEachIndexed { index, target ->
+                append(target = target)
+                if (index != targets.lastIndex) append("; ")
+            }
+        }
+    }
+}
+
 @Composable
-internal fun rememberMarker(): CartesianMarker {
+internal fun rememberMarker(isExpense: Boolean): CartesianMarker {
     val labelBackground =
         rememberShapeComponent(
             fill = Fill(MaterialTheme.colorScheme.surface),
@@ -104,7 +105,7 @@ internal fun rememberMarker(): CartesianMarker {
     return rememberDefaultCartesianMarker(
         label = label,
         valueFormatter = remember {
-            currencyFormatter
+            CurrencyFormatter(isExpense)
         },
         indicator = { color ->
             val indicatorInnerComponent =
