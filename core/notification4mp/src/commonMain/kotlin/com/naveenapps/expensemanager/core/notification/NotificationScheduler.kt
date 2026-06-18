@@ -8,6 +8,7 @@ import com.tweener.alarmee.model.Alarmee
 import com.tweener.alarmee.model.AndroidNotificationConfiguration
 import com.tweener.alarmee.model.AndroidNotificationPriority
 import com.tweener.alarmee.model.IosNotificationConfiguration
+import com.tweener.alarmee.model.RepeatInterval
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
@@ -41,6 +42,7 @@ class NotificationScheduler(
                     channelId = NotificationChannelId.CHANNEL_GENERAL,
                 ),
                 iosNotificationConfiguration = IosNotificationConfiguration(),
+                repeatInterval = RepeatInterval.Daily,
             )
         )
     }
