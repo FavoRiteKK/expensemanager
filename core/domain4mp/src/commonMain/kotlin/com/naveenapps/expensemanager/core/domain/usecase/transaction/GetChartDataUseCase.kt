@@ -11,6 +11,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.dateran
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetTransactionGroupTypeUseCase
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.GroupType
+import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
@@ -56,7 +57,9 @@ class GetChartDataUseCase(
 
             while (fromDate < toDate) {
                 val key = groupValue(groupType, fromDate.toEpochMilliseconds().toCompleteDate())
-                val values = transactionGroupByDate[key]
+                val values = transactionGroupByDate[key]?.filter {
+                    it.type != TransactionType.TRANSFER
+                }
                 dates.add(key)
 
                 if (values != null) {
